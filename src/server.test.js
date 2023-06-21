@@ -36,7 +36,8 @@ const controllers = {
 const { app } = await setupServer({
   env: envExample,
   specFileLocation,
-  controllers
+  controllers,
+  origin: 'hckr.news'
 })
 
 const request = supertest(app)
