@@ -19,13 +19,16 @@ const makeExpressCallback = ({
       query: context.request.query,
       spec: context.operation.parameters
     })
+    const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
+
     try {
       return controller({
         context,
         request,
         response,
         parameters,
-        specification
+        specification,
+        url
       })
     } catch (error) {
       const errorCodeStatus = getStatusByError(error)
