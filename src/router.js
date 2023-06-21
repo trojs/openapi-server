@@ -1,5 +1,13 @@
 import { OpenAPIBackend } from 'openapi-backend'
 
+/**
+ * Setup the router
+ * @param {object} params
+ * @param {object} params.env
+ * @param {object} params.openAPISpecification
+ * @param {object} params.controllers
+ * @returns {{ api, openAPISpecification: object }}
+ */
 const setupRouter = ({ env, openAPISpecification, controllers }) => {
   const secret = env.SECRET
 

@@ -6,6 +6,20 @@ import helmet from 'helmet'
 import { openAPI } from './openapi.js'
 import { setupRouter } from './router.js'
 
+/**
+ * @typedef {import('express').Express} Express
+ */
+
+/**
+ * Setup the server
+ * @async
+ * @param {object} params
+ * @param {object} params.env
+ * @param {string} params.specFileLocation
+ * @param {object} params.controllers
+ * @param {string=} params.origin
+ * @returns {Promise<{ app: Express; }>}
+ */
 const setupServer = async ({ env, specFileLocation, controllers, origin = '*' }) => {
   const { openAPISpecification } = await openAPI({ file: specFileLocation })
   const { api } = setupRouter({
