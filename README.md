@@ -38,5 +38,5 @@ const { app } = await setupServer({
 
 [npm-url]: https://www.npmjs.com/package/@hckrnews/openapi-server
 [npm-image]: https://img.shields.io/npm/v/@hckrnews/openapi-server.svg
-[scrutinizer-url]: https://scrutinizer-ci.com/g/hckrnews/openapi-server/?branch=master
-[scrutinizer-image]: https://scrutinizer-ci.com/g/hckrnews/openapi-server/badges/quality-score.png?b=master
+[scrutinizer-url]: https://scrutinizer-ci.com/g/hckrnews/openapi-server/?branch=main
+[scrutinizer-image]: https://scrutinizer-ci.com/g/hckrnews/openapi-server/badges/quality-score.png?b=main
