@@ -1,7 +1,7 @@
 {
     "name": "@hckrnews/openapi-server",
     "description": "OpenAPI Server",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "author": {
         "name": "Pieter Wigboldus",
         "url": "https://hckr.news/"
@@ -20,7 +20,9 @@
         "src/openapi.js",
         "src/router.js",
         "src/server.js",
-        "src/error-status.js"
+        "src/error-status.js",
+        "src/types.js",
+        "src/params.js"
     ],
     "main": "src/server.js",
     "devDependencies": {

@@ -1,5 +1,6 @@
 import { OpenAPIBackend } from 'openapi-backend'
 import getStatusByError from './error-status.js'
+import { parseParams } from './params.js'
 
 const makeExpressCallback = ({
   controller,
@@ -14,12 +15,18 @@ const makeExpressCallback = ({
  * @returns {Promise<any>}
  */
   async (context, request, response) => {
+    const parameters = parseParams({
+      query: context.request.query,
+      spec: context.operation.parameters
+    })
     try {
-      return controller(
+      return controller({
         context,
-        request, response,
+        request,
+        response,
+        parameters,
         specification
-      )
+      })
     } catch (error) {
       const errorCodeStatus = getStatusByError(error)
       response.status(errorCodeStatus)
