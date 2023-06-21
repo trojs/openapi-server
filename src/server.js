@@ -8,6 +8,13 @@ import { setupRouter } from './router.js'
 
 /**
  * @typedef {import('express').Express} Express
+ * @typedef {object} Controller
+ * @property {object=} context
+ * @property {object=} request
+ * @property {object=} response
+ * @property {object=} parameters
+ * @property {object=} specification
+ * @property {string=} url
  */
 
 /**
