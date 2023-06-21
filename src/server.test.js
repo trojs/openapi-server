@@ -30,7 +30,8 @@ const exampleResponse = {
 }
 
 const controllers = {
-  getMessages: () => exampleResponse
+  getMessages: () => exampleResponse,
+  getUsers: () => { throw new TypeError('test') }
 }
 
 const { app } = await setupServer({
@@ -131,5 +132,15 @@ test('Test the server', async (t) => {
 
     assert.strictEqual(response.status, 200)
     assert.deepEqual(response.body, exampleResponse)
+  })
+
+  await t.test('It should catch error\'s', async () => {
+    const response = await request
+      .get('/v1/users')
+      .set('x-api-key', envExample.SECRET)
+
+    assert.strictEqual(response.status, 422)
+    assert.deepEqual(response.body.status, 422)
+    assert.deepEqual(response.body.message, 'test')
   })
 })

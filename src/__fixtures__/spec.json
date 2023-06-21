@@ -67,6 +67,51 @@
                     }
                 ]
             }
+        },
+        "/v1/users": {
+            "get": {
+                "operationId": "getUsers",
+                "summary": "Get all user records",
+                "description": "Get all user records from the database.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Pagination"
+                                        },
+                                        {
+                                            "properties": {
+                                                "items": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/user"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "tags": [
+                    "Example"
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
         }
     },
     "info": {
@@ -144,6 +189,19 @@
                 },
                 "required": [
                     "id"
+                ]
+            },
+            "user": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Pieter",
+                        "description": "User name"
+                    }
+                },
+                "required": [
+                    "name"
                 ]
             }
         }

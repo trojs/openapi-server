@@ -1,20 +1,13 @@
 import test from 'node:test'
 import assert from 'node:assert'
 import { setupRouter } from './router.js'
+import openAPISpecification from './__fixtures__/spec.js'
 
 const envExample = {
   SECRET: 'test',
   PORT: 3000
 }
 
-const controllers = {
-  getMessages: () => ({
-    test: 'ok'
-  })
-}
-const specFileLocation = './__fixtures__/spec.json'
-
-const { api } = setupRouter({ env: envExample, specFileLocation, controllers })
 const resMock = {
   newStatus: null,
   response: null,
@@ -38,6 +31,13 @@ test('Test the router', async (t) => {
   await t.test(
     'It should response with a nice message if the response is invalid',
     async () => {
+      const controllers = {
+        getMessages: () => ({
+          test: 'ok'
+        })
+      }
+
+      const { api } = setupRouter({ env: envExample, openAPISpecification, controllers })
       const context = {
         response: {
           status: 200,
