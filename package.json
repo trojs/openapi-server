@@ -1,0 +1,66 @@
+{
+    "name": "@hckrnews/openapi-server",
+    "description": "OpenAPI Server",
+    "version": "0.1.0",
+    "author": {
+        "name": "Pieter Wigboldus",
+        "url": "https://hckr.news/"
+    },
+    "license": "LGPL-3.0",
+    "scripts": {
+        "lint": "eslint src/*.js --config .eslintrc",
+        "lint:report": "eslint src/*.js --config .eslintrc -f json -o report.json",
+        "lint:fix": "eslint src/*.js --config .eslintrc --fix",
+        "test": "c8 node --test src/",
+        "cpd": "node_modules/jscpd/bin/jscpd src",
+        "vulnerabilities": "npm audit --omit=dev"
+    },
+    "type": "module",
+    "files": [
+        "src/openapi.js",
+        "src/router.js",
+        "src/server.js"
+    ],
+    "main": "src/server.js",
+    "devDependencies": {
+        "@hckrnews/eslint-config": "^3.0.0",
+        "c8": "^8.0.0",
+        "eslint": "^8.23.0",
+        "eslint-config-standard": "^17.1.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-jsdoc": "^46.0.0",
+        "eslint-plugin-n": "^16.0.0",
+        "eslint-plugin-promise": "^6.0.1",
+        "eslint-plugin-sonarjs": "^0.19.0",
+        "jscpd": "^3.2.1",
+        "prettier": "^2.2.1",
+        "supertest": "^6.3.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hckrnews/openapi-server"
+    },
+    "engines": {
+        "node": ">= 18.13"
+    },
+    "keywords": [
+        "openapi",
+        "server",
+        "express"
+    ],
+    "dependencies": {
+        "compression": "^1.7.4",
+        "cors": "^2.8.5",
+        "express": "^4.18.2",
+        "helmet": "^7.0.0",
+        "openapi-backend": "^5.9.2",
+        "swagger-ui-express": "^4.6.3"
+    },
+    "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/w3nl"
+    },
+    "overrides": {
+        "xml2js": "^0.5.0"
+    }
+}
