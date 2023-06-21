@@ -1,4 +1,50 @@
 import { OpenAPIBackend } from 'openapi-backend'
+import getStatusByError from './error-status.js'
+
+const makeExpressCallback = ({
+  controller,
+  specification
+}) =>
+/**
+ * Handle controller
+ * @async
+ * @param {object} context
+ * @param {object} request
+ * @param {object} response
+ * @returns {Promise<any>}
+ */
+  async (context, request, response) => {
+    try {
+      return controller(
+        context,
+        request, response,
+        specification
+      )
+    } catch (error) {
+      const errorCodeStatus = getStatusByError(error)
+      response.status(errorCodeStatus)
+      return {
+        status: errorCodeStatus,
+        timestamp: new Date(),
+        message: error.message
+      }
+    }
+  }
+
+const operations = ['get', 'put', 'patch', 'post', 'delete']
+
+/**
+ * Get all operation ID's from the specification.
+ * @param {object} params
+ * @param {object} params.specification
+ * @returns {string[]}
+ */
+const operationIds = ({ specification }) => Object.values(specification.paths)
+  .map((path) => Object.entries(path)
+    .map(([operation, data]) => operations.includes(operation)
+      ? data.operationId
+      : null))
+  .flat()
 
 /**
  * Setup the router
@@ -14,7 +60,6 @@ const setupRouter = ({ env, openAPISpecification, controllers }) => {
   const api = new OpenAPIBackend({ definition: openAPISpecification })
 
   api.register({
-    ...controllers,
     unauthorizedHandler: async (context, request, response) => {
       response.status(401)
       return {
@@ -64,6 +109,17 @@ const setupRouter = ({ env, openAPISpecification, controllers }) => {
       return response.json(context.response)
     }
   })
+
+  operationIds({ specification: openAPISpecification }).forEach((operationId) => {
+    api.register(
+      operationId,
+      makeExpressCallback({
+        controller: controllers[operationId],
+        specification: openAPISpecification
+      })
+    )
+  })
+
   api.registerSecurityHandler(
     'apiKey',
     (context) => context.request.headers['x-api-key'] === secret
