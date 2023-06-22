@@ -27,6 +27,9 @@ export const setupRouter = ({ env, openAPISpecification, controllers }) => {
   })
 
   operationIds({ specification: openAPISpecification }).forEach((operationId) => {
+    if (!Object.hasOwn(controllers, operationId)) {
+      return
+    }
     api.register(
       operationId,
       makeExpressCallback({
@@ -34,6 +37,13 @@ export const setupRouter = ({ env, openAPISpecification, controllers }) => {
         specification: openAPISpecification
       })
     )
+  })
+
+  api.register('notImplemented', (context, request, response) => {
+    const { mock } = context.api.mockResponseForOperation(
+      context.operation.operationId
+    )
+    return mock
   })
 
   api.registerSecurityHandler(

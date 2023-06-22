@@ -112,6 +112,37 @@
                     }
                 ]
             }
+        },
+        "/v1/user": {
+            "get": {
+                "operationId": "getUser",
+                "summary": "Get all user record",
+                "description": "Get the user record from the database.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/user"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "tags": [
+                    "Example"
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
         }
     },
     "info": {
