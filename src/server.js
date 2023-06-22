@@ -7,6 +7,17 @@ import { openAPI } from './openapi.js'
 import { setupRouter } from './router.js'
 
 /**
+ * Get the origin resource policy
+ * @param {string} origin
+ * @returns {{ crossOriginResourcePolicy: { policy: string } }}
+ */
+const getOriginResourcePolicy = (origin) => ({
+  crossOriginResourcePolicy: {
+    policy: origin === '*' ? 'cross-origin' : 'same-origin'
+  }
+})
+
+/**
  * @typedef {import('express').Express} Express
  * @typedef {object} Controller
  * @property {object=} context
@@ -28,7 +39,7 @@ import { setupRouter } from './router.js'
  * @param {string=} params.origin
  * @returns {Promise<{ app: Express; }>}
  */
-const setupServer = async ({ env, specFileLocation, specFileBase, controllers, origin = '*' }) => {
+export const setupServer = async ({ env, specFileLocation, specFileBase, controllers, origin = '*' }) => {
   const { openAPISpecification } = await openAPI({ file: specFileLocation, base: specFileBase })
   const { api } = setupRouter({
     env,
@@ -54,16 +65,3 @@ const setupServer = async ({ env, specFileLocation, specFileBase, controllers, o
 
   return { app }
 }
-
-/**
- * Get the origin resource policy
- * @param {string} origin
- * @returns {{ crossOriginResourcePolicy: { policy: string } }}
- */
-const getOriginResourcePolicy = (origin) => ({
-  crossOriginResourcePolicy: {
-    policy: origin === '*' ? 'cross-origin' : 'same-origin'
-  }
-})
-
-export { setupServer }
