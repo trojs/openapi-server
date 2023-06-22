@@ -23,7 +23,15 @@ or
 ```javascript
 
 const controllers = {
-    getTest: () => ({ // connect to a openationId in the OpenAPI spec with the same name
+    // connect to a openationId in the OpenAPI spec with the same name
+    getTest: ({
+        context,
+        request,
+        response,
+        parameters,
+        specification,
+        url
+      }) => ({ //response an object
         test: 'ok'
     })
 }
@@ -35,6 +43,27 @@ const { app } = await setupServer({
 })
 
 ```
+
+If you create a controller, you can easy connect it to the operationId in the OpenAPI spec.
+Check also the examples in the test files.
+In your controller you can use e.g. context, request and response, from express.
+It isn neccesary to define it in your controller, if you don't use it, you can remove it.
+e.g.
+```javascript
+getTest: ({ parameters }) => 
+    {
+        return {
+            test: 'ok'
+        }
+    }
+```
+
+parameters are query param's from the url of a get request, parsed by the type defined in the OpenAPI spec.
+
+Specifications is the OpenAPI spec.
+
+Url is the current url.
+
 
 [npm-url]: https://www.npmjs.com/package/@hckrnews/openapi-server
 [npm-image]: https://img.shields.io/npm/v/@hckrnews/openapi-server.svg

@@ -1,7 +1,7 @@
 {
     "name": "@hckrnews/openapi-server",
     "description": "OpenAPI Server",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "author": {
         "name": "Pieter Wigboldus",
         "url": "https://hckr.news/"
@@ -22,7 +22,13 @@
         "src/server.js",
         "src/error-status.js",
         "src/types.js",
-        "src/params.js"
+        "src/params.js",
+        "src/express-callback.js",
+        "src/operation-ids.js",
+        "src/handlers/not-found.js",
+        "src/handlers/request-validation.js",
+        "src/handlers/response-validation.js",
+        "src/handlers/unauthorized.js"
     ],
     "main": "src/server.js",
     "devDependencies": {
