@@ -21,13 +21,13 @@ export const makeExpressCallback = ({
  * @returns {Promise<any>}
  */
   async (context, request, response) => {
-    const parameters = parseParams({
-      query: context.request.query,
-      spec: context.operation.parameters
-    })
-    const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
-
     try {
+      const parameters = parseParams({
+        query: context.request.query,
+        spec: context.operation.parameters
+      })
+      const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
+
       return controller({
         context,
         request,
