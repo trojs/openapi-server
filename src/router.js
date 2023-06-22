@@ -27,7 +27,7 @@ export const setupRouter = ({ env, openAPISpecification, controllers }) => {
   })
 
   operationIds({ specification: openAPISpecification }).forEach((operationId) => {
-    if (!controllers.hasOwnProperty(operationId)) {
+    if (!Object.hasOwn(controllers, operationId)) {
       return
     }
     api.register(
@@ -40,7 +40,7 @@ export const setupRouter = ({ env, openAPISpecification, controllers }) => {
   })
 
   api.register('notImplemented', (context, request, response) => {
-    const { status, mock } = context.api.mockResponseForOperation(
+    const { mock } = context.api.mockResponseForOperation(
       context.operation.operationId
     )
     return mock
