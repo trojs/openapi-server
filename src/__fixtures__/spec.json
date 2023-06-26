@@ -15,7 +15,8 @@
                         "schema": {
                             "type": "integer",
                             "minimum": 1,
-                            "maximum": 10000
+                            "maximum": 10000,
+                            "default": 10
                         }
                     },
                     {
@@ -25,7 +26,8 @@
                         "example": 0,
                         "schema": {
                             "type": "integer",
-                            "minimum": 0
+                            "minimum": 0,
+                            "default": 0
                         }
                     }
                 ],
@@ -118,7 +120,6 @@
                 "operationId": "getUser",
                 "summary": "Get all user record",
                 "description": "Get the user record from the database.",
-                "parameters": [],
                 "responses": {
                     "200": {
                         "description": "",

@@ -15,9 +15,64 @@ const TestCases = [
         schema: {
           type: 'integer',
           minimum: 1,
-          maximum: 10000
+          maximum: 10000,
+          default: 42
         }
       },
+      {
+        name: 'page',
+        required: false,
+        in: 'query',
+        example: 0,
+        schema: {
+          type: 'integer',
+          minimum: 0,
+          default: 1
+        }
+      }
+    ],
+    expectedResult: {
+      page: 0,
+      size: 10
+    }
+  },
+  {
+    description: 'Get the default values from the schema if no query params are given',
+    query: {},
+    spec: [
+      {
+        name: 'max',
+        required: false,
+        in: 'query',
+        example: 10,
+        schema: {
+          type: 'integer',
+          minimum: 1,
+          maximum: 10000,
+          default: 42
+        }
+      },
+      {
+        name: 'index',
+        required: false,
+        in: 'query',
+        example: 0,
+        schema: {
+          type: 'integer',
+          minimum: 0,
+          default: 1
+        }
+      }
+    ],
+    expectedResult: {
+      index: 1,
+      max: 42
+    }
+  },
+  {
+    description: 'Get the example values from the schema if no query params are given',
+    query: {},
+    spec: [
       {
         name: 'page',
         required: false,
@@ -30,7 +85,26 @@ const TestCases = [
       }
     ],
     expectedResult: {
-      page: 0,
+      page: 0
+    }
+  },
+  {
+    description: 'It should not throw if no query params are given',
+    query: undefined,
+    spec: [
+      {
+        name: 'size',
+        required: false,
+        in: 'query',
+        example: 10,
+        schema: {
+          type: 'integer',
+          minimum: 1,
+          maximum: 10000
+        }
+      }
+    ],
+    expectedResult: {
       size: 10
     }
   },

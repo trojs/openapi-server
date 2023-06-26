@@ -15,7 +15,8 @@ export default {
             schema: {
               type: 'integer',
               minimum: 1,
-              maximum: 10000
+              maximum: 10000,
+              default: 10
             }
           },
           {
@@ -25,7 +26,8 @@ export default {
             example: 0,
             schema: {
               type: 'integer',
-              minimum: 0
+              minimum: 0,
+              default: 0
             }
           }
         ],
