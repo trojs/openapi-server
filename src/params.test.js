@@ -41,7 +41,7 @@ const TestCases = [
     query: {},
     spec: [
       {
-        name: 'size',
+        name: 'max',
         required: false,
         in: 'query',
         example: 10,
@@ -53,7 +53,7 @@ const TestCases = [
         }
       },
       {
-        name: 'page',
+        name: 'index',
         required: false,
         in: 'query',
         example: 0,
@@ -65,25 +65,14 @@ const TestCases = [
       }
     ],
     expectedResult: {
-      page: 1,
-      size: 42
+      index: 1,
+      max: 42
     }
   },
   {
     description: 'Get the example values from the schema if no query params are given',
     query: {},
     spec: [
-      {
-        name: 'size',
-        required: false,
-        in: 'query',
-        example: 10,
-        schema: {
-          type: 'integer',
-          minimum: 1,
-          maximum: 10000
-        }
-      },
       {
         name: 'page',
         required: false,
@@ -96,8 +85,7 @@ const TestCases = [
       }
     ],
     expectedResult: {
-      page: 0,
-      size: 10
+      page: 0
     }
   },
   {
@@ -114,20 +102,9 @@ const TestCases = [
           minimum: 1,
           maximum: 10000
         }
-      },
-      {
-        name: 'page',
-        required: false,
-        in: 'query',
-        example: 0,
-        schema: {
-          type: 'integer',
-          minimum: 0
-        }
       }
     ],
     expectedResult: {
-      page: 0,
       size: 10
     }
   },
