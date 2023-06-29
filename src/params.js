@@ -9,8 +9,8 @@ import { types } from './types.js'
  */
 export const parseParams = ({ query, spec }) =>
   spec.map(parameter => {
-    const { name, schema, example: exampleValue } = parameter
-    const { type, default: defaultValue } = schema
+    const { name, schema } = parameter
+    const { type, default: defaultValue, example: exampleValue } = schema
     const Type = types[type]
     const paramName = query?.[name]
 
