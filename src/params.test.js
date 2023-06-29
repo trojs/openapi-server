@@ -11,11 +11,11 @@ const TestCases = [
         name: 'size',
         required: false,
         in: 'query',
-        example: 10,
         schema: {
           type: 'integer',
           minimum: 1,
           maximum: 10000,
+          example: 10,
           default: 42
         }
       },
@@ -23,10 +23,10 @@ const TestCases = [
         name: 'page',
         required: false,
         in: 'query',
-        example: 0,
         schema: {
           type: 'integer',
           minimum: 0,
+          example: 0,
           default: 1
         }
       }
@@ -44,11 +44,11 @@ const TestCases = [
         name: 'max',
         required: false,
         in: 'query',
-        example: 10,
         schema: {
           type: 'integer',
           minimum: 1,
           maximum: 10000,
+          example: 10,
           default: 42
         }
       },
@@ -56,10 +56,10 @@ const TestCases = [
         name: 'index',
         required: false,
         in: 'query',
-        example: 0,
         schema: {
           type: 'integer',
           minimum: 0,
+          example: 0,
           default: 1
         }
       }
@@ -77,10 +77,10 @@ const TestCases = [
         name: 'page',
         required: false,
         in: 'query',
-        example: 0,
         schema: {
           type: 'integer',
-          minimum: 0
+          minimum: 0,
+          example: 0
         }
       }
     ],
@@ -96,11 +96,11 @@ const TestCases = [
         name: 'size',
         required: false,
         in: 'query',
-        example: 10,
         schema: {
           type: 'integer',
           minimum: 1,
-          maximum: 10000
+          maximum: 10000,
+          example: 10
         }
       }
     ],
@@ -116,18 +116,18 @@ const TestCases = [
         name: 'name',
         required: false,
         in: 'query',
-        example: 10,
         schema: {
-          type: 'string'
+          type: 'string',
+          example: 10
         }
       },
       {
         name: 'ok',
         required: false,
         in: 'query',
-        example: 0,
         schema: {
-          type: 'boolean'
+          type: 'boolean',
+          example: 0
         }
       }
     ],
