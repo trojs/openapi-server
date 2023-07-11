@@ -1,7 +1,7 @@
 {
     "name": "@hckrnews/openapi-server",
     "description": "OpenAPI Server",
-    "version": "0.1.10",
+    "version": "0.2.0",
     "author": {
         "name": "Pieter Wigboldus",
         "url": "https://hckr.news/"
@@ -63,7 +63,7 @@
         "express": "^4.18.2",
         "helmet": "^7.0.0",
         "openapi-backend": "^5.9.2",
-        "swagger-ui-express": "^4.6.3"
+        "swagger-ui-express": "^5.0.0"
     },
     "funding": {
         "type": "github",
