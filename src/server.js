@@ -9,13 +9,16 @@ import { setupRouter } from './router.js'
 /**
  * Get the origin resource policy
  * @param {string} origin
- * @returns {{ crossOriginResourcePolicy: { policy: string }, 'require-trusted-types-for': string }}
+ * @returns {{ crossOriginResourcePolicy: { policy: string, directives: object } }}
  */
 const getOriginResourcePolicy = (origin) => ({
   crossOriginResourcePolicy: {
-    policy: origin === '*' ? 'cross-origin' : 'same-origin'
-  },
-  'require-trusted-types-for': 'script'
+    policy: origin === '*' ? 'cross-origin' : 'same-origin',
+    directives: {
+      // ...
+      'require-trusted-types-for': ["'script'"]
+    }
+  }
 })
 
 /**
