@@ -36,7 +36,7 @@ const controllers = {
     })
 }
 
-const { app } = await setupServer({
+const { app, openAPISpecification } = await setupServer({
   env: process.env,
   specFileLocation: './openapi-spec.json',
   controllers
