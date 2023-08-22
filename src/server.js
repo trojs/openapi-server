@@ -40,9 +40,10 @@ const getOriginResourcePolicy = (origin) => ({
  * @param {object} params.openAPISpecification
  * @param {object} params.controllers
  * @param {string=} params.origin
+ * @param {string=} params.staticFolder
  * @returns {Promise<{ app: Express; openAPISpecification: object }>}
  */
-export const setupServer = async ({ env, openAPISpecification, controllers, origin = '*' }) => {
+export const setupServer = async ({ env, openAPISpecification, controllers, origin = '*', staticFolder }) => {
   const { api } = setupRouter({
     env,
     openAPISpecification,
@@ -61,6 +62,11 @@ export const setupServer = async ({ env, openAPISpecification, controllers, orig
   app.get('/api-docs', (_request, response) =>
     response.json(openAPISpecification)
   )
+
+  if (staticFolder) {
+    app.use(express.static(staticFolder))
+  }
+
   app.use((request, response) =>
     api.handleRequest(request, request, response)
   )
