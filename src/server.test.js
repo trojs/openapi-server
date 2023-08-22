@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert'
 import supertest from 'supertest'
-import { setupServer } from './server.js'
+import { setupServer, openAPI } from './server.js'
 
 const envExample = {
   SECRET: 'test',
@@ -34,9 +34,10 @@ const controllers = {
   getUsers: () => { throw new TypeError('test') }
 }
 
+const { openAPISpecification } = await openAPI({ file: specFileLocation })
 const { app } = await setupServer({
   env: envExample,
-  specFileLocation,
+  openAPISpecification,
   controllers,
   origin: 'hckr.news'
 })

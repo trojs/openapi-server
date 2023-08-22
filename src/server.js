@@ -37,14 +37,12 @@ const getOriginResourcePolicy = (origin) => ({
  * @async
  * @param {object} params
  * @param {object} params.env
- * @param {string} params.specFileLocation
- * @param {object=} params.specFileBase
+ * @param {object} params.openAPISpecification
  * @param {object} params.controllers
  * @param {string=} params.origin
  * @returns {Promise<{ app: Express; openAPISpecification: object }>}
  */
-export const setupServer = async ({ env, specFileLocation, specFileBase, controllers, origin = '*' }) => {
-  const { openAPISpecification } = await openAPI({ file: specFileLocation, base: specFileBase })
+export const setupServer = async ({ env, openAPISpecification, controllers, origin = '*' }) => {
   const { api } = setupRouter({
     env,
     openAPISpecification,
@@ -69,3 +67,5 @@ export const setupServer = async ({ env, specFileLocation, specFileBase, control
 
   return { app, openAPISpecification }
 }
+
+export { openAPI }
