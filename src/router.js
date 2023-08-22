@@ -12,12 +12,14 @@ import { unauthorized } from './handlers/unauthorized.js'
  * @param {object} params.env
  * @param {object} params.openAPISpecification
  * @param {object} params.controllers
+ * @param {string=} params.apiRoot
+ * @param {boolean=} params.strictSpecification
  * @returns {{ api, openAPISpecification: object }}
  */
-export const setupRouter = ({ env, openAPISpecification, controllers }) => {
+export const setupRouter = ({ env, openAPISpecification, controllers, apiRoot, strictSpecification }) => {
   const secret = env.SECRET
 
-  const api = new OpenAPIBackend({ definition: openAPISpecification })
+  const api = new OpenAPIBackend({ definition: openAPISpecification, apiRoot, strict: strictSpecification })
 
   api.register({
     unauthorizedHandler: unauthorized,
