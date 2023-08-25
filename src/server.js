@@ -1,10 +1,9 @@
 import express from 'express'
-import swaggerUi from 'swagger-ui-express'
 import cors from 'cors'
 import compression from 'compression'
 import helmet from 'helmet'
 import { openAPI } from './openapi.js'
-import { setupRouter } from './router.js'
+import { Api } from './api.js'
 
 /**
  * Get the origin resource policy
@@ -22,6 +21,7 @@ const getOriginResourcePolicy = (origin) => ({
 })
 
 /**
+ * @typedef {import('./api.js').ApiSchema} ApiSchema
  * @typedef {import('express').Express} Express
  * @typedef {object} Controller
  * @property {object=} context
@@ -37,45 +37,34 @@ const getOriginResourcePolicy = (origin) => ({
  * @async
  * @param {object} params
  * @param {object} params.env
- * @param {object} params.openAPISpecification
- * @param {object} params.controllers
+ * @param {ApiSchema[]} params.apis
  * @param {string=} params.origin
  * @param {string=} params.staticFolder
  * @param {string=} params.apiRoot
  * @param {boolean=} params.strictSpecification
- * @returns {Promise<{ app: Express; openAPISpecification: object }>}
+ * @returns {Promise<{ app: Express }>}
  */
-export const setupServer = async ({ env, openAPISpecification, controllers, origin = '*', staticFolder, apiRoot, strictSpecification }) => {
-  const { api } = setupRouter({
-    env,
-    openAPISpecification,
-    controllers,
-    apiRoot,
-    strictSpecification
-  })
+export const setupServer = async ({ env, apis, origin = '*', staticFolder, apiRoot = '/', strictSpecification = true }) => {
   const corsOptions = {
     origin
   }
-  api.init()
   const app = express()
   app.use(cors(corsOptions))
   app.use(compression())
   app.use(helmet(getOriginResourcePolicy(origin)))
   app.use(express.json())
-  app.use('/swagger', swaggerUi.serve, swaggerUi.setup(openAPISpecification))
-  app.get('/api-docs', (_request, response) =>
-    response.json(openAPISpecification)
-  )
 
   if (staticFolder) {
     app.use(express.static(staticFolder))
   }
 
-  app.use((request, response) =>
-    api.handleRequest(request, request, response)
-  )
+  apis.forEach((api) => {
+    const apiRoutes = new Api(api)
+    const routes = apiRoutes.setup()
+    app.use(`/${api.version}`, routes)
+  })
 
-  return { app, openAPISpecification }
+  return { app }
 }
 
-export { openAPI }
+export { openAPI, Api }

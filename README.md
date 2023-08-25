@@ -36,11 +36,16 @@ const controllers = {
     })
 }
 
-const { openAPISpecification } = await openAPI({ file: './openapi-spec.json', base })
+const { openAPISpecification, Api } = await openAPI({ file: './openapi-spec.json', base })
+const api = new Api({
+  version: 'v1',
+  specification: openAPISpecification,
+  controllers,
+  secret: 'test'
+})
 const { app } = await setupServer({
   env: process.env,
-  openAPISpecification,
-  controllers
+  apis: [api]
 })
 
 ```

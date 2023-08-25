@@ -1,7 +1,7 @@
 export default {
   openapi: '3.0.3',
   paths: {
-    '/v1/messages': {
+    '/messages': {
       get: {
         operationId: 'getMessages',
         summary: 'Get all message records',
@@ -70,7 +70,7 @@ export default {
         ]
       }
     },
-    '/v1/users': {
+    '/users': {
       get: {
         operationId: 'getUsers',
         summary: 'Get all user records',
