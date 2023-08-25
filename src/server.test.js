@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert'
 import supertest from 'supertest'
-import { setupServer, openAPI } from './server.js'
+import { setupServer, openAPI, Api } from './server.js'
 
 const envExample = {
   SECRET: 'test',
@@ -35,20 +35,26 @@ const controllers = {
 }
 
 const { openAPISpecification } = await openAPI({ file: specFileLocation })
+const api = new Api({
+  version: 'v1',
+  specification: openAPISpecification,
+  controllers,
+  secret: envExample.SECRET
+})
 const { app } = await setupServer({
   env: envExample,
-  openAPISpecification,
-  controllers,
-  origin: 'hckr.news'
+  apis: [api],
+  origin: 'hckr.news',
+  staticFolder: './__fixtures__/'
 })
 
 const request = supertest(app)
 
 test('Test the server', async (t) => {
   await t.test(
-    'It should return status 200 for the specification (/api-docs)',
+    'It should return status 200 for the specification (/v1/api-docs)',
     async () => {
-      const response = await request.get('/api-docs')
+      const response = await request.get('/v1/api-docs')
 
       assert.strictEqual(response.status, 200)
     }

@@ -9,16 +9,14 @@ import { unauthorized } from './handlers/unauthorized.js'
 /**
  * Setup the router
  * @param {object} params
- * @param {object} params.env
+ * @param {string=} params.secret
  * @param {object} params.openAPISpecification
  * @param {object} params.controllers
  * @param {string=} params.apiRoot
  * @param {boolean=} params.strictSpecification
  * @returns {{ api, openAPISpecification: object }}
  */
-export const setupRouter = ({ env, openAPISpecification, controllers, apiRoot, strictSpecification }) => {
-  const secret = env.SECRET
-
+export const setupRouter = ({ secret, openAPISpecification, controllers, apiRoot, strictSpecification }) => {
   const api = new OpenAPIBackend({ definition: openAPISpecification, apiRoot, strict: strictSpecification })
 
   api.register({
