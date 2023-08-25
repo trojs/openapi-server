@@ -60,7 +60,8 @@ export const setupServer = async ({ env, apis, origin = '*', staticFolder, apiRo
 
   apis.forEach((api) => {
     const apiRoutes = new Api(api)
-    app.use(`/${api.version}`, apiRoutes.setup())
+    const routes = apiRoutes.setup()
+    app.use(`/${api.version}`, routes)
   })
 
   return { app }
