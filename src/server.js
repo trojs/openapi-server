@@ -36,15 +36,12 @@ const getOriginResourcePolicy = (origin) => ({
  * Setup the server
  * @async
  * @param {object} params
- * @param {object} params.env
  * @param {ApiSchema[]} params.apis
  * @param {string=} params.origin
  * @param {string=} params.staticFolder
- * @param {string=} params.apiRoot
- * @param {boolean=} params.strictSpecification
  * @returns {Promise<{ app: Express }>}
  */
-export const setupServer = async ({ env, apis, origin = '*', staticFolder, apiRoot = '/', strictSpecification = true }) => {
+export const setupServer = async ({ apis, origin = '*', staticFolder }) => {
   const corsOptions = {
     origin
   }
