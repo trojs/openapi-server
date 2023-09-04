@@ -1,4 +1,5 @@
 import { OpenAPIBackend } from 'openapi-backend'
+import addFormats from 'ajv-formats'
 import { makeExpressCallback } from './express-callback.js'
 import { operationIds } from './operation-ids.js'
 import { notFound } from './handlers/not-found.js'
@@ -17,7 +18,15 @@ import { unauthorized } from './handlers/unauthorized.js'
  * @returns {{ api, openAPISpecification: object }}
  */
 export const setupRouter = ({ secret, openAPISpecification, controllers, apiRoot, strictSpecification }) => {
-  const api = new OpenAPIBackend({ definition: openAPISpecification, apiRoot, strict: strictSpecification })
+  const api = new OpenAPIBackend({
+    definition: openAPISpecification,
+    apiRoot,
+    strict: strictSpecification,
+    customizeAjv: (originalAjv) => {
+      addFormats(originalAjv)
+      return originalAjv
+    }
+  })
 
   api.register({
     unauthorizedHandler: unauthorized,
