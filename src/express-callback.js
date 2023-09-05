@@ -6,11 +6,13 @@ import { parseParams } from './params.js'
  * @param {object} params
  * @param {Function} params.controller
  * @param {object} params.specification
+ * @param {boolean=} params.errorDetails
  * @returns {(context: object, request: object, response: object) => Promise<any>}
  */
 export const makeExpressCallback = ({
   controller,
-  specification
+  specification,
+  errorDetails
 }) =>
 /**
  * Handle controller
@@ -39,10 +41,19 @@ export const makeExpressCallback = ({
     } catch (error) {
       const errorCodeStatus = getStatusByError(error)
       response.status(errorCodeStatus)
+
+      if (errorDetails) {
+        return {
+          errors: [
+            error
+          ],
+          status: errorCodeStatus,
+          timestamp: new Date(),
+          message: error.message
+        }
+      }
+
       return {
-        errors: [
-          error
-        ],
         status: errorCodeStatus,
         timestamp: new Date(),
         message: error.message
