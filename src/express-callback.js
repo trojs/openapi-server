@@ -45,7 +45,11 @@ export const makeExpressCallback = ({
       if (errorDetails) {
         return {
           errors: [
-            error
+            {
+              message: error.message,
+              value: error.valueOf(),
+              type: error.constructor.name
+            }
           ],
           status: errorCodeStatus,
           timestamp: new Date(),
