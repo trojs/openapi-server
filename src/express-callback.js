@@ -40,6 +40,9 @@ export const makeExpressCallback = ({
       const errorCodeStatus = getStatusByError(error)
       response.status(errorCodeStatus)
       return {
+        errors: [
+          error
+        ],
         status: errorCodeStatus,
         timestamp: new Date(),
         message: error.message
