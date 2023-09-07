@@ -29,6 +29,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @property {object=} response
  * @property {object=} parameters
  * @property {object=} specification
+ * @property {object=} body
  * @property {string=} url
  */
 

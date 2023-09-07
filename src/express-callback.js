@@ -36,6 +36,7 @@ export const makeExpressCallback = ({
         response,
         parameters,
         specification,
+        post: request.body,
         url
       })
     } catch (error) {
