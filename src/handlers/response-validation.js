@@ -17,5 +17,14 @@ export const responseValidation = (context, request, response) => {
     })
   }
 
-  return response.json(context.response)
+  const contentType = request?.headers?.['Content-Type'] ?? 'application/json'
+  if (!context.response) {
+    return response.end()
+  }
+
+  if (contentType === 'application/json') {
+    return response.json(context.response)
+  }
+
+  return response.send(context.response)
 }
