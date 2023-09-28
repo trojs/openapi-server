@@ -21,7 +21,7 @@ export const responseValidation = (context, request, response) => {
     return response.end()
   }
 
-  const contentType = context?.operation?.accept ?? 'application/json'
+  const contentType = request?.headers?.accept ?? 'application/json'
   if (contentType === 'application/json') {
     return response.json(context.response)
   }
