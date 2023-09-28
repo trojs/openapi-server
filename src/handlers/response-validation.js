@@ -21,17 +21,10 @@ export const responseValidation = (context, request, response) => {
     return response.end()
   }
 
-  response.format({
-    'text/plain': () => {
-      response.send(context.response)
-    },
+  const contentType = context?.operation?.accept ?? 'application/json'
+  if (contentType === 'application/json') {
+    return response.json(context.response)
+  }
 
-    'application/json': () => {
-      response.json(context.response)
-    },
-
-    default: () => {
-      response.send(context.response)
-    }
-  })
+  return response.send(context.response)
 }
