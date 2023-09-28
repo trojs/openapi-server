@@ -17,11 +17,11 @@ export const responseValidation = (context, request, response) => {
     })
   }
 
-  const contentType = request?.headers?.['Content-Type'] ?? 'application/json'
   if (!context.response) {
     return response.end()
   }
 
+  const contentType = context?.operation?.accept ?? 'application/json'
   if (contentType === 'application/json') {
     return response.json(context.response)
   }
