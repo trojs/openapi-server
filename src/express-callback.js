@@ -7,12 +7,14 @@ import { parseParams } from './params.js'
  * @param {Function} params.controller
  * @param {object} params.specification
  * @param {boolean=} params.errorDetails
+ * @param {object=} params.logger
  * @returns {(context: object, request: object, response: object) => Promise<any>}
  */
 export const makeExpressCallback = ({
   controller,
   specification,
-  errorDetails
+  errorDetails,
+  logger
 }) =>
 /**
  * Handle controller
@@ -41,6 +43,9 @@ export const makeExpressCallback = ({
       })
     } catch (error) {
       const errorCodeStatus = getStatusByError(error)
+
+      logger.error(error)
+
       response.status(errorCodeStatus)
 
       if (errorDetails) {

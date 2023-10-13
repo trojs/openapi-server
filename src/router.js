@@ -16,9 +16,10 @@ import { unauthorized } from './handlers/unauthorized.js'
  * @param {string=} params.apiRoot
  * @param {boolean=} params.strictSpecification
  * @param {boolean=} params.errorDetails
+ * @param {object=} params.logger
  * @returns {{ api, openAPISpecification: object }}
  */
-export const setupRouter = ({ secret, openAPISpecification, controllers, apiRoot, strictSpecification, errorDetails }) => {
+export const setupRouter = ({ secret, openAPISpecification, controllers, apiRoot, strictSpecification, errorDetails, logger }) => {
   const api = new OpenAPIBackend({
     definition: openAPISpecification,
     apiRoot,
@@ -45,7 +46,8 @@ export const setupRouter = ({ secret, openAPISpecification, controllers, apiRoot
       makeExpressCallback({
         controller: controllers[operationId],
         specification: openAPISpecification,
-        errorDetails
+        errorDetails,
+        logger
       })
     )
   })
