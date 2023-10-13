@@ -41,7 +41,8 @@ const api = new Api({
   version: 'v1',
   specification: openAPISpecification,
   controllers,
-  secret: 'test'
+  secret: 'test',
+  logger: console
 })
 const { app } = await setupServer({
   env: process.env,

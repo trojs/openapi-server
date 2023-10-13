@@ -3,6 +3,11 @@ import swaggerUi from 'swagger-ui-express'
 import { setupRouter } from './router.js'
 
 /**
+ * @typedef {object} Logger
+ * @property {Function} error
+ * @property {Function} warn
+ * @property {Function} info
+ * @property {Function} debug
  * @typedef {object} ApiSchema
  * @property {string} version
  * @property {object} specification
@@ -11,6 +16,7 @@ import { setupRouter } from './router.js'
  * @property {string=} apiRoot
  * @property {boolean=} strictSpecification
  * @property {boolean=} errorDetails
+ * @property {Logger=} logger
  */
 
 /**
@@ -21,7 +27,7 @@ export class Api {
   /**
    * @param {ApiSchema} params
    */
-  constructor ({ version, specification, controllers, secret, apiRoot, strictSpecification, errorDetails }) {
+  constructor ({ version, specification, controllers, secret, apiRoot, strictSpecification, errorDetails, logger }) {
     this.version = version
     this.specification = specification
     this.controllers = controllers
@@ -29,6 +35,7 @@ export class Api {
     this.apiRoot = apiRoot
     this.strictSpecification = strictSpecification
     this.errorDetails = errorDetails || false
+    this.logger = logger || console
   }
 
   setup () {
@@ -45,7 +52,8 @@ export class Api {
       controllers: this.controllers,
       apiRoot: this.apiRoot,
       strictSpecification: this.strictSpecification,
-      errorDetails: this.errorDetails
+      errorDetails: this.errorDetails,
+      logger: this.logger
     })
     api.init()
 
