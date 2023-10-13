@@ -37,7 +37,7 @@ test('Test the router', async (t) => {
         })
       }
 
-      const { api } = setupRouter({ env: envExample, openAPISpecification, controllers })
+      const { api } = setupRouter({ secret: envExample.SECRET, openAPISpecification, controllers })
       const context = {
         response: {
           status: 200,

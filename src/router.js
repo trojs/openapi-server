@@ -8,6 +8,7 @@ import { responseValidation } from './handlers/response-validation.js'
 import { unauthorized } from './handlers/unauthorized.js'
 
 /**
+ * @typedef {import('./api.js').Logger} Logger
  * Setup the router
  * @param {object} params
  * @param {string=} params.secret
@@ -16,7 +17,7 @@ import { unauthorized } from './handlers/unauthorized.js'
  * @param {string=} params.apiRoot
  * @param {boolean=} params.strictSpecification
  * @param {boolean=} params.errorDetails
- * @param {object=} params.logger
+ * @param {Logger=} params.logger
  * @returns {{ api, openAPISpecification: object }}
  */
 export const setupRouter = ({ secret, openAPISpecification, controllers, apiRoot, strictSpecification, errorDetails, logger }) => {

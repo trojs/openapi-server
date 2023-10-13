@@ -3,6 +3,11 @@ import swaggerUi from 'swagger-ui-express'
 import { setupRouter } from './router.js'
 
 /**
+ * @typedef {object} Logger
+ * @property {Function} error
+ * @property {Function} warn
+ * @property {Function} info
+ * @property {Function} debug
  * @typedef {object} ApiSchema
  * @property {string} version
  * @property {object} specification
@@ -11,7 +16,7 @@ import { setupRouter } from './router.js'
  * @property {string=} apiRoot
  * @property {boolean=} strictSpecification
  * @property {boolean=} errorDetails
- * @property {object=} logger
+ * @property {Logger=} logger
  */
 
 /**
