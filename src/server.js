@@ -32,7 +32,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @property {object=} specification
  * @property {object=} post
  * @property {string=} url
- * @property {Logger} logger
+ * @property {Logger=} logger
  */
 
 /**
