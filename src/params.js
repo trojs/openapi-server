@@ -14,12 +14,19 @@ export const parseParams = ({ query, spec }) =>
     const Type = types[type]
     const paramName = query?.[name]
 
-    if (paramName) {
-      const value = new Type(paramName).valueOf()
-      return { name, value }
+    if (!paramName) {
+      return { name, value: defaultValue ?? exampleValue }
     }
 
-    return { name, value: defaultValue ?? exampleValue }
+    if (Type === Boolean) {
+      return {
+        name,
+        value: JSON.parse(paramName.toLowerCase())
+      }
+    }
+
+    const value = new Type(paramName).valueOf()
+    return { name, value }
   })
     .reduce((acc, { name, value }) => {
       acc[name] = value
