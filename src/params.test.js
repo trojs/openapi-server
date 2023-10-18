@@ -138,17 +138,8 @@ const TestCases = [
   },
   {
     description: 'It should set the boolean value to false on a string with the value false',
-    query: { name: 'Pieter', ok: 'false' },
+    query: { ok: 'false' },
     spec: [
-      {
-        name: 'name',
-        required: false,
-        in: 'query',
-        schema: {
-          type: 'string',
-          example: 10
-        }
-      },
       {
         name: 'ok',
         required: false,
@@ -160,7 +151,6 @@ const TestCases = [
       }
     ],
     expectedResult: {
-      name: 'Pieter',
       ok: false
     }
   }
