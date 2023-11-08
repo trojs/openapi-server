@@ -1,7 +1,7 @@
 {
     "name": "@hckrnews/openapi-server",
     "description": "OpenAPI Server",
-    "version": "0.5.5",
+    "version": "0.5.6",
     "author": {
         "name": "Pieter Wigboldus",
         "url": "https://hckr.news/"
@@ -34,6 +34,7 @@
     "main": "src/server.js",
     "devDependencies": {
         "@hckrnews/eslint-config": "^3.0.0",
+        "@types/express-serve-static-core": "^4.17.41",
         "c8": "^8.0.0",
         "eslint": "^8.23.0",
         "eslint-config-standard": "^17.1.0",
