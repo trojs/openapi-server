@@ -2,8 +2,8 @@ import getStatusByError from './error-status.js'
 import { parseParams } from './params.js'
 
 /**
- * @typedef {import('express').Request} Request
- * @typedef {import('express').Response} Response
+ * @typedef {import('express-serve-static-core').Request} Request
+ * @typedef {import('express-serve-static-core').Response} Response
  * @typedef {import('openapi-backend').Context} Context
  * @typedef {import('./api.js').Logger} Logger
  * @param {object} params
