@@ -22,6 +22,7 @@ const getOriginResourcePolicy = (origin) => ({
 
 /**
  * @typedef {import('express').Request} Request
+ * @typedef {import('express').Response} Response
  * @typedef {import('openapi-backend').Context} Context
  * @typedef {import('./api.js').ApiSchema} ApiSchema
  * @typedef {import('./api.js').Logger} Logger
@@ -29,7 +30,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @typedef {object} Controller
  * @property {Context=} context
  * @property {Request=} request
- * @property {object=} response
+ * @property {Response=} response
  * @property {object=} parameters
  * @property {object=} specification
  * @property {object=} post

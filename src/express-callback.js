@@ -3,6 +3,7 @@ import { parseParams } from './params.js'
 
 /**
  * @typedef {import('express').Request} Request
+ * @typedef {import('express').Response} Response
  * @typedef {import('openapi-backend').Context} Context
  * @typedef {import('./api.js').Logger} Logger
  * @param {object} params
@@ -23,7 +24,7 @@ export const makeExpressCallback = ({
  * @async
  * @param {Context} context
  * @param {Request} request
- * @param {object} response
+ * @param {Response} response
  * @returns {Promise<any>}
  */
   async (context, request, response) => {
