@@ -2,6 +2,8 @@ import getStatusByError from './error-status.js'
 import { parseParams } from './params.js'
 
 /**
+ * @typedef {import('express').Request} Request
+ * @typedef {import('openapi-backend').Context} Context
  * @typedef {import('./api.js').Logger} Logger
  * @param {object} params
  * @param {Function} params.controller
@@ -19,8 +21,8 @@ export const makeExpressCallback = ({
 /**
  * Handle controller
  * @async
- * @param {object} context
- * @param {object} request
+ * @param {Context} context
+ * @param {Request} request
  * @param {object} response
  * @returns {Promise<any>}
  */

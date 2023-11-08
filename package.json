@@ -1,7 +1,7 @@
 {
     "name": "@hckrnews/openapi-server",
     "description": "OpenAPI Server",
-    "version": "0.5.3",
+    "version": "0.5.4",
     "author": {
         "name": "Pieter Wigboldus",
         "url": "https://hckr.news/"
@@ -41,7 +41,7 @@
         "eslint-plugin-jsdoc": "^46.0.0",
         "eslint-plugin-n": "^16.0.0",
         "eslint-plugin-promise": "^6.0.1",
-        "eslint-plugin-sonarjs": "^0.21.0",
+        "eslint-plugin-sonarjs": "^0.23.0",
         "jscpd": "^3.2.1",
         "supertest": "^6.3.3"
     },
