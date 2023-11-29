@@ -13,7 +13,7 @@
         "lint:fix": "eslint src/*.js --config .eslintrc --fix",
         "test": "c8 node --test src/*.test.js",
         "cpd": "node_modules/jscpd/bin/jscpd src",
-        "vulnerabilities": "npm audit --omit=dev && snyk test"
+        "vulnerabilities": "npm audit --omit=dev"
     },
     "type": "module",
     "files": [
@@ -44,7 +44,6 @@
         "eslint-plugin-promise": "^6.0.1",
         "eslint-plugin-sonarjs": "^0.23.0",
         "jscpd": "^3.2.1",
-        "snyk": "^1.1258.0",
         "supertest": "^6.3.3"
     },
     "repository": {
