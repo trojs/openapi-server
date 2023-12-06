@@ -1,7 +1,7 @@
 {
     "name": "@hckrnews/openapi-server",
     "description": "OpenAPI Server",
-    "version": "0.5.11",
+    "version": "0.5.12",
     "author": {
         "name": "Pieter Wigboldus",
         "url": "https://hckr.news/"
@@ -73,6 +73,6 @@
     },
     "overrides": {
         "semver": "^7.5.3",
-        "xml2js": "^0.5.0"
+        "xml2js": "^0.6.0"
     }
 }
