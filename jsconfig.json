@@ -2,7 +2,7 @@
     "compilerOptions": {
         "checkJs": true,
         "target": "ESNext",
-        "module": "ESNext",
+        "module": "NodeNext",
         "moduleResolution": "nodenext",
         "rootDirs": [
             "src"
