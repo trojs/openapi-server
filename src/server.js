@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import compression from 'compression'
 import helmet from 'helmet'
+import * as Sentry from '@sentry/node'
+import { ProfilingIntegration } from '@sentry/profiling-node'
 import { openAPI } from './openapi.js'
 import { Api } from './api.js'
 
@@ -36,6 +38,10 @@ const getOriginResourcePolicy = (origin) => ({
  * @property {object=} post
  * @property {string=} url
  * @property {Logger=} logger
+ * @typedef {object} SentryConfig
+ * @property {string=} dsn
+ * @property {number=} tracesSampleRate
+ * @property {number=} profilesSampleRate
  */
 
 /**
@@ -45,13 +51,31 @@ const getOriginResourcePolicy = (origin) => ({
  * @param {ApiSchema[]} params.apis
  * @param {string=} params.origin
  * @param {string=} params.staticFolder
+ * @param {SentryConfig=} params.sentry
  * @returns {Promise<{ app: Express }>}
  */
-export const setupServer = async ({ apis, origin = '*', staticFolder }) => {
+export const setupServer = async ({ apis, origin = '*', staticFolder, sentry }) => {
   const corsOptions = {
     origin
   }
+
   const app = express()
+
+  if (sentry) {
+    Sentry.init({
+      dsn: sentry.dsn,
+      integrations: [
+        new Sentry.Integrations.Http({ tracing: true }),
+        new Sentry.Integrations.Express({ app }),
+        new ProfilingIntegration()
+      ],
+      tracesSampleRate: sentry.tracesSampleRate || 1.0,
+      profilesSampleRate: sentry.profilesSampleRate || 1.0
+    })
+
+    app.use(Sentry.Handlers.requestHandler())
+  }
+
   app.use(cors(corsOptions))
   app.use(compression())
   app.use(helmet(getOriginResourcePolicy(origin)))
@@ -66,6 +90,10 @@ export const setupServer = async ({ apis, origin = '*', staticFolder }) => {
     const routes = apiRoutes.setup()
     app.use(`/${api.version}`, routes)
   })
+
+  if (sentry) {
+    app.use(Sentry.Handlers.errorHandler())
+  }
 
   return { app }
 }
