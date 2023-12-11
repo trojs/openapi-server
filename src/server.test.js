@@ -141,7 +141,7 @@ test('Test the server', async (t) => {
     assert.deepEqual(response.body, exampleResponse)
   })
 
-  await t.test('It should return the mocked user, because we don\' have a controller yet', async () => {
+  await t.test('It should return the mocked user, because we don\'t have a controller yet', async () => {
     const response = await request
       .get('/v1/user')
       .set('x-api-key', envExample.SECRET)
