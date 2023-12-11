@@ -35,7 +35,7 @@ export const makeExpressCallback = ({
       })
       const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
 
-      return controller({
+      const responseBody = await controller({
         context,
         request,
         response,
@@ -45,6 +45,14 @@ export const makeExpressCallback = ({
         url,
         logger
       })
+      logger.debug({
+        url,
+        parameters,
+        post: request.body,
+        response: responseBody
+      })
+
+      return responseBody
     } catch (error) {
       const errorCodeStatus = getStatusByError(error)
 
