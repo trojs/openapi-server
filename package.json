@@ -73,7 +73,6 @@
         "url": "https://github.com/sponsors/w3nl"
     },
     "overrides": {
-        "semver": "^7.5.3",
-        "xml2js": "^0.6.0"
+        "semver": "^7.5.3"
     }
 }
