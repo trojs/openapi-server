@@ -3,7 +3,6 @@ import cors from 'cors'
 import compression from 'compression'
 import helmet from 'helmet'
 import * as Sentry from '@sentry/node'
-import { ProfilingIntegration } from '@sentry/profiling-node'
 import { openAPI } from './openapi.js'
 import { Api } from './api.js'
 
@@ -66,8 +65,7 @@ export const setupServer = async ({ apis, origin = '*', staticFolder, sentry }) 
       dsn: sentry.dsn,
       integrations: [
         new Sentry.Integrations.Http({ tracing: true }),
-        new Sentry.Integrations.Express({ app }),
-        new ProfilingIntegration()
+        new Sentry.Integrations.Express({ app })
       ],
       tracesSampleRate: sentry.tracesSampleRate || 1.0,
       profilesSampleRate: sentry.profilesSampleRate || 1.0
