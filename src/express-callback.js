@@ -11,13 +11,15 @@ import { parseParams } from './params.js'
  * @param {object} params.specification
  * @param {boolean=} params.errorDetails
  * @param {Logger=} params.logger
+ * @param {object=} params.meta
  * @returns {(context: object, request: object, response: object) => Promise<any>}
  */
 export const makeExpressCallback = ({
   controller,
   specification,
   errorDetails,
-  logger
+  logger,
+  meta
 }) =>
 /**
  * Handle controller
@@ -30,7 +32,7 @@ export const makeExpressCallback = ({
   async (context, request, response) => {
     try {
       const parameters = parseParams({
-        query: context.request.query,
+        query: context.request?.query,
         spec: context.operation.parameters
       })
       const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
@@ -43,7 +45,8 @@ export const makeExpressCallback = ({
         specification,
         post: request.body,
         url,
-        logger
+        logger,
+        meta
       })
       logger.debug({
         url,
