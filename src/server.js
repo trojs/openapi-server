@@ -37,6 +37,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @property {object=} post
  * @property {string=} url
  * @property {Logger=} logger
+ * @property {object=} meta
  * @typedef {object} SentryConfig
  * @property {string=} dsn
  * @property {number=} tracesSampleRate
