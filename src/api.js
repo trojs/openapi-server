@@ -17,6 +17,7 @@ import { setupRouter } from './router.js'
  * @property {boolean=} strictSpecification
  * @property {boolean=} errorDetails
  * @property {Logger=} logger
+ * @property {object=} meta
  */
 
 /**
@@ -27,7 +28,7 @@ export class Api {
   /**
    * @param {ApiSchema} params
    */
-  constructor ({ version, specification, controllers, secret, apiRoot, strictSpecification, errorDetails, logger }) {
+  constructor ({ version, specification, controllers, secret, apiRoot, strictSpecification, errorDetails, logger, meta }) {
     this.version = version
     this.specification = specification
     this.controllers = controllers
@@ -36,6 +37,7 @@ export class Api {
     this.strictSpecification = strictSpecification
     this.errorDetails = errorDetails || false
     this.logger = logger || console
+    this.meta = meta || {}
   }
 
   setup () {
@@ -53,7 +55,8 @@ export class Api {
       apiRoot: this.apiRoot,
       strictSpecification: this.strictSpecification,
       errorDetails: this.errorDetails,
-      logger: this.logger
+      logger: this.logger,
+      meta: this.meta
     })
     api.init()
 
