@@ -43,7 +43,7 @@ export class Api {
   setup () {
     const router = express.Router()
 
-    router.use('/swagger', swaggerUi.serve, swaggerUi.setup(this.specification))
+    router.use('/swagger', swaggerUi.serveFiles(this.specification, {}), swaggerUi.setup(this.specification))
     router.get('/api-docs', (_request, response) =>
       response.json(this.specification)
     )
