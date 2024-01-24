@@ -31,8 +31,12 @@ export const makeExpressCallback = ({
  */
   async (context, request, response) => {
     try {
+      const allParameters = {
+        ...(context.request?.params || {}),
+        ...(context.request?.query || {})
+      }
       const parameters = parseParams({
-        query: context.request?.query,
+        query: allParameters,
         spec: context.operation.parameters
       })
       const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
