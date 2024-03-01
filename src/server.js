@@ -42,7 +42,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @property {string=} dsn
  * @property {number=} tracesSampleRate
  * @property {number=} profilesSampleRate
- * @property {release=} release
+ * @property {string=} release
  */
 
 /**
