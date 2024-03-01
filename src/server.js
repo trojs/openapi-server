@@ -42,6 +42,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @property {string=} dsn
  * @property {number=} tracesSampleRate
  * @property {number=} profilesSampleRate
+ * @property {release=} release
  */
 
 /**
@@ -69,7 +70,8 @@ export const setupServer = async ({ apis, origin = '*', staticFolder, sentry }) 
         new Sentry.Integrations.Express({ app })
       ],
       tracesSampleRate: sentry.tracesSampleRate || 1.0,
-      profilesSampleRate: sentry.profilesSampleRate || 1.0
+      profilesSampleRate: sentry.profilesSampleRate || 1.0,
+      release: sentry.release
     })
 
     app.use(Sentry.Handlers.requestHandler())
