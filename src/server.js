@@ -53,9 +53,11 @@ const getOriginResourcePolicy = (origin) => ({
  * @param {string=} params.origin
  * @param {string=} params.staticFolder
  * @param {SentryConfig=} params.sentry
+ * @param {string=} params.poweredBy
+ * @param {string=} params.version
  * @returns {Promise<{ app: Express }>}
  */
-export const setupServer = async ({ apis, origin = '*', staticFolder, sentry }) => {
+export const setupServer = async ({ apis, origin = '*', staticFolder, sentry, poweredBy = 'HckrNews', version = '1.0.0' }) => {
   const corsOptions = {
     origin
   }
@@ -81,6 +83,11 @@ export const setupServer = async ({ apis, origin = '*', staticFolder, sentry }) 
   app.use(compression())
   app.use(helmet(getOriginResourcePolicy(origin)))
   app.use(express.json())
+  app.use((_request, response, next) => {
+    response.setHeader('X-Powered-By', poweredBy)
+    response.setHeader('X-Version', version)
+    next()
+  })
 
   if (staticFolder) {
     app.use(express.static(staticFolder))
