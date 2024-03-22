@@ -3,6 +3,7 @@ import cors from 'cors'
 import compression from 'compression'
 import helmet from 'helmet'
 import * as Sentry from '@sentry/node'
+import bodyParser from 'body-parser'
 import { openAPI } from './openapi.js'
 import { Api } from './api.js'
 
@@ -83,6 +84,7 @@ export const setupServer = async ({ apis, origin = '*', staticFolder, sentry, po
   app.use(compression())
   app.use(helmet(getOriginResourcePolicy(origin)))
   app.use(express.json())
+  app.use(bodyParser.urlencoded({ extended: false }))
   app.use((_request, response, next) => {
     response.setHeader('X-Powered-By', poweredBy)
     response.setHeader('X-Version', version)

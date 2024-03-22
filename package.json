@@ -1,7 +1,7 @@
 {
     "name": "@hckrnews/openapi-server",
     "description": "OpenAPI Server",
-    "version": "0.8.8",
+    "version": "0.8.9",
     "author": {
         "name": "Pieter Wigboldus",
         "url": "https://hckr.news/"
@@ -61,6 +61,7 @@
     "dependencies": {
         "@sentry/node": "^7.86.0",
         "ajv-formats": "^2.1.1",
+        "body-parser": "^1.20.2",
         "compression": "^1.7.4",
         "cors": "^2.8.5",
         "express": "^4.18.2",
