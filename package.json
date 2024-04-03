@@ -1,10 +1,10 @@
 {
-    "name": "@hckrnews/openapi-server",
+    "name": "@trojs/openapi-server",
     "description": "OpenAPI Server",
-    "version": "0.8.10",
+    "version": "0.9.0",
     "author": {
         "name": "Pieter Wigboldus",
-        "url": "https://hckr.news/"
+        "url": "https://github.com/trojs"
     },
     "license": "MIT",
     "scripts": {
@@ -48,7 +48,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/hckrnews/openapi-server"
+        "url": "https://github.com/trojs/openapi-server"
     },
     "engines": {
         "node": ">= 18.13"
@@ -60,7 +60,7 @@
     ],
     "dependencies": {
         "@sentry/node": "^7.86.0",
-        "ajv-formats": "^2.1.1",
+        "ajv-formats": "^3.0.0",
         "body-parser": "^1.20.2",
         "compression": "^1.7.4",
         "cors": "^2.8.5",

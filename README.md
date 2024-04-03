@@ -1,16 +1,16 @@
 # OpenAPI server
 
-[![NPM version][npm-image]][npm-url] [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=hckrnews_openapi-server&metric=coverage)](https://sonarcloud.io/summary/new_code?id=hckrnews_openapi-server) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hckrnews_openapi-server&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=hckrnews_openapi-server) 
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=hckrnews_openapi-server&metric=bugs)](https://sonarcloud.io/summary/new_code?id=hckrnews_openapi-server) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=hckrnews_openapi-server&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=hckrnews_openapi-server) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=hckrnews_openapi-server&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=hckrnews_openapi-server) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=hckrnews_openapi-server&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=hckrnews_openapi-server)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=hckrnews_openapi-server&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=hckrnews_openapi-server) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=hckrnews_openapi-server&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=hckrnews_openapi-server) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=hckrnews_openapi-server&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=hckrnews_openapi-server)
+[![NPM version][npm-image]][npm-url] [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=trojs_openapi-server&metric=coverage)](https://sonarcloud.io/summary/new_code?id=trojs_openapi-server) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=trojs_openapi-server&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=trojs_openapi-server) 
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=trojs_openapi-server&metric=bugs)](https://sonarcloud.io/summary/new_code?id=trojs_openapi-server) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=trojs_openapi-server&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=trojs_openapi-server) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=trojs_openapi-server&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=trojs_openapi-server) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=trojs_openapi-server&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=trojs_openapi-server)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=trojs_openapi-server&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=trojs_openapi-server) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=trojs_openapi-server&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=trojs_openapi-server) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=trojs_openapi-server&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=trojs_openapi-server)
 
 Create easy a webserver API first with a OpenAPI spec.
 
 ## Installation
 
-`npm install @hckrnews/openapi-server`
+`npm install @trojs/openapi-server`
 or
-`yarn add @hckrnews/openapi-server`
+`yarn add @trojs/openapi-server`
 
 ## Test the package
 
@@ -72,5 +72,5 @@ Specifications is the OpenAPI spec.
 Url is the current url.
 
 
-[npm-url]: https://www.npmjs.com/package/@hckrnews/openapi-server
-[npm-image]: https://img.shields.io/npm/v/@hckrnews/openapi-server.svg
+[npm-url]: https://www.npmjs.com/package/@trojs/openapi-server
+[npm-image]: https://img.shields.io/npm/v/@trojs/openapi-server.svg
