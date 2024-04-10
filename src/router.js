@@ -9,6 +9,7 @@ import { unauthorized } from './handlers/unauthorized.js'
 
 /**
  * @typedef {import('./api.js').Logger} Logger
+ * @typedef {import('./api.js').SecurityHandler} SecurityHandler
  * Setup the router
  * @param {object} params
  * @param {string=} params.secret
@@ -19,9 +20,10 @@ import { unauthorized } from './handlers/unauthorized.js'
  * @param {boolean=} params.errorDetails
  * @param {Logger=} params.logger
  * @param {object=} params.meta
+ * @param {SecurityHandler[]=} params.securityHandlers
  * @returns {{ api, openAPISpecification: object }}
  */
-export const setupRouter = ({ secret, openAPISpecification, controllers, apiRoot, strictSpecification, errorDetails, logger, meta }) => {
+export const setupRouter = ({ secret, openAPISpecification, controllers, apiRoot, strictSpecification, errorDetails, logger, meta, securityHandlers = [] }) => {
   const api = new OpenAPIBackend({
     definition: openAPISpecification,
     apiRoot,
@@ -66,6 +68,10 @@ export const setupRouter = ({ secret, openAPISpecification, controllers, apiRoot
     'apiKey',
     (context) => context.request.headers['x-api-key'] === secret
   )
+
+  securityHandlers.forEach((securityHandler) => {
+    api.registerSecurityHandler(securityHandler.name, securityHandler.handler)
+  })
 
   return { api, openAPISpecification }
 }

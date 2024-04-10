@@ -72,5 +72,36 @@ Specifications is the OpenAPI spec.
 Url is the current url.
 
 
+## Add custom security handlers like JWT
+```javascript
+import jwt from 'jsonwebtoken'
+
+function jwtHandler(context, request, response) {
+  const authHeader = context.request.headers.authorization;
+  if (!authHeader) {
+    throw new Error('Missing authorization header');
+  }
+  const token = authHeader.replace('Bearer ', '');
+  return jwt.verify(token, 'secret');
+}
+
+const securityHandlers = [
+  {
+    name: 'jwt',
+    handler: jwtHandler
+  }
+]
+
+const api = new Api({
+  version: 'v1',
+  specification: openAPISpecification,
+  controllers,
+  securityHandlers
+})
+```
+
+See also: https://openapistack.co/docs/openapi-backend/security-handlers/#security-handlers
+
+
 [npm-url]: https://www.npmjs.com/package/@hckrnews/openapi-server
 [npm-image]: https://img.shields.io/npm/v/@hckrnews/openapi-server.svg

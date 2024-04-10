@@ -144,6 +144,32 @@
                     }
                 ]
             }
+        },
+        "/user-secure": {
+            "get": {
+                "operationId": "getUserSecure",
+                "summary": "Get all user record",
+                "description": "Get the user record from the database.",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "tags": [
+                    "Example"
+                ],
+                "security": [
+                    {
+                        "customSecurityHandler": []
+                    }
+                ]
+            }
         }
     },
     "info": {
