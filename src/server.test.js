@@ -31,15 +31,38 @@ const exampleResponse = {
 
 const controllers = {
   getMessages: () => exampleResponse,
-  getUsers: () => { throw new TypeError('test') }
+  getUsers: () => { throw new TypeError('test') },
+  getUserSecure: ({ context }) => context.security.customSecurityHandler
 }
 
 const { openAPISpecification } = await openAPI({ file: specFileLocation })
+
+function customHandler (context) {
+  const authHeader = context.request.headers.authorization
+  if (!authHeader) {
+    throw new Error('Missing authorization header')
+  }
+  const token = authHeader.replace('Bearer ', '')
+
+  if (token === 'secret') {
+    return 42
+  }
+
+  return false
+}
+
+const securityHandlers = [
+  {
+    name: 'customSecurityHandler',
+    handler: customHandler
+  }
+]
 const api = new Api({
   version: 'v1',
   specification: openAPISpecification,
   controllers,
-  secret: envExample.SECRET
+  secret: envExample.SECRET,
+  securityHandlers
 })
 const { app } = await setupServer({
   env: envExample,
@@ -160,5 +183,22 @@ test('Test the server', async (t) => {
     assert.strictEqual(response.status, 422)
     assert.deepEqual(response.body.status, 422)
     assert.deepEqual(response.body.message, 'test')
+  })
+
+  await t.test('It should return 200 with the right secret for the custom security handler', async () => {
+    const response = await request
+      .get('/v1/user-secure')
+      .set('authorization', 'secret')
+
+    assert.strictEqual(response.status, 200)
+    assert.strictEqual(response.body, 42)
+  })
+
+  await t.test('It should return 401 with the wrong secret for the custom security handler', async () => {
+    const response = await request
+      .get('/v1/user-secure')
+      .set('authorization', 'not-the-secret')
+
+    assert.strictEqual(response.status, 401)
   })
 })

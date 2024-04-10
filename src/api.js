@@ -3,11 +3,15 @@ import swaggerUi from 'swagger-ui-express'
 import { setupRouter } from './router.js'
 
 /**
+ * @typedef {import('openapi-backend').Handler} Handler
  * @typedef {object} Logger
  * @property {Function} error
  * @property {Function} warn
  * @property {Function} info
  * @property {Function} debug
+ * @typedef {object} SecurityHandler
+ * @property {string} name
+ * @property {Handler} handler
  * @typedef {object} ApiSchema
  * @property {string} version
  * @property {object} specification
@@ -18,6 +22,7 @@ import { setupRouter } from './router.js'
  * @property {boolean=} errorDetails
  * @property {Logger=} logger
  * @property {object=} meta
+ * @property {SecurityHandler[]=} securityHandlers
  */
 
 /**
@@ -28,7 +33,7 @@ export class Api {
   /**
    * @param {ApiSchema} params
    */
-  constructor ({ version, specification, controllers, secret, apiRoot, strictSpecification, errorDetails, logger, meta }) {
+  constructor ({ version, specification, controllers, secret, apiRoot, strictSpecification, errorDetails, logger, meta, securityHandlers }) {
     this.version = version
     this.specification = specification
     this.controllers = controllers
@@ -38,6 +43,7 @@ export class Api {
     this.errorDetails = errorDetails || false
     this.logger = logger || console
     this.meta = meta || {}
+    this.securityHandlers = securityHandlers || []
   }
 
   setup () {
@@ -56,7 +62,8 @@ export class Api {
       strictSpecification: this.strictSpecification,
       errorDetails: this.errorDetails,
       logger: this.logger,
-      meta: this.meta
+      meta: this.meta,
+      securityHandlers: this.securityHandlers
     })
     api.init()
 
