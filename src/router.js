@@ -64,10 +64,12 @@ export const setupRouter = ({ secret, openAPISpecification, controllers, apiRoot
     return mock
   })
 
-  api.registerSecurityHandler(
-    'apiKey',
-    (context) => context.request.headers['x-api-key'] === secret
-  )
+  if (secret) {
+    api.registerSecurityHandler(
+      'apiKey',
+      (context) => context.request.headers['x-api-key'] === secret
+    )
+  }
 
   securityHandlers.forEach((securityHandler) => {
     api.registerSecurityHandler(securityHandler.name, securityHandler.handler)
