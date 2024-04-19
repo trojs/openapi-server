@@ -65,7 +65,7 @@ const api = new Api({
 const { app } = await setupServer({
   env: envExample,
   apis: [api],
-  origin: 'hckr.news',
+  origin: 'trojs.org',
   staticFolder: './__fixtures__/'
 })
 

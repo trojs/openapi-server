@@ -1,10 +1,10 @@
 {
-    "name": "@hckrnews/openapi-server",
+    "name": "@trojs/openapi-server",
     "description": "OpenAPI Server",
-    "version": "0.8.13",
+    "version": "1.0.0",
     "author": {
         "name": "Pieter Wigboldus",
-        "url": "https://hckr.news/"
+        "url": "https://trojs.org/"
     },
     "license": "MIT",
     "scripts": {
