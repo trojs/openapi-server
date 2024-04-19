@@ -58,7 +58,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @param {string=} params.version
  * @returns {Promise<{ app: Express }>}
  */
-export const setupServer = async ({ apis, origin = '*', staticFolder, sentry, poweredBy = 'HckrNews', version = '1.0.0' }) => {
+export const setupServer = async ({ apis, origin = '*', staticFolder, sentry, poweredBy = 'TroJS', version = '1.0.0' }) => {
   const corsOptions = {
     origin
   }

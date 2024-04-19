@@ -8,9 +8,9 @@ Create easy a webserver API first with a OpenAPI spec.
 
 ## Installation
 
-`npm install @hckrnews/openapi-server`
+`npm install @trojs/openapi-server`
 or
-`yarn add @hckrnews/openapi-server`
+`yarn add @trojs/openapi-server`
 
 ## Test the package
 
@@ -103,5 +103,5 @@ const api = new Api({
 See also: https://openapistack.co/docs/openapi-backend/security-handlers/#security-handlers
 
 
-[npm-url]: https://www.npmjs.com/package/@hckrnews/openapi-server
-[npm-image]: https://img.shields.io/npm/v/@hckrnews/openapi-server.svg
+[npm-url]: https://www.npmjs.com/package/@trojs/openapi-server
+[npm-image]: https://img.shields.io/npm/v/@trojs/openapi-server.svg
