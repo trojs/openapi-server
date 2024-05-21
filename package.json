@@ -1,7 +1,7 @@
 {
     "name": "@trojs/openapi-server",
     "description": "OpenAPI Server",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "author": {
         "name": "Pieter Wigboldus",
         "url": "https://trojs.org/"
@@ -44,7 +44,7 @@
         "eslint-plugin-promise": "^6.0.1",
         "eslint-plugin-sonarjs": "^0.25.1",
         "jscpd": "^3.2.1",
-        "supertest": "^6.3.3"
+        "supertest": "^7.0.0"
     },
     "repository": {
         "type": "git",
@@ -59,7 +59,7 @@
         "express"
     ],
     "dependencies": {
-        "@sentry/node": "^7.86.0",
+        "@sentry/node": "^8.0.0",
         "ajv-formats": "^3.0.0",
         "body-parser": "^1.20.2",
         "compression": "^1.7.4",
