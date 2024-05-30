@@ -23,6 +23,8 @@ import { setupRouter } from './router.js'
  * @property {Logger=} logger
  * @property {object=} meta
  * @property {SecurityHandler[]=} securityHandlers
+ * @property {boolean=} swagger
+ * @property {boolean=} apiDocs
  */
 
 /**
@@ -33,7 +35,7 @@ export class Api {
   /**
    * @param {ApiSchema} params
    */
-  constructor ({ version, specification, controllers, secret, apiRoot, strictSpecification, errorDetails, logger, meta, securityHandlers }) {
+  constructor ({ version, specification, controllers, secret, apiRoot, strictSpecification, errorDetails, logger, meta, securityHandlers, swagger, apiDocs }) {
     this.version = version
     this.specification = specification
     this.controllers = controllers
@@ -44,15 +46,21 @@ export class Api {
     this.logger = logger || console
     this.meta = meta || {}
     this.securityHandlers = securityHandlers || []
+    this.swagger = swagger || true
+    this.apiDocs = apiDocs || true
   }
 
   setup () {
     const router = express.Router()
 
-    router.use('/swagger', swaggerUi.serveFiles(this.specification, {}), swaggerUi.setup(this.specification))
-    router.get('/api-docs', (_request, response) =>
-      response.json(this.specification)
-    )
+    if (this.swagger) {
+      router.use('/swagger', swaggerUi.serveFiles(this.specification, {}), swaggerUi.setup(this.specification))
+    }
+    if (this.apiDocs) {
+      router.get('/api-docs', (_request, response) =>
+        response.json(this.specification)
+      )
+    }
 
     const { api } = setupRouter({
       secret: this.secret,
