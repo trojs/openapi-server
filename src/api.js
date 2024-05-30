@@ -46,8 +46,8 @@ export class Api {
     this.logger = logger || console
     this.meta = meta || {}
     this.securityHandlers = securityHandlers || []
-    this.swagger = swagger || true
-    this.apiDocs = apiDocs || true
+    this.swagger = swagger ?? true
+    this.apiDocs = apiDocs ?? true
   }
 
   setup () {
