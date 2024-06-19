@@ -63,7 +63,7 @@ const api = new Api({
   controllers,
   secret: envExample.SECRET,
   securityHandlers,
-  allErrors: true
+  ajvOptions: { allErrors: true }
 })
 const { app } = await setupServer({
   env: envExample,
