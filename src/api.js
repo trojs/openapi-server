@@ -4,6 +4,7 @@ import { setupRouter } from './router.js'
 
 /**
  * @typedef {import('openapi-backend').Handler} Handler
+ * @typedef {import('ajv').Options} AjvOpts
  * @typedef {object} Logger
  * @property {Function} error
  * @property {Function} warn
@@ -25,7 +26,7 @@ import { setupRouter } from './router.js'
  * @property {SecurityHandler[]=} securityHandlers
  * @property {boolean=} swagger
  * @property {boolean=} apiDocs
- * @property {object=} ajvOptions
+ * @property {AjvOpts=} ajvOptions
  */
 
 /**
