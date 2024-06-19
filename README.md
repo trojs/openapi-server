@@ -43,7 +43,7 @@ const api = new Api({
   controllers,
   secret: 'test',
   logger: console,
-  allErrors: true
+  ajvOptions: { allErrors: true }
 })
 const { app } = await setupServer({
   env: process.env,
