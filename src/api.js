@@ -25,6 +25,7 @@ import { setupRouter } from './router.js'
  * @property {SecurityHandler[]=} securityHandlers
  * @property {boolean=} swagger
  * @property {boolean=} apiDocs
+ * @property {boolean=} allErrors
  */
 
 /**
@@ -35,7 +36,7 @@ export class Api {
   /**
    * @param {ApiSchema} params
    */
-  constructor ({ version, specification, controllers, secret, apiRoot, strictSpecification, errorDetails, logger, meta, securityHandlers, swagger, apiDocs }) {
+  constructor ({ version, specification, controllers, secret, apiRoot, strictSpecification, errorDetails, logger, meta, securityHandlers, swagger, apiDocs, allErrors }) {
     this.version = version
     this.specification = specification
     this.controllers = controllers
@@ -48,6 +49,7 @@ export class Api {
     this.securityHandlers = securityHandlers || []
     this.swagger = swagger ?? true
     this.apiDocs = apiDocs ?? true
+    this.allErrors = allErrors ?? false
   }
 
   setup () {
@@ -71,7 +73,8 @@ export class Api {
       errorDetails: this.errorDetails,
       logger: this.logger,
       meta: this.meta,
-      securityHandlers: this.securityHandlers
+      securityHandlers: this.securityHandlers,
+      allErrors: this.allErrors
     })
     api.init()
 
