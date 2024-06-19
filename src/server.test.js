@@ -62,7 +62,8 @@ const api = new Api({
   specification: openAPISpecification,
   controllers,
   secret: envExample.SECRET,
-  securityHandlers
+  securityHandlers,
+  allErrors: true
 })
 const { app } = await setupServer({
   env: envExample,
@@ -125,7 +126,7 @@ test('Test the server', async (t) => {
     'It should response with a 400 message if the params are incorrect',
     async () => {
       const response = await request
-        .get('/v1/messages?page=a')
+        .get('/v1/messages?page=a&size=b')
         .set('x-api-key', envExample.SECRET)
 
       assert.strictEqual(response.status, 400)
@@ -140,14 +141,22 @@ test('Test the server', async (t) => {
           status: 400,
           errors: [
             {
-              instancePath: '/query/page',
-              schemaPath:
-                                '#/properties/query/properties/page/type',
+              instancePath: '/query/size',
               keyword: 'type',
+              message: 'must be integer',
               params: {
                 type: 'integer'
               },
-              message: 'must be integer'
+              schemaPath: '#/properties/query/properties/size/type'
+            },
+            {
+              instancePath: '/query/page',
+              keyword: 'type',
+              message: 'must be integer',
+              params: {
+                type: 'integer'
+              },
+              schemaPath: '#/properties/query/properties/page/type'
             }
           ]
         }

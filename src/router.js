@@ -21,13 +21,15 @@ import { unauthorized } from './handlers/unauthorized.js'
  * @param {Logger=} params.logger
  * @param {object=} params.meta
  * @param {SecurityHandler[]=} params.securityHandlers
+ * @param {boolean=} params.allErrors
  * @returns {{ api, openAPISpecification: object }}
  */
-export const setupRouter = ({ secret, openAPISpecification, controllers, apiRoot, strictSpecification, errorDetails, logger, meta, securityHandlers = [] }) => {
+export const setupRouter = ({ secret, openAPISpecification, controllers, apiRoot, strictSpecification, errorDetails, logger, meta, securityHandlers = [], allErrors = false }) => {
   const api = new OpenAPIBackend({
     definition: openAPISpecification,
     apiRoot,
     strict: strictSpecification,
+    ajvOpts: { allErrors },
     customizeAjv: (originalAjv) => {
       addFormats(originalAjv)
       return originalAjv
