@@ -10,6 +10,7 @@ import { unauthorized } from './handlers/unauthorized.js'
 /**
  * @typedef {import('./api.js').Logger} Logger
  * @typedef {import('./api.js').SecurityHandler} SecurityHandler
+ * @typedef {import('ajv').Options} AjvOpts
  * Setup the router
  * @param {object} params
  * @param {string=} params.secret
@@ -21,7 +22,7 @@ import { unauthorized } from './handlers/unauthorized.js'
  * @param {Logger=} params.logger
  * @param {object=} params.meta
  * @param {SecurityHandler[]=} params.securityHandlers
- * @param {object=} params.ajvOptions
+ * @param {AjvOpts=} params.ajvOptions
  * @returns {{ api, openAPISpecification: object }}
  */
 export const setupRouter = ({ secret, openAPISpecification, controllers, apiRoot, strictSpecification, errorDetails, logger, meta, securityHandlers = [], ajvOptions = {} }) => {
