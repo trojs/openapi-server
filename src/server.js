@@ -29,6 +29,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @typedef {import('./api.js').ApiSchema} ApiSchema
  * @typedef {import('./api.js').Logger} Logger
  * @typedef {import('express').Express} Express
+ * @typedef {import('@trojs/formdata-parser').FormData} FormData
  * @typedef {object} Controller
  * @property {Context=} context
  * @property {Request=} request
@@ -39,6 +40,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @property {string=} url
  * @property {Logger=} logger
  * @property {object=} meta
+ * @property {FormData[]=} files
  * @typedef {object} SentryConfig
  * @property {string=} dsn
  * @property {number=} tracesSampleRate

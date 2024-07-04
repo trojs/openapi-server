@@ -1,7 +1,7 @@
 {
     "name": "@trojs/openapi-server",
     "description": "OpenAPI Server",
-    "version": "1.0.10",
+    "version": "1.1.0",
     "author": {
         "name": "Pieter Wigboldus",
         "url": "https://trojs.org/"
@@ -24,6 +24,7 @@
         "src/error-status.js",
         "src/types.js",
         "src/params.js",
+        "src/formdata.js",
         "src/express-callback.js",
         "src/operation-ids.js",
         "src/handlers/not-found.js",
@@ -35,6 +36,7 @@
     "devDependencies": {
         "@hckrnews/eslint-config": "^3.0.0",
         "@types/express-serve-static-core": "^4.17.41",
+        "@types/node": "^20.14.9",
         "c8": "^10.0.0",
         "eslint": "^8.23.0",
         "eslint-config-standard": "^17.1.0",
@@ -60,6 +62,7 @@
     ],
     "dependencies": {
         "@sentry/node": "^7.112.1",
+        "@trojs/formdata-parser": "^0.2.0",
         "ajv-formats": "^3.0.0",
         "body-parser": "^1.20.2",
         "compression": "^1.7.4",
