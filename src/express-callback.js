@@ -42,8 +42,8 @@ export const makeExpressCallback = ({
       })
       const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
 
-      const data = request?._readableState?.buffer
       // @ts-ignore
+      const data = request?._readableState?.buffer
       const files = parseFormData(data, request.headers)
       const responseBody = await controller({
         context,

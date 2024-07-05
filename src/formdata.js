@@ -11,9 +11,8 @@ import formDataParser from '@trojs/formdata-parser'
  */
 export const parseFormData = (data, headers) => {
   const contentType = headers?.['content-type']
-  if (contentType?.startsWith('multipart/form-data')) {
+  if (contentType?.startsWith('multipart/form-data') && data) {
     const dataString = data.toString('utf8')
-    console.log('parse form data')
     return formDataParser(dataString, contentType)
   }
   return []
