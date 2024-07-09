@@ -29,7 +29,6 @@ const getOriginResourcePolicy = (origin) => ({
  * @typedef {import('./api.js').ApiSchema} ApiSchema
  * @typedef {import('./api.js').Logger} Logger
  * @typedef {import('express').Express} Express
- * @typedef {import('@trojs/formdata-parser').FormData} FormData
  * @typedef {object} Controller
  * @property {Context=} context
  * @property {Request=} request
@@ -40,7 +39,6 @@ const getOriginResourcePolicy = (origin) => ({
  * @property {string=} url
  * @property {Logger=} logger
  * @property {object=} meta
- * @property {FormData[]=} files
  * @typedef {object} SentryConfig
  * @property {string=} dsn
  * @property {number=} tracesSampleRate
@@ -58,9 +56,10 @@ const getOriginResourcePolicy = (origin) => ({
  * @param {SentryConfig=} params.sentry
  * @param {string=} params.poweredBy
  * @param {string=} params.version
+ * @param {any[]=} params.middleware
  * @returns {Promise<{ app: Express }>}
  */
-export const setupServer = async ({ apis, origin = '*', staticFolder, sentry, poweredBy = 'TroJS', version = '1.0.0' }) => {
+export const setupServer = async ({ apis, origin = '*', staticFolder, sentry, poweredBy = 'TroJS', version = '1.0.0', middleware = [] }) => {
   const corsOptions = {
     origin
   }
@@ -86,6 +85,7 @@ export const setupServer = async ({ apis, origin = '*', staticFolder, sentry, po
   app.use(compression())
   app.use(helmet(getOriginResourcePolicy(origin)))
   app.use(express.json())
+  middleware.forEach((fn) => app.use(fn))
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use((_request, response, next) => {
     response.setHeader('X-Powered-By', poweredBy)
