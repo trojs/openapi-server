@@ -4,8 +4,11 @@ import compression from 'compression'
 import helmet from 'helmet'
 import * as Sentry from '@sentry/node'
 import bodyParser from 'body-parser'
+import multer from 'multer'
 import { openAPI } from './openapi.js'
 import { Api } from './api.js'
+
+const upload = multer()
 
 /**
  * Get the origin resource policy
@@ -29,7 +32,6 @@ const getOriginResourcePolicy = (origin) => ({
  * @typedef {import('./api.js').ApiSchema} ApiSchema
  * @typedef {import('./api.js').Logger} Logger
  * @typedef {import('express').Express} Express
- * @typedef {import('@trojs/formdata-parser').FormData} FormData
  * @typedef {object} Controller
  * @property {Context=} context
  * @property {Request=} request
@@ -40,7 +42,6 @@ const getOriginResourcePolicy = (origin) => ({
  * @property {string=} url
  * @property {Logger=} logger
  * @property {object=} meta
- * @property {FormData[]=} files
  * @typedef {object} SentryConfig
  * @property {string=} dsn
  * @property {number=} tracesSampleRate
@@ -86,6 +87,7 @@ export const setupServer = async ({ apis, origin = '*', staticFolder, sentry, po
   app.use(compression())
   app.use(helmet(getOriginResourcePolicy(origin)))
   app.use(express.json())
+  app.use(upload.array())
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use((_request, response, next) => {
     response.setHeader('X-Powered-By', poweredBy)

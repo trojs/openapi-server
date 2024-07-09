@@ -1,6 +1,5 @@
 import getStatusByError from './error-status.js'
 import { parseParams } from './params.js'
-import { parseFormData } from './formdata.js'
 
 /**
  * @typedef {import('express-serve-static-core').Request} Request
@@ -42,9 +41,6 @@ export const makeExpressCallback = ({
       })
       const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
 
-      // @ts-ignore
-      const data = request?._readableState?.buffer
-      const files = parseFormData(data, request.headers)
       const responseBody = await controller({
         context,
         request,
@@ -54,8 +50,7 @@ export const makeExpressCallback = ({
         post: request.body,
         url,
         logger,
-        meta,
-        files
+        meta
       })
       logger.debug({
         url,
