@@ -37,7 +37,7 @@
         "@types/express-serve-static-core": "^4.17.41",
         "@types/node": "^20.14.9",
         "c8": "^10.0.0",
-        "eslint": "^8.23.0",
+        "eslint": "^9.0.0",
         "eslint-config-standard": "^17.1.0",
         "eslint-plugin-import": "^2.26.0",
         "eslint-plugin-jsdoc": "^48.0.0",
