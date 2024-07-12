@@ -63,7 +63,11 @@ export const makeExpressCallback = ({
     } catch (error) {
       const errorCodeStatus = getStatusByError(error)
 
-      logger.error(error)
+      if (errorCodeStatus >= 500) {
+        logger.error(error)
+      } else {
+        logger.warn(error)
+      }
 
       response.status(errorCodeStatus)
 
