@@ -66,7 +66,7 @@
         "express"
     ],
     "dependencies": {
-        "@sentry/node": "^7.112.1",
+        "@sentry/node": "^8.0.0",
         "ajv-formats": "^3.0.0",
         "body-parser": "^2.0.0",
         "compression": "^1.7.4",
