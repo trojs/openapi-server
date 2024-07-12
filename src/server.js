@@ -69,16 +69,10 @@ export const setupServer = async ({ apis, origin = '*', staticFolder, sentry, po
   if (sentry) {
     Sentry.init({
       dsn: sentry.dsn,
-      integrations: [
-        new Sentry.Integrations.Http({ tracing: true }),
-        new Sentry.Integrations.Express({ app })
-      ],
       tracesSampleRate: sentry.tracesSampleRate || 1.0,
       profilesSampleRate: sentry.profilesSampleRate || 1.0,
       release: sentry.release
     })
-
-    app.use(Sentry.Handlers.requestHandler())
   }
 
   app.use(cors(corsOptions))
@@ -104,7 +98,7 @@ export const setupServer = async ({ apis, origin = '*', staticFolder, sentry, po
   })
 
   if (sentry) {
-    app.use(Sentry.Handlers.errorHandler())
+    Sentry.setupExpressErrorHandler(app)
   }
 
   return { app }
