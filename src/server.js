@@ -81,20 +81,14 @@ export const setupServer = async ({
 
     const app = express();
 
-    if (sentry) {
-        Sentry.init({
-            dsn: sentry.dsn,
-            integrations: [
-                new Sentry.Integrations.Http({ tracing: true }),
-                new Sentry.Integrations.Express({ app }),
-            ],
-            tracesSampleRate: sentry.tracesSampleRate || 1.0,
-            profilesSampleRate: sentry.profilesSampleRate || 1.0,
-            release: sentry.release,
-        });
-
-        app.use(Sentry.Handlers.requestHandler());
-    }
+  if (sentry) {
+    Sentry.init({
+      dsn: sentry.dsn,
+      tracesSampleRate: sentry.tracesSampleRate || 1.0,
+      profilesSampleRate: sentry.profilesSampleRate || 1.0,
+      release: sentry.release
+    })
+  }
 
     app.use(cors(corsOptions));
     app.use(compression());
@@ -118,9 +112,9 @@ export const setupServer = async ({
         app.use(`/${api.version}`, routes);
     });
 
-    if (sentry) {
-        app.use(Sentry.Handlers.errorHandler());
-    }
+  if (sentry) {
+    Sentry.setupExpressErrorHandler(app)
+  }
 
     return { app };
 };
