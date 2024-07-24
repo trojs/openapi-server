@@ -29,16 +29,23 @@ const getOriginResourcePolicy = (origin) => ({
  * @typedef {import('./api.js').ApiSchema} ApiSchema
  * @typedef {import('./api.js').Logger} Logger
  * @typedef {import('express').Express} Express
+ */
+
+/**
+ * @template {object} [T=object]
  * @typedef {object} Controller
  * @property {Context=} context
  * @property {Request=} request
  * @property {Response=} response
  * @property {object=} parameters
  * @property {object=} specification
- * @property {object=} post
+ * @property {T=} post
  * @property {string=} url
  * @property {Logger=} logger
  * @property {object=} meta
+ */
+
+/**
  * @typedef {object} SentryConfig
  * @property {string=} dsn
  * @property {number=} tracesSampleRate
