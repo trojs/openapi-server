@@ -1,17 +1,17 @@
 const errorCodesStatus = [
-  {
-    type: TypeError,
-    status: 422
-  },
-  {
-    type: RangeError,
-    status: 404
-  },
-  {
-    type: Error,
-    status: 500
-  }
-]
+    {
+        type: TypeError,
+        status: 422,
+    },
+    {
+        type: RangeError,
+        status: 404,
+    },
+    {
+        type: Error,
+        status: 500,
+    },
+];
 
 /**
  * Get a http status when you send an error.
@@ -20,5 +20,5 @@ const errorCodesStatus = [
  * @returns {number}
  */
 export default (error) =>
-  errorCodesStatus.find((errorCode) => error instanceof errorCode.type)
-    .status
+    errorCodesStatus.find((errorCode) => error instanceof errorCode.type)
+        .status;
