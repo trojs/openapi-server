@@ -1,7 +1,7 @@
 {
     "name": "@trojs/openapi-server",
     "description": "OpenAPI Server",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "author": {
         "name": "Pieter Wigboldus",
         "url": "https://trojs.org/"
@@ -33,18 +33,24 @@
     ],
     "main": "src/server.js",
     "devDependencies": {
-        "@hckrnews/eslint-config": "^3.0.0",
+        "@hckrnews/eslint-code-quality": "^0.2.1",
+        "@hckrnews/eslint-config": "^3.1.0",
         "@types/express-serve-static-core": "^4.17.41",
         "@types/node": "^20.14.9",
         "c8": "^10.0.0",
         "eslint": "^8.23.0",
-        "eslint-config-standard": "^17.1.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-html": "^8.1.1",
         "eslint-plugin-import": "^2.26.0",
         "eslint-plugin-jsdoc": "^48.0.0",
-        "eslint-plugin-n": "^16.0.0",
-        "eslint-plugin-promise": "^6.0.1",
+        "eslint-plugin-jsx-a11y": "^6.9.0",
+        "eslint-plugin-n": "^17.0.0",
+        "eslint-plugin-prettier": "^5.1.3",
+        "eslint-plugin-promise": "^7.0.0",
         "eslint-plugin-sonarjs": "^0.25.1",
         "jscpd": "^4.0.0",
+        "prettier": "^3.3.3",
         "supertest": "^7.0.0"
     },
     "repository": {
