@@ -38,7 +38,7 @@
         "@types/express-serve-static-core": "^4.17.41",
         "@types/node": "^20.14.9",
         "c8": "^10.0.0",
-        "eslint": "^8.23.0",
+        "eslint": "^9.0.0",
         "eslint-config-airbnb-base": "^15.0.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-html": "^8.1.1",
