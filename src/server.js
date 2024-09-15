@@ -29,6 +29,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @typedef {import('./api.js').ApiSchema} ApiSchema
  * @typedef {import('./api.js').Logger} Logger
  * @typedef {import('express').Express} Express
+ * @typedef {import('@sentry/types').Integration} Integration
  */
 
 /**
@@ -51,6 +52,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @property {number=} tracesSampleRate
  * @property {number=} profilesSampleRate
  * @property {string=} release
+ * @property {Integration[]=} integrations
  */
 
 /**
@@ -86,6 +88,7 @@ export const setupServer = async ({
             dsn: sentry.dsn,
             tracesSampleRate: sentry.tracesSampleRate || 1.0,
             profilesSampleRate: sentry.profilesSampleRate || 1.0,
+            integrations: sentry.integrations || [],
             release: sentry.release,
         });
     }
