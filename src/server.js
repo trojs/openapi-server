@@ -29,6 +29,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @typedef {import('./api.js').ApiSchema} ApiSchema
  * @typedef {import('./api.js').Logger} Logger
  * @typedef {import('express').Express} Express
+ * @typedef {import('@sentry/types').Integration} Integration
  */
 
 /**
@@ -51,6 +52,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @property {number=} tracesSampleRate
  * @property {number=} profilesSampleRate
  * @property {string=} release
+ * @property {Integration[]=} integrations
  */
 
 /**
@@ -84,16 +86,11 @@ export const setupServer = async ({
     if (sentry) {
         Sentry.init({
             dsn: sentry.dsn,
-            integrations: [
-                new Sentry.Integrations.Http({ tracing: true }),
-                new Sentry.Integrations.Express({ app }),
-            ],
             tracesSampleRate: sentry.tracesSampleRate || 1.0,
             profilesSampleRate: sentry.profilesSampleRate || 1.0,
+            integrations: sentry.integrations || [],
             release: sentry.release,
         });
-
-        app.use(Sentry.Handlers.requestHandler());
     }
 
     app.use(cors(corsOptions));
@@ -119,7 +116,7 @@ export const setupServer = async ({
     });
 
     if (sentry) {
-        app.use(Sentry.Handlers.errorHandler());
+        Sentry.setupExpressErrorHandler(app);
     }
 
     return { app };
