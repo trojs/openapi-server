@@ -35,7 +35,7 @@
     "devDependencies": {
         "@hckrnews/eslint-code-quality": "^0.2.1",
         "@hckrnews/eslint-config": "^3.1.0",
-        "@types/express-serve-static-core": "^4.17.41",
+        "@types/express-serve-static-core": "^5.0.0",
         "@types/node": "^22.0.0",
         "c8": "^10.0.0",
         "eslint": "^8.23.0",
