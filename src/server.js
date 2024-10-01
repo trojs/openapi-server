@@ -75,7 +75,7 @@ export const setupServer = async ({
     poweredBy = 'TroJS',
     version = '1.0.0',
     middleware = [],
-    maximumBodySize = '5mb',
+    maximumBodySize = undefined,
 }) => {
     const corsOptions = {
         origin,
