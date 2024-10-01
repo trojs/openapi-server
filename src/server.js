@@ -66,6 +66,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @param {string=} params.poweredBy
  * @param {string=} params.version
  * @param {any[]=} params.middleware
+ * @param {string=} params.maximumBodySize
  * @returns {Promise<{ app: Express }>}
  */
 export const setupServer = async ({
@@ -76,6 +77,7 @@ export const setupServer = async ({
     poweredBy = 'TroJS',
     version = '1.0.0',
     middleware = [],
+    maximumBodySize = '5mb',
 }) => {
     const corsOptions = {
         origin,
@@ -98,7 +100,7 @@ export const setupServer = async ({
     app.use(helmet(getOriginResourcePolicy(origin)));
     app.use(express.json());
     middleware.forEach((fn) => app.use(fn));
-    app.use(bodyParser.urlencoded({ extended: false, limit: '5mb' }));
+    app.use(bodyParser.urlencoded({ extended: false, limit: maximumBodySize }));
     app.use((_request, response, next) => {
         response.setHeader('X-Powered-By', poweredBy);
         response.setHeader('X-Version', version);
