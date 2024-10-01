@@ -16,7 +16,6 @@ import { unauthorized } from './handlers/unauthorized.js';
 /**
  * Setup the router
  * @param {object} params
- * @param {string=} params.secret
  * @param {object} params.openAPISpecification
  * @param {object} params.controllers
  * @param {string=} params.apiRoot
@@ -29,7 +28,6 @@ import { unauthorized } from './handlers/unauthorized.js';
  * @returns {{ api: OpenAPIBackend<any>, openAPISpecification: object }}
  */
 export const setupRouter = ({
-    secret,
     openAPISpecification,
     controllers,
     apiRoot,
@@ -82,13 +80,6 @@ export const setupRouter = ({
         );
         return mock;
     });
-
-    if (secret) {
-        api.registerSecurityHandler(
-            'apiKey',
-            (context) => context.request.headers['x-api-key'] === secret
-        );
-    }
 
     securityHandlers.forEach((securityHandler) => {
         api.registerSecurityHandler(
