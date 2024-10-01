@@ -98,7 +98,7 @@ export const setupServer = async ({
     app.use(cors(corsOptions));
     app.use(compression());
     app.use(helmet(getOriginResourcePolicy(origin)));
-    app.use(express.json());
+    app.use(express.json({ limit: maximumBodySize }));
     middleware.forEach((fn) => app.use(fn));
     app.use(bodyParser.urlencoded({ extended: false, limit: maximumBodySize }));
     app.use((_request, response, next) => {
