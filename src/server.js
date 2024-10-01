@@ -66,7 +66,7 @@ const getOriginResourcePolicy = (origin) => ({
  * @param {string=} params.poweredBy
  * @param {string=} params.version
  * @param {any[]=} params.middleware
- * @param {string=} params.maximumBodySize
+ * @param {string|number=} params.maximumBodySize
  * @returns {Promise<{ app: Express }>}
  */
 export const setupServer = async ({
