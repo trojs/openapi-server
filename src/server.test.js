@@ -55,6 +55,11 @@ function customHandler(context) {
 
 const securityHandlers = [
     {
+        name: 'apiKey',
+        handler: (context) =>
+            context.request.headers['x-api-key'] === envExample.SECRET,
+    },
+    {
         name: 'customSecurityHandler',
         handler: customHandler,
     },
