@@ -98,7 +98,7 @@ export const setupServer = async ({
     app.use(helmet(getOriginResourcePolicy(origin)));
     app.use(express.json());
     middleware.forEach((fn) => app.use(fn));
-    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.urlencoded({ extended: false, limit: '5mb' }));
     app.use((_request, response, next) => {
         response.setHeader('X-Powered-By', poweredBy);
         response.setHeader('X-Version', version);
