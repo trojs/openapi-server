@@ -17,7 +17,6 @@ import { setupRouter } from './router.js';
  * @property {string} version
  * @property {object} specification
  * @property {object} controllers
- * @property {string=} secret
  * @property {string=} apiRoot
  * @property {boolean=} strictSpecification
  * @property {boolean=} errorDetails
@@ -43,7 +42,6 @@ export class Api {
         version,
         specification,
         controllers,
-        secret,
         apiRoot,
         strictSpecification,
         errorDetails,
@@ -57,7 +55,6 @@ export class Api {
         this.version = version;
         this.specification = specification;
         this.controllers = controllers;
-        this.secret = secret;
         this.apiRoot = apiRoot;
         this.strictSpecification = strictSpecification;
         this.errorDetails = errorDetails || false;
@@ -86,7 +83,6 @@ export class Api {
         }
 
         const { api } = setupRouter({
-            secret: this.secret,
             openAPISpecification: this.specification,
             controllers: this.controllers,
             apiRoot: this.apiRoot,

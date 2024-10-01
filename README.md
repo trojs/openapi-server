@@ -41,7 +41,6 @@ const api = new Api({
   version: 'v1',
   specification: openAPISpecification,
   controllers,
-  secret: 'test',
   logger: console,
   ajvOptions: { allErrors: true }
 })
