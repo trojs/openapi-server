@@ -11,16 +11,16 @@ export const parseParams = ({ query, spec }) =>
     spec
         .map((parameter) => {
             const { name, schema } = parameter;
-            const {
-                type,
-                default: defaultValue,
-                example: exampleValue,
-            } = schema;
+            const { type, default: defaultValue } = schema;
             const Type = types[type];
             const paramName = query?.[name];
 
+            if (!paramName && defaultValue) {
+                return { name, value: defaultValue };
+            }
+
             if (!paramName) {
-                return { name, value: defaultValue ?? exampleValue };
+                return undefined;
             }
 
             if (Type === Boolean) {
@@ -33,6 +33,7 @@ export const parseParams = ({ query, spec }) =>
             const value = new Type(paramName).valueOf();
             return { name, value };
         })
+        .filter(Boolean)
         .reduce((acc, { name, value }) => {
             acc[name] = value;
             return acc;
