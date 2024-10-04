@@ -86,9 +86,7 @@ const TestCases = [
                 },
             },
         ],
-        expectedResult: {
-            page: 0,
-        },
+        expectedResult: {},
     },
     {
         description: 'It should not throw if no query params are given',
@@ -106,9 +104,7 @@ const TestCases = [
                 },
             },
         ],
-        expectedResult: {
-            size: 10,
-        },
+        expectedResult: {},
     },
     {
         description: 'Parse mixed params to the types defined in the spec',
