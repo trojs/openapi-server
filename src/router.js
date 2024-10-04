@@ -25,6 +25,7 @@ import { unauthorized } from './handlers/unauthorized.js';
  * @param {object=} params.meta
  * @param {SecurityHandler[]=} params.securityHandlers
  * @param {AjvOpts=} params.ajvOptions
+ * @param {boolean=} params.mock
  * @returns {{ api: OpenAPIBackend<any>, openAPISpecification: object }}
  */
 export const setupRouter = ({
@@ -37,6 +38,7 @@ export const setupRouter = ({
     meta,
     securityHandlers = [],
     ajvOptions = {},
+    mock,
 }) => {
     const api = new OpenAPIBackend({
         definition: openAPISpecification,
@@ -69,16 +71,16 @@ export const setupRouter = ({
                     errorDetails,
                     logger,
                     meta,
+                    mock,
                 })
             );
         }
     );
 
     api.register('notImplemented', (context) => {
-        const { mock } = context.api.mockResponseForOperation(
-            context.operation.operationId
-        );
-        return mock;
+        const { mock: mockImplementation } =
+            context.api.mockResponseForOperation(context.operation.operationId);
+        return mockImplementation;
     });
 
     securityHandlers.forEach((securityHandler) => {
