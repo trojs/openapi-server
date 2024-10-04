@@ -72,7 +72,7 @@ const TestCases = [
     },
     {
         description:
-            'Get the example values from the schema if no query params are given',
+            'Dont get the example values from the schema if no query params are given and mock is not enabled',
         query: {},
         spec: [
             {
@@ -89,7 +89,29 @@ const TestCases = [
         expectedResult: {},
     },
     {
-        description: 'It should not throw if no query params are given',
+        description:
+            'Get the example values from the schema if no query params are given and mock is enabled',
+        query: {},
+        spec: [
+            {
+                name: 'page',
+                required: false,
+                in: 'query',
+                schema: {
+                    type: 'integer',
+                    minimum: 0,
+                    example: 0,
+                },
+            },
+        ],
+        mock: true,
+        expectedResult: {
+            page: 0,
+        },
+    },
+    {
+        description:
+            'It should not throw if no query params are given and mock is not enabled',
         query: undefined,
         spec: [
             {
@@ -105,6 +127,28 @@ const TestCases = [
             },
         ],
         expectedResult: {},
+    },
+    {
+        description:
+            'It should not throw if no query params are given and mock is enabled',
+        query: undefined,
+        spec: [
+            {
+                name: 'size',
+                required: false,
+                in: 'query',
+                schema: {
+                    type: 'integer',
+                    minimum: 1,
+                    maximum: 10000,
+                    example: 10,
+                },
+            },
+        ],
+        mock: true,
+        expectedResult: {
+            size: 10,
+        },
     },
     {
         description: 'Parse mixed params to the types defined in the spec',
@@ -157,10 +201,15 @@ const TestCases = [
 
 test('Parse params', async (t) => {
     await Promise.all(
-        TestCases.map(async ({ description, query, spec, expectedResult }) => {
-            await t.test(description, () => {
-                assert.deepEqual(parseParams({ query, spec }), expectedResult);
-            });
-        })
+        TestCases.map(
+            async ({ description, query, spec, mock, expectedResult }) => {
+                await t.test(description, () => {
+                    assert.deepEqual(
+                        parseParams({ query, spec, mock }),
+                        expectedResult
+                    );
+                });
+            }
+        )
     );
 });
