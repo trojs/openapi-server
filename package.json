@@ -52,7 +52,7 @@
         "url": "https://github.com/trojs/openapi-server"
     },
     "engines": {
-        "node": ">= 18.13"
+        "node": ">= 18.13 < 19 || >= 20 < 21 || >= 22 < 23"
     },
     "keywords": [
         "openapi",
