@@ -1,6 +1,6 @@
-import test from 'node:test';
-import assert from 'node:assert';
-import { parseParams } from './params.js';
+import test from 'node:test'
+import assert from 'node:assert'
+import { parseParams } from './params.js'
 
 const TestCases = [
     {
@@ -16,8 +16,8 @@ const TestCases = [
                     minimum: 1,
                     maximum: 10000,
                     example: 10,
-                    default: 42,
-                },
+                    default: 42
+                }
             },
             {
                 name: 'page',
@@ -27,14 +27,14 @@ const TestCases = [
                     type: 'integer',
                     minimum: 0,
                     example: 0,
-                    default: 1,
-                },
-            },
+                    default: 1
+                }
+            }
         ],
         expectedResult: {
             page: 0,
-            size: 10,
-        },
+            size: 10
+        }
     },
     {
         description:
@@ -50,8 +50,8 @@ const TestCases = [
                     minimum: 1,
                     maximum: 10000,
                     example: 10,
-                    default: 42,
-                },
+                    default: 42
+                }
             },
             {
                 name: 'index',
@@ -61,14 +61,14 @@ const TestCases = [
                     type: 'integer',
                     minimum: 0,
                     example: 0,
-                    default: 1,
-                },
-            },
+                    default: 1
+                }
+            }
         ],
         expectedResult: {
             index: 1,
-            max: 42,
-        },
+            max: 42
+        }
     },
     {
         description:
@@ -82,11 +82,11 @@ const TestCases = [
                 schema: {
                     type: 'integer',
                     minimum: 0,
-                    example: 0,
-                },
-            },
+                    example: 0
+                }
+            }
         ],
-        expectedResult: {},
+        expectedResult: {}
     },
     {
         description:
@@ -100,14 +100,14 @@ const TestCases = [
                 schema: {
                     type: 'integer',
                     minimum: 0,
-                    example: 0,
-                },
-            },
+                    example: 0
+                }
+            }
         ],
         mock: true,
         expectedResult: {
-            page: 0,
-        },
+            page: 0
+        }
     },
     {
         description:
@@ -122,11 +122,11 @@ const TestCases = [
                     type: 'integer',
                     minimum: 1,
                     maximum: 10000,
-                    example: 10,
-                },
-            },
+                    example: 10
+                }
+            }
         ],
-        expectedResult: {},
+        expectedResult: {}
     },
     {
         description:
@@ -141,14 +141,14 @@ const TestCases = [
                     type: 'integer',
                     minimum: 1,
                     maximum: 10000,
-                    example: 10,
-                },
-            },
+                    example: 10
+                }
+            }
         ],
         mock: true,
         expectedResult: {
-            size: 10,
-        },
+            size: 10
+        }
     },
     {
         description: 'Parse mixed params to the types defined in the spec',
@@ -160,8 +160,8 @@ const TestCases = [
                 in: 'query',
                 schema: {
                     type: 'string',
-                    example: 10,
-                },
+                    example: 10
+                }
             },
             {
                 name: 'ok',
@@ -169,14 +169,14 @@ const TestCases = [
                 in: 'query',
                 schema: {
                     type: 'boolean',
-                    example: 0,
-                },
-            },
+                    example: 0
+                }
+            }
         ],
         expectedResult: {
             name: 'Pieter',
-            ok: true,
-        },
+            ok: true
+        }
     },
     {
         description:
@@ -189,15 +189,15 @@ const TestCases = [
                 in: 'query',
                 schema: {
                     type: 'boolean',
-                    example: 0,
-                },
-            },
+                    example: 0
+                }
+            }
         ],
         expectedResult: {
-            ok: false,
-        },
-    },
-];
+            ok: false
+        }
+    }
+]
 
 test('Parse params', async (t) => {
     await Promise.all(
@@ -207,9 +207,9 @@ test('Parse params', async (t) => {
                     assert.deepEqual(
                         parseParams({ query, spec, mock }),
                         expectedResult
-                    );
-                });
+                    )
+                })
             }
         )
-    );
-});
+    )
+})
