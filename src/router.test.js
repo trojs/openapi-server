@@ -1,12 +1,12 @@
-import test from 'node:test';
-import assert from 'node:assert';
-import { setupRouter } from './router.js';
-import openAPISpecification from './__fixtures__/spec.js';
+import test from 'node:test'
+import assert from 'node:assert'
+import { setupRouter } from './router.js'
+import openAPISpecification from './__fixtures__/spec.js'
 
 const envExample = {
     SECRET: 'test',
-    PORT: 3000,
-};
+    PORT: 3000
+}
 
 const resMock = {
     newStatus: null,
@@ -14,18 +14,18 @@ const resMock = {
     type: () => true,
     status: (newStatus) => ({
         json: (data) => {
-            resMock.newStatus = newStatus;
-            resMock.response = data;
+            resMock.newStatus = newStatus
+            resMock.response = data
         },
         send: (data) => {
-            resMock.newStatus = newStatus;
-            resMock.response = data;
-        },
+            resMock.newStatus = newStatus
+            resMock.response = data
+        }
     }),
     json: (data) => {
-        resMock.response = data;
-    },
-};
+        resMock.response = data
+    }
+}
 
 test('Test the router', async (t) => {
     await t.test(
@@ -33,47 +33,47 @@ test('Test the router', async (t) => {
         async () => {
             const controllers = {
                 getMessages: () => ({
-                    test: 'ok',
-                }),
-            };
+                    test: 'ok'
+                })
+            }
 
             const { api } = setupRouter({
                 secret: envExample.SECRET,
                 openAPISpecification,
-                controllers,
-            });
+                controllers
+            })
             const context = {
                 response: {
                     status: 200,
                     timestamp: new Date(),
-                    message: 'OK',
+                    message: 'OK'
                 },
                 operation: 'get',
                 api: {
                     validateResponse: () => ({ errors: 'test' }),
-                    validateResponseHeaders: () => undefined,
-                },
-            };
-            const request = {};
-            const response = resMock;
+                    validateResponseHeaders: () => undefined
+                }
+            }
+            const request = {}
+            const response = resMock
 
-            api.handlers.postResponseHandler(context, request, response);
+            api.handlers.postResponseHandler(context, request, response)
 
-            assert.strictEqual(resMock.newStatus, 502);
+            assert.strictEqual(resMock.newStatus, 502)
 
-            const responseBody = resMock.response;
+            const responseBody = resMock.response
             assert.deepEqual(
                 {
                     message: responseBody.message,
                     status: responseBody.status,
-                    errors: responseBody.errors,
+                    errors: responseBody.errors
                 },
                 {
                     message: 'Bad response',
                     status: 502,
-                    errors: 'test',
+                    errors: 'test'
                 }
-            );
+            )
         }
-    );
-});
+    )
+})

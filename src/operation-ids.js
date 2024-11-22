@@ -1,4 +1,4 @@
-const operations = ['get', 'put', 'patch', 'post', 'delete'];
+const operations = ['get', 'put', 'patch', 'post', 'delete']
 
 /**
  * Get all operation ID's from the specification.
@@ -13,4 +13,4 @@ export const operationIds = ({ specification }) =>
                 operations.includes(operation) ? data.operationId : null
             )
         )
-        .flat();
+        .flat()

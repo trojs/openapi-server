@@ -6,7 +6,7 @@ const types = {
     integer: Number,
     boolean: Boolean,
     url: URL,
-    date: Date,
-};
+    date: Date
+}
 
-export { types };
+export { types }
