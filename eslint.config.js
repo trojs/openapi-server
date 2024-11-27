@@ -28,6 +28,9 @@ export default [
         settings: {
             jsdoc: {
                 mode: 'typescript'
+            },
+            react: {
+                version: '18.3.1'
             }
         },
         plugins: {

@@ -1,4 +1,4 @@
-import { types } from './types.js';
+import { types } from './types.js'
 
 /**
  * Parse params to the types defined in the spec
@@ -11,39 +11,39 @@ import { types } from './types.js';
 export const parseParams = ({ query, spec, mock = false }) =>
     spec
         .map((parameter) => {
-            const { name, schema } = parameter;
+            const { name, schema } = parameter
             const {
                 type,
                 default: defaultValue,
-                example: exampleValue,
-            } = schema;
-            const Type = types[type];
-            const paramName = query?.[name];
+                example: exampleValue
+            } = schema
+            const Type = types[type]
+            const paramName = query?.[name]
 
             if (!paramName && defaultValue !== undefined) {
-                return { name, value: defaultValue };
+                return { name, value: defaultValue }
             }
 
             if (!paramName && mock && exampleValue !== undefined) {
-                return { name, value: exampleValue };
+                return { name, value: exampleValue }
             }
 
             if (!paramName) {
-                return undefined;
+                return undefined
             }
 
             if (Type === Boolean) {
                 return {
                     name,
-                    value: JSON.parse(paramName.toLowerCase()),
-                };
+                    value: JSON.parse(paramName.toLowerCase())
+                }
             }
 
-            const value = new Type(paramName).valueOf();
-            return { name, value };
+            const value = new Type(paramName).valueOf()
+            return { name, value }
         })
         .filter(Boolean)
         .reduce((acc, { name, value }) => {
-            acc[name] = value;
-            return acc;
-        }, {});
+            acc[name] = value
+            return acc
+        }, {})

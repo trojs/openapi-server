@@ -1,11 +1,11 @@
-import { OpenAPIBackend } from 'openapi-backend';
-import addFormats from 'ajv-formats';
-import { makeExpressCallback } from './express-callback.js';
-import { operationIds } from './operation-ids.js';
-import { notFound } from './handlers/not-found.js';
-import { requestValidation } from './handlers/request-validation.js';
-import { responseValidation } from './handlers/response-validation.js';
-import { unauthorized } from './handlers/unauthorized.js';
+import { OpenAPIBackend } from 'openapi-backend'
+import addFormats from 'ajv-formats'
+import { makeExpressCallback } from './express-callback.js'
+import { operationIds } from './operation-ids.js'
+import { notFound } from './handlers/not-found.js'
+import { requestValidation } from './handlers/request-validation.js'
+import { responseValidation } from './handlers/response-validation.js'
+import { unauthorized } from './handlers/unauthorized.js'
 
 /**
  * @typedef {import('./api.js').Logger} Logger
@@ -38,7 +38,7 @@ export const setupRouter = ({
     meta,
     securityHandlers = [],
     ajvOptions = {},
-    mock,
+    mock
 }) => {
     const api = new OpenAPIBackend({
         definition: openAPISpecification,
@@ -46,22 +46,22 @@ export const setupRouter = ({
         strict: strictSpecification,
         ajvOpts: ajvOptions,
         customizeAjv: (originalAjv) => {
-            addFormats(originalAjv);
-            return originalAjv;
-        },
-    });
+            addFormats(originalAjv)
+            return originalAjv
+        }
+    })
 
     api.register({
         unauthorizedHandler: unauthorized,
         validationFail: requestValidation,
         notFound,
-        postResponseHandler: responseValidation,
-    });
+        postResponseHandler: responseValidation
+    })
 
     operationIds({ specification: openAPISpecification }).forEach(
         (operationId) => {
             if (!Object.hasOwn(controllers, operationId)) {
-                return;
+                return
             }
             api.register(
                 operationId,
@@ -71,24 +71,24 @@ export const setupRouter = ({
                     errorDetails,
                     logger,
                     meta,
-                    mock,
+                    mock
                 })
-            );
+            )
         }
-    );
+    )
 
     api.register('notImplemented', (context) => {
         const { mock: mockImplementation } =
-            context.api.mockResponseForOperation(context.operation.operationId);
-        return mockImplementation;
-    });
+            context.api.mockResponseForOperation(context.operation.operationId)
+        return mockImplementation
+    })
 
     securityHandlers.forEach((securityHandler) => {
         api.registerSecurityHandler(
             securityHandler.name,
             securityHandler.handler
-        );
-    });
+        )
+    })
 
-    return { api, openAPISpecification };
-};
+    return { api, openAPISpecification }
+}
