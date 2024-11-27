@@ -23,6 +23,7 @@ import { setupRouter } from './router.js'
  * @property {Logger=} logger
  * @property {object=} meta
  * @property {SecurityHandler[]=} securityHandlers
+ * @property {Handler=} unauthorizedHandler
  * @property {boolean=} swagger
  * @property {boolean=} apiDocs
  * @property {AjvOpts=} ajvOptions
@@ -49,6 +50,7 @@ export class Api {
         logger,
         meta,
         securityHandlers,
+        unauthorizedHandler,
         swagger,
         apiDocs,
         ajvOptions
@@ -62,6 +64,7 @@ export class Api {
         this.logger = logger || console
         this.meta = meta || {}
         this.securityHandlers = securityHandlers || []
+        this.unauthorizedHandler = unauthorizedHandler || undefined
         this.swagger = swagger ?? true
         this.apiDocs = apiDocs ?? true
         this.ajvOptions = ajvOptions ?? { allErrors: false }
@@ -92,6 +95,7 @@ export class Api {
             logger: this.logger,
             meta: this.meta,
             securityHandlers: this.securityHandlers,
+            unauthorizedHandler: this.unauthorizedHandler,
             ajvOptions: this.ajvOptions
         })
         api.init()

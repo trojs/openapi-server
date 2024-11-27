@@ -64,12 +64,22 @@ const securityHandlers = [
         handler: customHandler
     }
 ]
+
+const unauthorizedHandler = async (_context, _request, response) => {
+    response.status(403)
+    return {
+        status: 403,
+        timestamp: new Date(),
+        message: 'Unauthorized'
+    }
+}
 const api = new Api({
     version: 'v1',
     specification: openAPISpecification,
     controllers,
     secret: envExample.SECRET,
     securityHandlers,
+    unauthorizedHandler,
     ajvOptions: { allErrors: true }
 })
 const { app } = await setupServer({
@@ -111,11 +121,11 @@ test('Test the server', async (t) => {
     )
 
     await t.test(
-        'It should response with a 401 message if you forgot the secret in the header',
+        'It should response with a 403 message if you forgot the secret in the header',
         async () => {
             const response = await request.get('/v1/messages')
 
-            assert.strictEqual(response.status, 401)
+            assert.strictEqual(response.status, 403)
             assert.deepEqual(
                 {
                     message: response.body.message,
@@ -123,7 +133,7 @@ test('Test the server', async (t) => {
                 },
                 {
                     message: 'Unauthorized',
-                    status: 401
+                    status: 403
                 }
             )
         }
@@ -219,13 +229,13 @@ test('Test the server', async (t) => {
     )
 
     await t.test(
-        'It should return 401 with the wrong secret for the custom security handler',
+        'It should return 403 with the wrong secret for the custom security handler',
         async () => {
             const response = await request
                 .get('/v1/user-secure')
                 .set('authorization', 'not-the-secret')
 
-            assert.strictEqual(response.status, 401)
+            assert.strictEqual(response.status, 403)
         }
     )
 })

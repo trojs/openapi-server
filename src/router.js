@@ -10,6 +10,7 @@ import { unauthorized } from './handlers/unauthorized.js'
 /**
  * @typedef {import('./api.js').Logger} Logger
  * @typedef {import('./api.js').SecurityHandler} SecurityHandler
+ * @typedef {import('./api.js').Handler} Handler
  * @typedef {import('ajv').Options} AjvOpts
  */
 
@@ -24,6 +25,7 @@ import { unauthorized } from './handlers/unauthorized.js'
  * @param {Logger=} params.logger
  * @param {object=} params.meta
  * @param {SecurityHandler[]=} params.securityHandlers
+ * @param {Handler=} params.unauthorizedHandler
  * @param {AjvOpts=} params.ajvOptions
  * @param {boolean=} params.mock
  * @returns {{ api: OpenAPIBackend<any>, openAPISpecification: object }}
@@ -37,6 +39,7 @@ export const setupRouter = ({
     logger,
     meta,
     securityHandlers = [],
+    unauthorizedHandler,
     ajvOptions = {},
     mock
 }) => {
@@ -52,7 +55,7 @@ export const setupRouter = ({
     })
 
     api.register({
-        unauthorizedHandler: unauthorized,
+        unauthorizedHandler: unauthorizedHandler || unauthorized,
         validationFail: requestValidation,
         notFound,
         postResponseHandler: responseValidation
