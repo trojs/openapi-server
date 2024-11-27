@@ -1,11 +1,13 @@
-import express from 'express';
-import cors from 'cors';
-import compression from 'compression';
-import helmet from 'helmet';
-import * as Sentry from '@sentry/node';
-import bodyParser from 'body-parser';
-import { openAPI } from './openapi.js';
-import { Api } from './api.js';
+import express from 'express'
+import cors from 'cors'
+import compression from 'compression'
+import helmet from 'helmet'
+import * as Sentry from '@sentry/node'
+import bodyParser from 'body-parser'
+import { openAPI } from './openapi.js'
+import { Api } from './api.js'
+
+/* eslint-disable sonarjs/cors */
 
 /**
  * Get the origin resource policy
@@ -17,10 +19,10 @@ const getOriginResourcePolicy = (origin) => ({
         policy: origin === '*' ? 'cross-origin' : 'same-origin',
         directives: {
             // ...
-            'require-trusted-types-for': ["'script'"],
-        },
-    },
-});
+            'require-trusted-types-for': ["'script'"]
+        }
+    }
+})
 
 /**
  * @typedef {import('express-serve-static-core').Request} Request
@@ -75,56 +77,56 @@ export const setupServer = async ({
     poweredBy = 'TroJS',
     version = '1.0.0',
     middleware = [],
-    maximumBodySize = undefined,
+    maximumBodySize = undefined
 }) => {
     const corsOptions = {
-        origin,
-    };
+        origin
+    }
 
-    const app = express();
+    const app = express()
 
     if (sentry) {
         Sentry.init({
             dsn: sentry.dsn,
             integrations: [
                 new Sentry.Integrations.Http({ tracing: true }),
-                new Sentry.Integrations.Express({ app }),
+                new Sentry.Integrations.Express({ app })
             ],
             tracesSampleRate: sentry.tracesSampleRate || 1.0,
             profilesSampleRate: sentry.profilesSampleRate || 1.0,
-            release: sentry.release,
-        });
+            release: sentry.release
+        })
 
-        app.use(Sentry.Handlers.requestHandler());
+        app.use(Sentry.Handlers.requestHandler())
     }
 
-    app.use(cors(corsOptions));
-    app.use(compression());
-    app.use(helmet(getOriginResourcePolicy(origin)));
-    app.use(express.json({ limit: maximumBodySize }));
-    middleware.forEach((fn) => app.use(fn));
-    app.use(bodyParser.urlencoded({ extended: false, limit: maximumBodySize }));
+    app.use(cors(corsOptions))
+    app.use(compression())
+    app.use(helmet(getOriginResourcePolicy(origin)))
+    app.use(express.json({ limit: maximumBodySize }))
+    middleware.forEach((fn) => app.use(fn))
+    app.use(bodyParser.urlencoded({ extended: false, limit: maximumBodySize }))
     app.use((_request, response, next) => {
-        response.setHeader('X-Powered-By', poweredBy);
-        response.setHeader('X-Version', version);
-        next();
-    });
+        response.setHeader('X-Powered-By', poweredBy)
+        response.setHeader('X-Version', version)
+        next()
+    })
 
     if (staticFolder) {
-        app.use(express.static(staticFolder));
+        app.use(express.static(staticFolder))
     }
 
     apis.forEach((api) => {
-        const apiRoutes = new Api(api);
-        const routes = apiRoutes.setup();
-        app.use(`/${api.version}`, routes);
-    });
+        const apiRoutes = new Api(api)
+        const routes = apiRoutes.setup()
+        app.use(`/${api.version}`, routes)
+    })
 
     if (sentry) {
-        app.use(Sentry.Handlers.errorHandler());
+        app.use(Sentry.Handlers.errorHandler())
     }
 
-    return { app };
-};
+    return { app }
+}
 
-export { openAPI, Api };
+export { openAPI, Api }

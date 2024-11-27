@@ -1,6 +1,6 @@
-import express from 'express';
-import swaggerUi from 'swagger-ui-express';
-import { setupRouter } from './router.js';
+import express from 'express'
+import swaggerUi from 'swagger-ui-express'
+import { setupRouter } from './router.js'
 
 /**
  * @typedef {import('openapi-backend').Handler} Handler
@@ -29,13 +29,14 @@ import { setupRouter } from './router.js';
  */
 
 /**
- * Setup the server for a specific API, so every server can run multiple instances of the API, like different versions, for e.g. different clients
+ * Setup the server for a specific API, so every server can run multiple instances of the API,
+ * like different versions, for e.g. different clients
  */
 
 export class Api {
     /**
      * Create a new instance of the API
-     * @constructor
+     * @class
      * @param {ApiSchema} params
      */
     constructor({
@@ -50,36 +51,36 @@ export class Api {
         securityHandlers,
         swagger,
         apiDocs,
-        ajvOptions,
+        ajvOptions
     }) {
-        this.version = version;
-        this.specification = specification;
-        this.controllers = controllers;
-        this.apiRoot = apiRoot;
-        this.strictSpecification = strictSpecification;
-        this.errorDetails = errorDetails || false;
-        this.logger = logger || console;
-        this.meta = meta || {};
-        this.securityHandlers = securityHandlers || [];
-        this.swagger = swagger ?? true;
-        this.apiDocs = apiDocs ?? true;
-        this.ajvOptions = ajvOptions ?? { allErrors: false };
+        this.version = version
+        this.specification = specification
+        this.controllers = controllers
+        this.apiRoot = apiRoot
+        this.strictSpecification = strictSpecification
+        this.errorDetails = errorDetails || false
+        this.logger = logger || console
+        this.meta = meta || {}
+        this.securityHandlers = securityHandlers || []
+        this.swagger = swagger ?? true
+        this.apiDocs = apiDocs ?? true
+        this.ajvOptions = ajvOptions ?? { allErrors: false }
     }
 
     setup() {
-        const router = express.Router();
+        const router = express.Router()
 
         if (this.swagger) {
             router.use(
                 '/swagger',
                 swaggerUi.serveFiles(this.specification, {}),
                 swaggerUi.setup(this.specification)
-            );
+            )
         }
         if (this.apiDocs) {
             router.get('/api-docs', (_request, response) =>
                 response.json(this.specification)
-            );
+            )
         }
 
         const { api } = setupRouter({
@@ -91,14 +92,14 @@ export class Api {
             logger: this.logger,
             meta: this.meta,
             securityHandlers: this.securityHandlers,
-            ajvOptions: this.ajvOptions,
-        });
-        api.init();
+            ajvOptions: this.ajvOptions
+        })
+        api.init()
 
         router.use((request, response) =>
             api.handleRequest(request, request, response)
-        );
+        )
 
-        return router;
+        return router
     }
 }
