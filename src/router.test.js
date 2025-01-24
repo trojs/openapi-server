@@ -40,7 +40,14 @@ test('Test the router', async (t) => {
             const { api } = setupRouter({
                 secret: envExample.SECRET,
                 openAPISpecification,
-                controllers
+                controllers,
+                customizeAjv: (originalAjv) => {
+                    originalAjv.addKeyword('example', {
+                        validate: (schema, data) => data === 'example',
+                        errors: false
+                    })
+                    return originalAjv
+                }
             })
             const context = {
                 response: {
