@@ -12,6 +12,7 @@ import { unauthorized } from './handlers/unauthorized.js'
  * @typedef {import('./api.js').SecurityHandler} SecurityHandler
  * @typedef {import('./api.js').Handler} Handler
  * @typedef {import('ajv').Options} AjvOpts
+ * @typedef {import('openapi-backend').AjvCustomizer} AjvCustomizer
  */
 
 /**
@@ -27,6 +28,7 @@ import { unauthorized } from './handlers/unauthorized.js'
  * @param {SecurityHandler[]=} params.securityHandlers
  * @param {Handler=} params.unauthorizedHandler
  * @param {AjvOpts=} params.ajvOptions
+ * @param {AjvCustomizer=} params.customizeAjv
  * @param {boolean=} params.mock
  * @returns {{ api: OpenAPIBackend<any>, openAPISpecification: object }}
  */
@@ -41,17 +43,19 @@ export const setupRouter = ({
     securityHandlers = [],
     unauthorizedHandler,
     ajvOptions = {},
+    customizeAjv,
     mock
 }) => {
+    const ajvWithExtraFormats = (originalAjv) => {
+        addFormats(originalAjv)
+        return originalAjv
+    }
     const api = new OpenAPIBackend({
         definition: openAPISpecification,
         apiRoot,
         strict: strictSpecification,
         ajvOpts: ajvOptions,
-        customizeAjv: (originalAjv) => {
-            addFormats(originalAjv)
-            return originalAjv
-        }
+        customizeAjv: customizeAjv || ajvWithExtraFormats
     })
 
     api.register({
