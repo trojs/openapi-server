@@ -80,7 +80,11 @@ const api = new Api({
     secret: envExample.SECRET,
     securityHandlers,
     unauthorizedHandler,
-    ajvOptions: { allErrors: true }
+    ajvOptions: { allErrors: true },
+    customizeAjv: (originalAjv) => {
+        originalAjv.addFormat('date', () => true)
+        return originalAjv
+    }
 })
 const { app } = await setupServer({
     env: envExample,
