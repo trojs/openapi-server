@@ -5,6 +5,7 @@ import { setupRouter } from './router.js'
 /**
  * @typedef {import('openapi-backend').Handler} Handler
  * @typedef {import('ajv').Options} AjvOpts
+ * @typedef {import('openapi-backend').AjvCustomizer} AjvCustomizer
  * @typedef {object} Logger
  * @property {Function} error
  * @property {Function} warn
@@ -27,6 +28,7 @@ import { setupRouter } from './router.js'
  * @property {boolean=} swagger
  * @property {boolean=} apiDocs
  * @property {AjvOpts=} ajvOptions
+ * @property {AjvCustomizer=} customizeAjv
  */
 
 /**
@@ -53,7 +55,8 @@ export class Api {
         unauthorizedHandler,
         swagger,
         apiDocs,
-        ajvOptions
+        ajvOptions,
+        customizeAjv
     }) {
         this.version = version
         this.specification = specification
@@ -68,6 +71,7 @@ export class Api {
         this.swagger = swagger ?? true
         this.apiDocs = apiDocs ?? true
         this.ajvOptions = ajvOptions ?? { allErrors: false }
+        this.customizeAjv = customizeAjv
     }
 
     setup() {
@@ -96,7 +100,8 @@ export class Api {
             meta: this.meta,
             securityHandlers: this.securityHandlers,
             unauthorizedHandler: this.unauthorizedHandler,
-            ajvOptions: this.ajvOptions
+            ajvOptions: this.ajvOptions,
+            customizeAjv: this.customizeAjv
         })
         api.init()
 
