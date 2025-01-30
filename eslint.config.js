@@ -24,6 +24,6 @@ export default [
         rules: {
             ...rules.all
         },
-    files: ['src/**/*.js']
+        files: ['src/**/*.js']
     }
 ]
