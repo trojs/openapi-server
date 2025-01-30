@@ -9,7 +9,7 @@ import { readFile } from 'node:fs/promises'
  * @returns {Promise<{ openAPISpecification: object; }>}
  */
 export const openAPI = async ({ file, base = import.meta.url }) => {
-    const fileUrl = new URL(file, base)
-    const openAPISpecification = JSON.parse(await readFile(fileUrl, 'utf8'))
-    return { openAPISpecification }
+  const fileUrl = new URL(file, base)
+  const openAPISpecification = JSON.parse(await readFile(fileUrl, 'utf8'))
+  return { openAPISpecification }
 }

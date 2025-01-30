@@ -1,16 +1,16 @@
 const errorCodesStatus = [
-    {
-        type: TypeError,
-        status: 422
-    },
-    {
-        type: RangeError,
-        status: 404
-    },
-    {
-        type: Error,
-        status: 500
-    }
+  {
+    type: TypeError,
+    status: 422
+  },
+  {
+    type: RangeError,
+    status: 404
+  },
+  {
+    type: Error,
+    status: 500
+  }
 ]
 
 /**
@@ -19,6 +19,6 @@ const errorCodesStatus = [
  * @param {Error} error
  * @returns {number}
  */
-export default (error) =>
-    errorCodesStatus.find((errorCode) => error instanceof errorCode.type)
-        .status
+export default error =>
+  errorCodesStatus.find(errorCode => error instanceof errorCode.type)
+    .status
