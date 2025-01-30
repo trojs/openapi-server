@@ -14,14 +14,14 @@ import { Api } from './api.js'
  * @param {string} origin
  * @returns {{ crossOriginResourcePolicy: { policy: string, directives: object } }}
  */
-const getOriginResourcePolicy = (origin) => ({
-    crossOriginResourcePolicy: {
-        policy: origin === '*' ? 'cross-origin' : 'same-origin',
-        directives: {
-            // ...
-            'require-trusted-types-for': ["'script'"]
-        }
+const getOriginResourcePolicy = origin => ({
+  crossOriginResourcePolicy: {
+    policy: origin === '*' ? 'cross-origin' : 'same-origin',
+    directives: {
+      // ...
+      'require-trusted-types-for': ['\'script\'']
     }
+  }
 })
 
 /**
@@ -70,63 +70,63 @@ const getOriginResourcePolicy = (origin) => ({
  * @returns {Promise<{ app: Express }>}
  */
 export const setupServer = async ({
-    apis,
-    origin = '*',
-    staticFolder,
-    sentry,
-    poweredBy = 'TroJS',
-    version = '1.0.0',
-    middleware = [],
-    maximumBodySize = undefined
+  apis,
+  origin = '*',
+  staticFolder,
+  sentry,
+  poweredBy = 'TroJS',
+  version = '1.0.0',
+  middleware = [],
+  maximumBodySize = undefined
 }) => {
-    const corsOptions = {
-        origin
-    }
+  const corsOptions = {
+    origin
+  }
 
-    const app = express()
+  const app = express()
 
-    if (sentry) {
-        Sentry.init({
-            dsn: sentry.dsn,
-            integrations: [
-                new Sentry.Integrations.Http({ tracing: true }),
-                new Sentry.Integrations.Express({ app })
-            ],
-            tracesSampleRate: sentry.tracesSampleRate || 1.0,
-            profilesSampleRate: sentry.profilesSampleRate || 1.0,
-            release: sentry.release
-        })
-
-        app.use(Sentry.Handlers.requestHandler())
-    }
-
-    app.use(cors(corsOptions))
-    app.use(compression())
-    app.use(helmet(getOriginResourcePolicy(origin)))
-    app.use(express.json({ limit: maximumBodySize }))
-    middleware.forEach((fn) => app.use(fn))
-    app.use(bodyParser.urlencoded({ extended: false, limit: maximumBodySize }))
-    app.use((_request, response, next) => {
-        response.setHeader('X-Powered-By', poweredBy)
-        response.setHeader('X-Version', version)
-        next()
+  if (sentry) {
+    Sentry.init({
+      dsn: sentry.dsn,
+      integrations: [
+        new Sentry.Integrations.Http({ tracing: true }),
+        new Sentry.Integrations.Express({ app })
+      ],
+      tracesSampleRate: sentry.tracesSampleRate || 1.0,
+      profilesSampleRate: sentry.profilesSampleRate || 1.0,
+      release: sentry.release
     })
 
-    if (staticFolder) {
-        app.use(express.static(staticFolder))
-    }
+    app.use(Sentry.Handlers.requestHandler())
+  }
 
-    apis.forEach((api) => {
-        const apiRoutes = new Api(api)
-        const routes = apiRoutes.setup()
-        app.use(`/${api.version}`, routes)
-    })
+  app.use(cors(corsOptions))
+  app.use(compression())
+  app.use(helmet(getOriginResourcePolicy(origin)))
+  app.use(express.json({ limit: maximumBodySize }))
+  middleware.forEach(fn => app.use(fn))
+  app.use(bodyParser.urlencoded({ extended: false, limit: maximumBodySize }))
+  app.use((_request, response, next) => {
+    response.setHeader('X-Powered-By', poweredBy)
+    response.setHeader('X-Version', version)
+    next()
+  })
 
-    if (sentry) {
-        app.use(Sentry.Handlers.errorHandler())
-    }
+  if (staticFolder) {
+    app.use(express.static(staticFolder))
+  }
 
-    return { app }
+  apis.forEach((api) => {
+    const apiRoutes = new Api(api)
+    const routes = apiRoutes.setup()
+    app.use(`/${api.version}`, routes)
+  })
+
+  if (sentry) {
+    app.use(Sentry.Handlers.errorHandler())
+  }
+
+  return { app }
 }
 
 export { openAPI, Api }

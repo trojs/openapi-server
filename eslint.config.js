@@ -1,7 +1,5 @@
 import globals from 'globals'
 import pluginJs from '@eslint/js'
-import prettierPlugin from 'eslint-plugin-prettier'
-import prettierConfig from 'eslint-config-prettier'
 import { plugins, rules} from '@trojs/lint'
 
 export default [
@@ -21,12 +19,11 @@ export default [
             }
         },
         plugins: {
-            ...plugins,
-            prettier: prettierPlugin
+            ...plugins
         },
         rules: {
-            ...rules.all,
-            ...prettierConfig.rules
-        }
+            ...rules.all
+        },
+    files: ['src/**/*.js']
     }
 ]
