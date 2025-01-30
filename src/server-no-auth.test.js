@@ -1,7 +1,11 @@
 import test from 'node:test'
 import assert from 'node:assert'
 import supertest from 'supertest'
-import { setupServer, openAPI, Api } from './server.js'
+import { Api, openAPI, setupServer } from './server.js'
+
+/**
+ * @typedef {import('openapi-backend').Context} Context
+ */
 
 const envExample = {
     PORT: 3000
@@ -38,6 +42,10 @@ const controllers = {
 
 const { openAPISpecification } = await openAPI({ file: specFileLocation })
 
+/**
+ * @param {Context} context
+ * @returns {any}
+ */
 function customHandler(context) {
     const authHeader = context.request.headers.authorization
     if (!authHeader) {
