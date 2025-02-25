@@ -34,8 +34,8 @@
     "main": "src/server.js",
     "devDependencies": {
         "@eslint/js": "^9.15.0",
-        "@stylistic/eslint-plugin": "^3.0.0",
-        "@stylistic/eslint-plugin-js": "^3.0.0",
+        "@stylistic/eslint-plugin": "^4.0.0",
+        "@stylistic/eslint-plugin-js": "^4.0.0",
         "@types/express-serve-static-core": "^4.17.41",
         "@types/node": "^22.0.0",
         "c8": "^10.0.0",
