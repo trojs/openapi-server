@@ -34,72 +34,72 @@ import { setupRouter } from './router.js'
  */
 
 export class Api {
-    /**
-     * Create a new instance of the API
-     * @class
-     * @param {ApiSchema} params
-     */
-    constructor({
-        version,
-        specification,
-        controllers,
-        apiRoot,
-        strictSpecification,
-        errorDetails,
-        logger,
-        meta,
-        securityHandlers,
-        swagger,
-        apiDocs,
-        ajvOptions
-    }) {
-        this.version = version
-        this.specification = specification
-        this.controllers = controllers
-        this.apiRoot = apiRoot
-        this.strictSpecification = strictSpecification
-        this.errorDetails = errorDetails || false
-        this.logger = logger || console
-        this.meta = meta || {}
-        this.securityHandlers = securityHandlers || []
-        this.swagger = swagger ?? true
-        this.apiDocs = apiDocs ?? true
-        this.ajvOptions = ajvOptions ?? { allErrors: false }
+  /**
+   * Create a new instance of the API
+   * @class
+   * @param {ApiSchema} params
+   */
+  constructor ({
+    version,
+    specification,
+    controllers,
+    apiRoot,
+    strictSpecification,
+    errorDetails,
+    logger,
+    meta,
+    securityHandlers,
+    swagger,
+    apiDocs,
+    ajvOptions
+  }) {
+    this.version = version
+    this.specification = specification
+    this.controllers = controllers
+    this.apiRoot = apiRoot
+    this.strictSpecification = strictSpecification
+    this.errorDetails = errorDetails || false
+    this.logger = logger || console
+    this.meta = meta || {}
+    this.securityHandlers = securityHandlers || []
+    this.swagger = swagger ?? true
+    this.apiDocs = apiDocs ?? true
+    this.ajvOptions = ajvOptions ?? { allErrors: false }
+  }
+
+  setup () {
+    const router = express.Router()
+
+    if (this.swagger) {
+      router.use(
+        '/swagger',
+        swaggerUi.serveFiles(this.specification, {}),
+        swaggerUi.setup(this.specification)
+      )
+    }
+    if (this.apiDocs) {
+      router.get('/api-docs', (_request, response) =>
+        response.json(this.specification)
+      )
     }
 
-    setup() {
-        const router = express.Router()
+    const { api } = setupRouter({
+      openAPISpecification: this.specification,
+      controllers: this.controllers,
+      apiRoot: this.apiRoot,
+      strictSpecification: this.strictSpecification,
+      errorDetails: this.errorDetails,
+      logger: this.logger,
+      meta: this.meta,
+      securityHandlers: this.securityHandlers,
+      ajvOptions: this.ajvOptions
+    })
+    api.init()
 
-        if (this.swagger) {
-            router.use(
-                '/swagger',
-                swaggerUi.serveFiles(this.specification, {}),
-                swaggerUi.setup(this.specification)
-            )
-        }
-        if (this.apiDocs) {
-            router.get('/api-docs', (_request, response) =>
-                response.json(this.specification)
-            )
-        }
+    router.use((request, response) =>
+      api.handleRequest(request, request, response)
+    )
 
-        const { api } = setupRouter({
-            openAPISpecification: this.specification,
-            controllers: this.controllers,
-            apiRoot: this.apiRoot,
-            strictSpecification: this.strictSpecification,
-            errorDetails: this.errorDetails,
-            logger: this.logger,
-            meta: this.meta,
-            securityHandlers: this.securityHandlers,
-            ajvOptions: this.ajvOptions
-        })
-        api.init()
-
-        router.use((request, response) =>
-            api.handleRequest(request, request, response)
-        )
-
-        return router
-    }
+    return router
+  }
 }

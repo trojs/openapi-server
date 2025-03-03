@@ -15,13 +15,13 @@ import { Api } from './api.js'
  * @returns {{ crossOriginResourcePolicy: { policy: string, directives: object } }}
  */
 const getOriginResourcePolicy = (origin) => ({
-    crossOriginResourcePolicy: {
-        policy: origin === '*' ? 'cross-origin' : 'same-origin',
-        directives: {
-            // ...
-            'require-trusted-types-for': ["'script'"]
-        }
+  crossOriginResourcePolicy: {
+    policy: origin === '*' ? 'cross-origin' : 'same-origin',
+    directives: {
+      // ...
+      'require-trusted-types-for': ['\'script\'']
     }
+  }
 })
 
 /**
@@ -72,58 +72,58 @@ const getOriginResourcePolicy = (origin) => ({
  * @returns {Promise<{ app: Express }>}
  */
 export const setupServer = async ({
-    apis,
-    origin = '*',
-    staticFolder,
-    sentry,
-    poweredBy = 'TroJS',
-    version = '1.0.0',
-    middleware = [],
-    maximumBodySize = undefined
+  apis,
+  origin = '*',
+  staticFolder,
+  sentry,
+  poweredBy = 'TroJS',
+  version = '1.0.0',
+  middleware = [],
+  maximumBodySize = undefined
 }) => {
-    const corsOptions = {
-        origin
-    }
+  const corsOptions = {
+    origin
+  }
 
-    const app = express()
+  const app = express()
 
-    if (sentry) {
-        Sentry.init({
-            dsn: sentry.dsn,
-            tracesSampleRate: sentry.tracesSampleRate || 1.0,
-            profilesSampleRate: sentry.profilesSampleRate || 1.0,
-            integrations: sentry.integrations || [],
-            release: sentry.release
-        })
-    }
-
-    app.use(cors(corsOptions))
-    app.use(compression())
-    app.use(helmet(getOriginResourcePolicy(origin)))
-    app.use(express.json({ limit: maximumBodySize }))
-    middleware.forEach((fn) => app.use(fn))
-    app.use(bodyParser.urlencoded({ extended: false, limit: maximumBodySize }))
-    app.use((_request, response, next) => {
-        response.setHeader('X-Powered-By', poweredBy)
-        response.setHeader('X-Version', version)
-        next()
+  if (sentry) {
+    Sentry.init({
+      dsn: sentry.dsn,
+      tracesSampleRate: sentry.tracesSampleRate || 1.0,
+      profilesSampleRate: sentry.profilesSampleRate || 1.0,
+      integrations: sentry.integrations || [],
+      release: sentry.release
     })
+  }
 
-    if (staticFolder) {
-        app.use(express.static(staticFolder))
-    }
+  app.use(cors(corsOptions))
+  app.use(compression())
+  app.use(helmet(getOriginResourcePolicy(origin)))
+  app.use(express.json({ limit: maximumBodySize }))
+  middleware.forEach((fn) => app.use(fn))
+  app.use(bodyParser.urlencoded({ extended: false, limit: maximumBodySize }))
+  app.use((_request, response, next) => {
+    response.setHeader('X-Powered-By', poweredBy)
+    response.setHeader('X-Version', version)
+    next()
+  })
 
-    apis.forEach((api) => {
-        const apiRoutes = new Api(api)
-        const routes = apiRoutes.setup()
-        app.use(`/${api.version}`, routes)
-    })
+  if (staticFolder) {
+    app.use(express.static(staticFolder))
+  }
 
-    if (sentry) {
-        Sentry.setupExpressErrorHandler(app)
-    }
+  apis.forEach((api) => {
+    const apiRoutes = new Api(api)
+    const routes = apiRoutes.setup()
+    app.use(`/${api.version}`, routes)
+  })
 
-    return { app }
+  if (sentry) {
+    Sentry.setupExpressErrorHandler(app)
+  }
+
+  return { app }
 }
 
 export { openAPI, Api }
