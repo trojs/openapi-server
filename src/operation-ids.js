@@ -8,7 +8,7 @@ const operations = ['get', 'put', 'patch', 'post', 'delete']
  */
 export const operationIds = ({ specification }) =>
   Object.values(specification.paths)
-    .map(path =>
+    .map((path) =>
       Object.entries(path).map(([operation, data]) =>
         operations.includes(operation) ? data.operationId : null
       )

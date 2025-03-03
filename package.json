@@ -1,7 +1,7 @@
 {
     "name": "@trojs/openapi-server",
     "description": "OpenAPI Server",
-    "version": "1.7.3",
+    "version": "1.7.4",
     "author": {
         "name": "Pieter Wigboldus",
         "url": "https://trojs.org/"
@@ -12,7 +12,7 @@
         "lint:report": "eslint src/*.js -f json -o report.json",
         "lint:fix": "eslint --fix",
         "lint:rules": "eslint --print-config src/index.js > eslintconfig.json",
-        "test": "c8 node --test src/*.test.js",
+        "test": "node --test --experimental-test-coverage --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=./coverage/lcov.info",
         "cpd": "node_modules/jscpd/bin/jscpd src",
         "vulnerabilities": "npm audit --omit=dev"
     },
@@ -35,20 +35,13 @@
     "main": "src/server.js",
     "devDependencies": {
         "@eslint/js": "^9.15.0",
-        "@stylistic/eslint-plugin": "^3.0.0",
-        "@stylistic/eslint-plugin-js": "^3.0.0",
-        "@trojs/lint": "^0.2.3",
-        "@types/express-serve-static-core": "^4.17.41",
+        "@trojs/lint": "^0.2.9",
         "@types/node": "^22.0.0",
-        "c8": "^10.0.0",
+        "@types/express-serve-static-core": "^4.17.41",
         "eslint": "^9.15.0",
-        "eslint-plugin-import": "^2.31.0",
-        "eslint-plugin-jsdoc": "^50.5.0",
-        "eslint-plugin-n": "^17.14.0",
-        "eslint-plugin-promise": "^7.1.0",
-        "eslint-plugin-sonarjs": "^2.0.4",
-        "globals": "^15.12.0",
-        "jscpd": "^4.0.0",
+        "globals": "^16.0.0",
+        "jscpd": "^4.0.5",
+        "prettier": "^3.3.3",
         "supertest": "^7.0.0"
     },
     "repository": {
@@ -56,7 +49,7 @@
         "url": "https://github.com/trojs/openapi-server"
     },
     "engines": {
-        "node": ">= 20"
+        "node": ">= 20 < 21 || >= 22 < 23"
     },
     "keywords": [
         "openapi",
