@@ -14,7 +14,7 @@ import { Api } from './api.js'
  * @param {string} origin
  * @returns {{ crossOriginResourcePolicy: { policy: string, directives: object } }}
  */
-const getOriginResourcePolicy = origin => ({
+const getOriginResourcePolicy = (origin) => ({
   crossOriginResourcePolicy: {
     policy: origin === '*' ? 'cross-origin' : 'same-origin',
     directives: {
@@ -104,7 +104,7 @@ export const setupServer = async ({
   app.use(compression())
   app.use(helmet(getOriginResourcePolicy(origin)))
   app.use(express.json({ limit: maximumBodySize }))
-  middleware.forEach(fn => app.use(fn))
+  middleware.forEach((fn) => app.use(fn))
   app.use(bodyParser.urlencoded({ extended: false, limit: maximumBodySize }))
   app.use((_request, response, next) => {
     response.setHeader('X-Powered-By', poweredBy)

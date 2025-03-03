@@ -12,7 +12,7 @@ const resMock = {
   newStatus: null,
   response: null,
   type: () => true,
-  status: newStatus => ({
+  status: (newStatus) => ({
     json: (data) => {
       resMock.newStatus = newStatus
       resMock.response = data

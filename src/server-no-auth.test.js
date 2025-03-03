@@ -46,7 +46,7 @@ const { openAPISpecification } = await openAPI({ file: specFileLocation })
  * @param {Context} context
  * @returns {any}
  */
-function customHandler(context) {
+function customHandler (context) {
   const authHeader = context.request.headers.authorization
   if (!authHeader) {
     throw new Error('Missing authorization header')

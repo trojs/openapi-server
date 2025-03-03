@@ -19,6 +19,6 @@ const errorCodesStatus = [
  * @param {Error} error
  * @returns {number}
  */
-export default error =>
-  errorCodesStatus.find(errorCode => error instanceof errorCode.type)
+export default (error) =>
+  errorCodesStatus.find((errorCode) => error instanceof errorCode.type)
     .status

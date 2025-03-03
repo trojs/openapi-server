@@ -42,7 +42,7 @@ export class Api {
    * @class
    * @param {ApiSchema} params
    */
-  constructor({
+  constructor ({
     version,
     specification,
     controllers,
@@ -74,7 +74,7 @@ export class Api {
     this.customizeAjv = customizeAjv
   }
 
-  setup() {
+  setup () {
     const router = express.Router()
 
     if (this.swagger) {

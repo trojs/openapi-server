@@ -11,13 +11,13 @@ const res = {
     send: null,
     headers: {}
   },
-  set(value) {
+  set (value) {
     this.values.set = value
   },
-  type(value) {
+  type (value) {
     this.values.type = value
   },
-  status(value) {
+  status (value) {
     this.values.status = value
     return {
       send: (value2) => {
@@ -29,14 +29,14 @@ const res = {
       end: () => true
     }
   },
-  json(value) {
+  json (value) {
     this.values.send = value
   },
-  send(value) {
+  send (value) {
     this.values.send = value
   },
   end: () => true,
-  setHeader(key, value) {
+  setHeader (key, value) {
     this.values.headers[key] = value
   }
 }
