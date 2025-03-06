@@ -34,7 +34,7 @@ const getOriginResourcePolicy = (origin) => ({
  */
 
 /**
- * @template T
+ * @template [T=unknown]
  * @typedef {object} Controller
  * @property {Context=} context
  * @property {Request=} request
