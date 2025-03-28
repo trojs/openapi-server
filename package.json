@@ -35,7 +35,7 @@
     "devDependencies": {
         "@trojs/lint": "^0.2.9",
         "@types/node": "^22.0.0",
-        "@types/express-serve-static-core": "^4.17.41",
+        "@types/express-serve-static-core": "^5.0.0",
         "eslint": "^9.15.0",
         "globals": "^16.0.0",
         "jscpd": "^4.0.5",
