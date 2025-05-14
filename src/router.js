@@ -24,6 +24,7 @@ import { unauthorized } from './handlers/unauthorized.js'
  * @param {boolean=} params.strictSpecification
  * @param {boolean=} params.errorDetails
  * @param {Logger=} params.logger
+ * @param {Function=} params.log
  * @param {object=} params.meta
  * @param {SecurityHandler[]=} params.securityHandlers
  * @param {Handler=} params.unauthorizedHandler
@@ -39,6 +40,7 @@ export const setupRouter = ({
   strictSpecification,
   errorDetails,
   logger,
+  log,
   meta,
   securityHandlers = [],
   unauthorizedHandler,
@@ -78,7 +80,8 @@ export const setupRouter = ({
           errorDetails,
           logger,
           meta,
-          mock
+          mock,
+          log
         })
       )
     }
