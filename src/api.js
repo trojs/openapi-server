@@ -30,6 +30,7 @@ import { setupRouter } from './router.js'
  * @property {boolean=} apiDocs
  * @property {AjvOpts=} ajvOptions
  * @property {AjvCustomizer=} customizeAjv
+ * @property {any[]=} middleware
  */
 
 /**
@@ -58,7 +59,8 @@ export class Api {
     swagger,
     apiDocs,
     ajvOptions,
-    customizeAjv
+    customizeAjv,
+    middleware = []
   }) {
     this.version = version
     this.specification = specification
@@ -75,6 +77,7 @@ export class Api {
     this.apiDocs = apiDocs ?? true
     this.ajvOptions = ajvOptions ?? { allErrors: false }
     this.customizeAjv = customizeAjv
+    this.middleware = middleware
   }
 
   setup () {
@@ -108,7 +111,7 @@ export class Api {
       customizeAjv: this.customizeAjv
     })
     api.init()
-
+    this.middleware.forEach((fn) => router.use(fn))
     router.use((request, response) =>
       api.handleRequest(request, request, response)
     )
