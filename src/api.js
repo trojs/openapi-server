@@ -22,7 +22,8 @@ import { setupRouter } from './router.js'
  * @property {boolean=} strictSpecification
  * @property {boolean=} errorDetails
  * @property {Logger=} logger
- * @property {Function=} log
+ * @property {Function=} preLog
+ * @property {Function=} postLog
  * @property {object=} meta
  * @property {SecurityHandler[]=} securityHandlers
  * @property {Handler=} unauthorizedHandler
@@ -52,7 +53,8 @@ export class Api {
     strictSpecification,
     errorDetails,
     logger,
-    log,
+    preLog,
+    postLog,
     meta,
     securityHandlers,
     unauthorizedHandler,
@@ -69,7 +71,8 @@ export class Api {
     this.strictSpecification = strictSpecification
     this.errorDetails = errorDetails || false
     this.logger = logger || console
-    this.log = log || undefined
+    this.preLog = preLog || undefined
+    this.postLog = postLog || undefined
     this.meta = meta || {}
     this.securityHandlers = securityHandlers || []
     this.unauthorizedHandler = unauthorizedHandler || undefined
@@ -103,7 +106,8 @@ export class Api {
       strictSpecification: this.strictSpecification,
       errorDetails: this.errorDetails,
       logger: this.logger,
-      log: this.log,
+      preLog: this.preLog,
+      postLog: this.postLog,
       meta: this.meta,
       securityHandlers: this.securityHandlers,
       unauthorizedHandler: this.unauthorizedHandler,
