@@ -17,11 +17,12 @@ import { parseParams } from './params.js'
  * @param {Logger=} params.logger
  * @param {object=} params.meta
  * @param {boolean=} params.mock
- * @param {Function=} params.log
+ * @param {Function=} params.preLog
+ * @param {Function=} params.postLog
  * @returns {Function}
  */
 export const makeExpressCallback
-    = ({ controller, specification, errorDetails, logger, meta, mock, log }) =>
+    = ({ controller, specification, errorDetails, logger, meta, mock, preLog, postLog }) =>
     /**
      * Handle controller
      * @async
@@ -53,10 +54,13 @@ export const makeExpressCallback
             logger,
             meta
           }
-          if (log) {
-            log(feedback)
+          if (preLog) {
+            preLog(feedback)
           }
           const responseBody = await controller(feedback)
+          if (postLog) {
+            postLog({ ...feedback, responseBody })
+          }
           logger.debug({
             url,
             parameters,

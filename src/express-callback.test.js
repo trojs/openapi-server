@@ -74,15 +74,30 @@ test('Test the express callback', async (t) => {
       test: 'ok'
     })
 
+    const preFeedbackLog = []
+    const postFeedbackLog = []
+    const preFeedback = (args) => {
+      preFeedbackLog.push(args)
+    }
+    const postFeedback = (args) => {
+      postFeedbackLog.push(args)
+    }
+
     const expressCallback = makeExpressCallback({
       controller,
       specification,
       logger,
-      meta
+      meta,
+      preLog: preFeedback,
+      postLog: postFeedback
     })
 
     const result = await expressCallback(context, req, currentRes)
     assert.deepEqual(result, {
+      test: 'ok'
+    })
+    assert.deepEqual(preFeedbackLog[0].context, context)
+    assert.deepEqual(postFeedbackLog[0].responseBody, {
       test: 'ok'
     })
   })
@@ -113,9 +128,13 @@ test('Test the express callback', async (t) => {
     const controller = () => {
       throw new Error('test error')
     }
-    const feedbackLog = []
-    const feedback = (args) => {
-      feedbackLog.push(args)
+    const preFeedbackLog = []
+    const postFeedbackLog = []
+    const preFeedback = (args) => {
+      preFeedbackLog.push(args)
+    }
+    const postFeedback = (args) => {
+      postFeedbackLog.push(args)
     }
 
     const expressCallback = makeExpressCallback({
@@ -124,7 +143,8 @@ test('Test the express callback', async (t) => {
       logger,
       meta,
       errorDetails: true,
-      log: feedback
+      preLog: preFeedback,
+      postLog: postFeedback
     })
 
     const result = await expressCallback(context, req, currentRes)
@@ -132,6 +152,7 @@ test('Test the express callback', async (t) => {
     assert.deepEqual(result.status, 500)
     assert.deepEqual(result.errors[0].message, 'test error')
     assert.deepEqual(result.errors[0].type, 'Error')
-    assert.deepEqual(feedbackLog[0].context, context)
+    assert.deepEqual(preFeedbackLog[0].context, context)
+    assert.deepEqual(postFeedbackLog, [])
   })
 })
