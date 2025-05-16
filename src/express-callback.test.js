@@ -100,6 +100,7 @@ test('Test the express callback', async (t) => {
     assert.deepEqual(postFeedbackLog[0].responseBody, {
       test: 'ok'
     })
+    assert.ok(postFeedbackLog[0].responseTime > 0)
   })
 
   await t.test('It should catch errors', async () => {

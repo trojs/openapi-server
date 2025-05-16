@@ -1,3 +1,4 @@
+import { hrtime } from 'node:process'
 import getStatusByError from './error-status.js'
 import { parseParams } from './params.js'
 
@@ -32,6 +33,7 @@ export const makeExpressCallback
      * @returns {Promise<any>}
      */
       async (context, request, response) => {
+        const startTime = hrtime()
         try {
           const allParameters = {
             ...(context.request?.params || {}),
@@ -58,8 +60,9 @@ export const makeExpressCallback
             preLog(feedback)
           }
           const responseBody = await controller(feedback)
+          const responseTime = hrtime(startTime)[1] / 1000000 // convert to milliseconds
           if (postLog) {
-            postLog({ ...feedback, responseBody })
+            postLog({ ...feedback, responseBody, responseTime })
           }
           logger.debug({
             url,
