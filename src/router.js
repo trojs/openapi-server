@@ -4,7 +4,7 @@ import { makeExpressCallback } from './express-callback.js'
 import { operationIds } from './operation-ids.js'
 import { notFound } from './handlers/not-found.js'
 import { requestValidation } from './handlers/request-validation.js'
-import { responseValidation } from './handlers/response-validation.js'
+import makeResponseValidation from './handlers/response-validation.js'
 import { unauthorized } from './handlers/unauthorized.js'
 
 /**
@@ -61,6 +61,8 @@ export const setupRouter = ({
     ajvOpts: ajvOptions,
     customizeAjv: customizeAjv || ajvWithExtraFormats
   })
+
+  const responseValidation = makeResponseValidation(logger)
 
   api.register({
     unauthorizedHandler: unauthorizedHandler || unauthorized,

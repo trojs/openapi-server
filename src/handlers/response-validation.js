@@ -1,4 +1,4 @@
-export const responseValidation = (context, request, response) => {
+export default (logger) => (context, request, response) => {
   const responseDoesntNeedValidation = response.statusCode >= 400
   if (responseDoesntNeedValidation) {
     return response.json(context.response)
@@ -9,6 +9,15 @@ export const responseValidation = (context, request, response) => {
     context.operation
   )
   if (valid?.errors) {
+    if (logger) {
+      logger.error({
+        message: 'Response validation failed',
+        errors: valid.errors,
+        operation: context.operation,
+        statusCode: response.statusCode,
+        response: context.response
+      })
+    }
     return response.status(502).json({
       errors: valid.errors,
       status: 502,
