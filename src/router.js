@@ -62,13 +62,11 @@ export const setupRouter = ({
     customizeAjv: customizeAjv || ajvWithExtraFormats
   })
 
-  const responseValidation = makeResponseValidation(logger)
-
   api.register({
     unauthorizedHandler: unauthorizedHandler || unauthorized,
     validationFail: requestValidation,
     notFound,
-    postResponseHandler: responseValidation
+    postResponseHandler: makeResponseValidation(logger)
   })
 
   operationIds({ specification: openAPISpecification }).forEach(
