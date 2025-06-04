@@ -26,6 +26,11 @@ const resMock = {
     resMock.response = data
   }
 }
+const logger = {
+  debug: (data) => { },
+  error: (data) => { },
+  info: (data) => { }
+}
 
 test('Test the router', async (t) => {
   await t.test(
@@ -47,7 +52,8 @@ test('Test the router', async (t) => {
             errors: false
           })
           return originalAjv
-        }
+        },
+        logger
       })
       const context = {
         response: {
