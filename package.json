@@ -33,7 +33,7 @@
     ],
     "main": "src/server.js",
     "devDependencies": {
-        "@trojs/lint": "^0.2.9",
+        "@trojs/lint": "^0.3.0",
         "@types/node": "^22.0.0",
         "@types/express-serve-static-core": "^5.0.0",
         "eslint": "^9.15.0",
