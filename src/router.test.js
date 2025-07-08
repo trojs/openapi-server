@@ -8,6 +8,12 @@ const envExample = {
   PORT: 3000
 }
 
+const logger = {
+  debug: (data) => { },
+  error: (data) => { },
+  info: (data) => { }
+}
+
 const resMock = {
   newStatus: null,
   response: null,
@@ -47,7 +53,8 @@ test('Test the router', async (t) => {
             errors: false
           })
           return originalAjv
-        }
+        },
+        logger
       })
       const context = {
         response: {

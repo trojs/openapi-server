@@ -4,7 +4,7 @@ import { makeExpressCallback } from './express-callback.js'
 import { operationIds } from './operation-ids.js'
 import { notFound } from './handlers/not-found.js'
 import { requestValidation } from './handlers/request-validation.js'
-import { responseValidation } from './handlers/response-validation.js'
+import makeResponseValidation from './handlers/response-validation.js'
 import { unauthorized } from './handlers/unauthorized.js'
 
 /**
@@ -43,23 +43,22 @@ export const setupRouter = ({
   customizeAjv,
   mock
 }) => {
-  const ajvWithExtraFormats = (originalAjv) => {
-    addFormats(originalAjv)
-    return originalAjv
-  }
   const api = new OpenAPIBackend({
     definition: openAPISpecification,
     apiRoot,
     strict: strictSpecification,
     ajvOpts: ajvOptions,
-    customizeAjv: customizeAjv || ajvWithExtraFormats
+    customizeAjv: (originalAjv) => {
+      addFormats(originalAjv)
+      return originalAjv
+    }
   })
 
   api.register({
     unauthorizedHandler: unauthorized,
     validationFail: requestValidation,
     notFound,
-    postResponseHandler: responseValidation
+    postResponseHandler: makeResponseValidation(logger)
   })
 
   operationIds({ specification: openAPISpecification }).forEach(

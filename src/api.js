@@ -26,6 +26,7 @@ import { setupRouter } from './router.js'
  * @property {boolean=} swagger
  * @property {boolean=} apiDocs
  * @property {AjvOpts=} ajvOptions
+ * @property {any[]=} middleware
  */
 
 /**
@@ -51,7 +52,8 @@ export class Api {
     securityHandlers,
     swagger,
     apiDocs,
-    ajvOptions
+    ajvOptions,
+    middleware = []
   }) {
     this.version = version
     this.specification = specification
@@ -65,6 +67,7 @@ export class Api {
     this.swagger = swagger ?? true
     this.apiDocs = apiDocs ?? true
     this.ajvOptions = ajvOptions ?? { allErrors: false }
+    this.middleware = middleware
   }
 
   setup () {
@@ -95,6 +98,8 @@ export class Api {
       ajvOptions: this.ajvOptions
     })
     api.init()
+
+    this.middleware.forEach((fn) => router.use(fn))
 
     router.use((request, response) =>
       api.handleRequest(request, request, response)
