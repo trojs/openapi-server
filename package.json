@@ -1,7 +1,7 @@
 {
   "name": "@trojs/openapi-server",
   "description": "OpenAPI Server",
-  "version": "3.1.3",
+  "version": "3.1.4",
   "author": {
     "name": "Pieter Wigboldus",
     "url": "https://trojs.org/"
