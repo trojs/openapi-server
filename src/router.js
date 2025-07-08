@@ -43,16 +43,15 @@ export const setupRouter = ({
   customizeAjv,
   mock
 }) => {
-  const ajvWithExtraFormats = (originalAjv) => {
-    addFormats(originalAjv)
-    return originalAjv
-  }
   const api = new OpenAPIBackend({
     definition: openAPISpecification,
     apiRoot,
     strict: strictSpecification,
     ajvOpts: ajvOptions,
-    customizeAjv: customizeAjv || ajvWithExtraFormats
+    customizeAjv: (originalAjv) => {
+      addFormats(originalAjv)
+      return originalAjv
+    }
   })
 
   api.register({
