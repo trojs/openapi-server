@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import test from 'node:test'
 import assert from 'node:assert'
 import supertest from 'supertest'
@@ -114,7 +115,7 @@ test('Test the server', async (t) => {
       assert.ok(firstResponse.headers['etag'])
 
       // Second request with If-None-Match header
-      const [etag] = firstResponse.headers
+      const etag = firstResponse.headers['etag']
       const secondResponse = await request
         .get('/v1/api-docs')
         .set('If-None-Match', etag)
