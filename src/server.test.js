@@ -89,12 +89,23 @@ const { app } = await setupServer({
 const request = supertest(app)
 
 test('Test the server', async (t) => {
-  await t.test(
-    'It should return status 200 for the specification (/v1/api-docs)',
+   await t.test(
+    'It should return Cache-Control and ETag headers for /v1/api-docs and support 304',
     async () => {
-      const response = await request.get('/v1/api-docs')
+      // First request to get headers
+      const firstResponse = await request.get('/v1/api-docs')
+      assert.strictEqual(firstResponse.status, 200)
+      assert.ok(firstResponse.headers['cache-control'])
+      assert.ok(firstResponse.headers['etag'])
 
-      assert.strictEqual(response.status, 200)
+      // Second request with If-None-Match header
+      const etag = firstResponse.headers['etag']
+      const secondResponse = await request
+        .get('/v1/api-docs')
+        .set('If-None-Match', etag)
+
+      assert.strictEqual(secondResponse.status, 304)
+      assert.strictEqual(secondResponse.text, '')
     }
   )
 
