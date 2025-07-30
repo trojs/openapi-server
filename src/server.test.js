@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import test from 'node:test'
 import assert from 'node:assert'
 import supertest from 'supertest'
@@ -89,7 +90,7 @@ const { app } = await setupServer({
 const request = supertest(app)
 
 test('Test the server', async (t) => {
-   await t.test(
+  await t.test(
     'It should return Cache-Control and ETag headers for /v1/api-docs and support 304',
     async () => {
       // First request to get headers
