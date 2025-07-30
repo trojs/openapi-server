@@ -88,9 +88,13 @@ export class Api {
 
       router.get('/api-docs', (request, response) => {
         // Check for If-None-Match header
-        if (request.headers['if-none-match'] === etag) {
-          response.status(304).end()
-          return
+        const ifNoneMatchHeader = request.headers['if-none-match']
+        if (ifNoneMatchHeader) {
+          const etags = ifNoneMatchHeader.split(',').map((tag) => tag.trim())
+          if (etags.includes('*') || etags.includes(etag)) {
+            response.status(304).end()
+            return
+          }
         }
         response.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate')
         response.setHeader('ETag', etag)
