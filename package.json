@@ -35,7 +35,7 @@
     "main": "src/server.js",
     "devDependencies": {
         "@eslint/js": "^9.15.0",
-        "@trojs/lint": "^0.2.9",
+        "@trojs/lint": "^0.3.4",
         "@types/node": "^22.0.0",
         "@types/express-serve-static-core": "^5.0.6",
         "eslint": "^9.15.0",

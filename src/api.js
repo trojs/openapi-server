@@ -93,10 +93,26 @@ export class Api {
         swaggerUi.setup(this.specification)
       )
     }
+
     if (this.apiDocs) {
-      router.get('/api-docs', (_request, response) =>
+    // Generate an ETag for the specification (simple hash or JSON string)
+      const apiDocsString = JSON.stringify(this.specification)
+      const etag = `"${Buffer.from(apiDocsString).toString('base64')}"`
+
+      router.get('/api-docs', (request, response) => {
+        // Check for If-None-Match header
+        const ifNoneMatchHeader = request.headers['if-none-match']
+        if (ifNoneMatchHeader) {
+          const etags = ifNoneMatchHeader.split(',').map((tag) => tag.trim())
+          if (etags.includes('*') || etags.includes(etag)) {
+            response.status(304).end()
+            return
+          }
+        }
+        response.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate')
+        response.setHeader('ETag', etag)
         response.json(this.specification)
-      )
+      })
     }
 
     const { api } = setupRouter({
