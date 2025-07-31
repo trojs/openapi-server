@@ -1,5 +1,6 @@
 import express from 'express'
 import swaggerUi from 'swagger-ui-express'
+import crypto from 'node:crypto'
 import { setupRouter } from './router.js'
 
 /**
@@ -97,7 +98,7 @@ export class Api {
     if (this.apiDocs) {
     // Generate an ETag for the specification (simple hash or JSON string)
       const apiDocsString = JSON.stringify(this.specification)
-      const etag = `"${Buffer.from(apiDocsString).toString('base64')}"`
+      const etag = `"${crypto.createHash('sha256').update(apiDocsString).digest('base64')}"`
 
       router.get('/api-docs', (request, response) => {
         // Check for If-None-Match header
