@@ -23,7 +23,7 @@ import { parseParams } from './params.js'
  * @returns {Function}
  */
 export const makeExpressCallback
-    = ({ controller, specification, errorDetails, logger, meta, mock, preLog, postLog }) =>
+  = ({ controller, specification, errorDetails, logger, meta, mock, preLog, postLog }) =>
     /**
      * Handle controller
      * @async
@@ -32,76 +32,76 @@ export const makeExpressCallback
      * @param {Response} response
      * @returns {Promise<any>}
      */
-      async (context, request, response) => {
-        const startTime = hrtime()
-        try {
-          const allParameters = {
-            ...(context.request?.params || {}),
-            ...(context.request?.query || {})
-          }
-          const parameters = parseParams({
-            query: allParameters,
-            spec: context.operation.parameters,
-            mock
-          })
-          const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
-          const feedback = {
-            context,
-            request,
-            response,
-            parameters,
-            specification,
-            post: request.body,
-            url,
-            logger,
-            meta
-          }
-          if (preLog) {
-            preLog(feedback)
-          }
-          const responseBody = await controller(feedback)
-          const responseTime = hrtime(startTime)[1] / 1000000 // convert to milliseconds
-          if (postLog) {
-            postLog({ ...feedback, responseBody, responseTime })
-          }
-          logger.debug({
-            url,
-            parameters,
-            post: request.body,
-            response: responseBody
-          })
+    async (context, request, response) => {
+      const startTime = hrtime()
+      try {
+        const allParameters = {
+          ...(context.request?.params || {}),
+          ...(context.request?.query || {})
+        }
+        const parameters = parseParams({
+          query: allParameters,
+          spec: context.operation.parameters,
+          mock
+        })
+        const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
+        const feedback = {
+          context,
+          request,
+          response,
+          parameters,
+          specification,
+          post: request.body,
+          url,
+          logger,
+          meta
+        }
+        if (preLog) {
+          preLog(feedback)
+        }
+        const responseBody = await controller(feedback)
+        const responseTime = hrtime(startTime)[1] / 1000000 // convert to milliseconds
+        if (postLog) {
+          postLog({ ...feedback, responseBody, responseTime })
+        }
+        logger.debug({
+          url,
+          parameters,
+          post: request.body,
+          response: responseBody
+        })
 
-          return responseBody
-        } catch (error) {
-          const errorCodeStatus = getStatusByError(error)
+        return responseBody
+      } catch (error) {
+        const errorCodeStatus = getStatusByError(error)
 
-          if (errorCodeStatus >= 500) {
-            logger.error(error)
-          } else {
-            logger.warn(error)
-          }
+        if (errorCodeStatus >= 500) {
+          logger.error(error)
+        } else {
+          logger.warn(error)
+        }
 
-          response.status(errorCodeStatus)
+        response.status(errorCodeStatus)
 
-          if (errorDetails) {
-            return {
-              errors: [
-                {
-                  message: error.message,
-                  value: error.valueOf(),
-                  type: error.constructor.name
-                }
-              ],
-              status: errorCodeStatus,
-              timestamp: new Date(),
-              message: error.message
-            }
-          }
-
+        if (errorDetails) {
           return {
+            errors: [
+              {
+                message: error.message,
+                value: error.valueOf(),
+                type: error.constructor.name
+              }
+            ],
             status: errorCodeStatus,
             timestamp: new Date(),
             message: error.message
           }
         }
+
+        return {
+          status: errorCodeStatus,
+          timestamp: new Date(),
+          message: error.message
+        }
       }
+    }
