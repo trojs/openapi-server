@@ -19,6 +19,7 @@
         "prepublishOnly": "npm run build:types"
     },
     "type": "module",
+    "types": "types/server.d.ts",
     "files": [
         "src/api.js",
         "src/openapi.js",
@@ -32,7 +33,8 @@
         "src/handlers/not-found.js",
         "src/handlers/request-validation.js",
         "src/handlers/response-validation.js",
-        "src/handlers/unauthorized.js"
+        "src/handlers/unauthorized.js",
+        "types/**"
     ],
     "main": "src/server.js",
     "devDependencies": {

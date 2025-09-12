@@ -5,7 +5,6 @@
         "outDir": "./types",
         "module": "nodenext",
         "target": "esnext",
-        "types": [],
         "allowJs": true,
         "sourceMap": true,
         "declaration": true,
