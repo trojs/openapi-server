@@ -18,6 +18,9 @@ jobs:
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+        contents: read
+        id-token: write
     steps:
       - uses: actions/checkout@v5
         with:
@@ -53,10 +56,13 @@ jobs:
           git reset --hard "refs/tags/${TAG}" # Ensure code matches the tag
           git pull origin ${{ steps.get_branch.outputs.branch }}
           npm version $TAG --no-git-tag-version
-          git add package.json package-lock.json
+          jq '.version = "'$TAG'"' jsr.json > jsr.json.tmp && mv jsr.json.tmp jsr.json
+          jq '.version = "'$TAG'"' deno.json > deno.json.tmp && mv deno.json.tmp deno.json
+          git add package.json package-lock.json jsr.json deno.json
           git commit -m "ci: set version to $TAG [skip ci]" || true
           git push origin ${{ steps.get_branch.outputs.branch }}
       - run: npm run build --if-present
       - run: npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
+            NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
+      - run: npx jsr publish

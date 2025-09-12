@@ -1,3 +1,4 @@
+/* @ts-self-types="../types/server.d.ts" */
 import express from 'express'
 import cors from 'cors'
 import compression from 'compression'
@@ -28,8 +29,8 @@ const getOriginResourcePolicy = (origin) => ({
  * @typedef {import('express-serve-static-core').Request} Request
  * @typedef {import('express-serve-static-core').Response} Response
  * @typedef {import('openapi-backend').Context} Context
- * @typedef {import('./api.js').ApiSchema} ApiSchema
- * @typedef {import('./api.js').Logger} Logger
+ * @typedef {import('../src/api.js').ApiSchema} ApiSchema
+ * @typedef {import('../src/api.js').Logger} Logger
  * @typedef {import('express').Express} Express
  * @typedef {import('@sentry/types').Integration} Integration
  */
@@ -69,9 +70,9 @@ const getOriginResourcePolicy = (origin) => ({
  * @param {string=} params.version
  * @param {any[]=} params.middleware
  * @param {string|number=} params.maximumBodySize
- * @returns {Promise<{ app: Express }>}
+ * @returns {{ app: Express }}
  */
-export const setupServer = async ({
+export const setupServer = ({
   apis,
   origin = '*',
   staticFolder,

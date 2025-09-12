@@ -1,3 +1,4 @@
+/* @ts-self-types="../types/error-status.d.ts" */
 const errorCodesStatus = [
   {
     type: TypeError,

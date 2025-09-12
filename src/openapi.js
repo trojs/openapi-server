@@ -1,3 +1,4 @@
+/* @ts-self-types="../types/openapi.d.ts" */
 import { readFile } from 'node:fs/promises'
 
 /**

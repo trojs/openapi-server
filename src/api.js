@@ -1,5 +1,7 @@
+/* @ts-self-types="../types/api.d.ts" */
 import express from 'express'
 import swaggerUi from 'swagger-ui-express'
+import { Buffer } from 'node:buffer'
 import { setupRouter } from './router.js'
 
 /**
