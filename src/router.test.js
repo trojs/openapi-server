@@ -9,9 +9,9 @@ const envExample = {
 }
 
 const logger = {
-  debug: (data) => { },
-  error: (data) => { },
-  info: (data) => { }
+  debug: (_data) => { },
+  error: (_data) => { },
+  info: (_data) => { }
 }
 
 const resMock = {
@@ -36,7 +36,7 @@ const resMock = {
 test('Test the router', async (t) => {
   await t.test(
     'It should response with a nice message if the response is invalid',
-    async () => {
+    () => {
       const controllers = {
         getMessages: () => ({
           test: 'ok'
@@ -49,7 +49,7 @@ test('Test the router', async (t) => {
         controllers,
         customizeAjv: (originalAjv) => {
           originalAjv.addKeyword('example', {
-            validate: (schema, data) => data === 'example',
+            validate: (_schema, data) => data === 'example',
             errors: false
           })
           return originalAjv

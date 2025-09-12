@@ -1,3 +1,4 @@
+/* @ts-self-types="../../types/handlers/response-validation.d.ts" */
 export default (logger) => (context, request, response) => {
   const responseDoesntNeedValidation = response.statusCode >= 400
   if (responseDoesntNeedValidation) {

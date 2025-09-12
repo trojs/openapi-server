@@ -4,6 +4,7 @@
         "rootDir": "./src",
         "outDir": "./types",
         "module": "nodenext",
+        "moduleResolution": "nodenext",
         "target": "esnext",
         "allowJs": true,
         "sourceMap": true,
@@ -17,8 +18,26 @@
         "isolatedModules": true,
         "noUncheckedSideEffectImports": true,
         "moduleDetection": "force",
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "lib": [
+            "ESNext"
+        ],
+        "rootDirs": [
+            "src"
+        ],
+        "baseUrl": ".",
+        "resolveJsonModule": true,
+        "types": [
+            "node"
+        ],
+        "esModuleInterop": true,
     },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "**/*.test.js", "**/__fixtures__/**"]
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.test.js",
+        "**/__fixtures__/**"
+    ]
 }

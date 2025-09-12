@@ -1,0 +1,6 @@
+{
+    "name": "@trojs/openapi-server",
+    "version": "3.4.1",
+    "license": "MIT",
+    "exports": "./src/server.js"
+}

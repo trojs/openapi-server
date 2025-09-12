@@ -12,10 +12,22 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 22
-          cache: "npm"
+          cache: 'npm'
+
       - name: npm lint
         run: |
           npm ci
           npm run lint
+          npm run lint:types
         env:
           CI: true
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Deno lint
+        run: deno lint
+      - name: Deno check
+        run: deno task check
