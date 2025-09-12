@@ -59,19 +59,22 @@ const getOriginResourcePolicy = (origin) => ({
  */
 
 /**
- * Setup the server
- * @async
- * @param {object} params
- * @param {ApiSchema[]} params.apis
- * @param {string=} params.origin
- * @param {string=} params.staticFolder
- * @param {SentryConfig=} params.sentry
- * @param {string=} params.poweredBy
  * @param {string=} params.version
- * @param {any[]=} params.middleware
- * @param {string|number=} params.maximumBodySize
- * @returns {{ app: Express }}
+ * @typedef {import('../src/api.js').ApiSchema} ApiSchema
+ * @typedef {import('express').Express} Express
+ * @typedef {object} SetupServerParams
+ * @property {ApiSchema[]} apis
+ * @property {string=} origin
+ * @property {string=} staticFolder
+ * @property {SentryConfig=} sentry
+ * @property {string=} poweredBy
+ * @property {string=} version
+ * @property {any[]=} middleware
+ * @property {string|number=} maximumBodySize
  */
+
+/** @type {(params: SetupServerParams) => { app: Express }} */
+
 export const setupServer = ({
   apis,
   origin = '*',
