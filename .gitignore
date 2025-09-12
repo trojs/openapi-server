@@ -132,3 +132,6 @@ dist
 # Linting report
 report.json
 report/
+
+# Generated Type declarations
+types/
