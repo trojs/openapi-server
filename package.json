@@ -13,9 +13,12 @@
     "lint:fix": "eslint --fix",
     "test": "node --test --experimental-test-coverage --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=./coverage/lcov.info",
     "cpd": "node_modules/jscpd/bin/jscpd src",
-    "vulnerabilities": "npm audit --omit=dev"
+    "vulnerabilities": "npm audit --omit=dev",
+    "build:types": "tsc",
+    "prepublishOnly": "rm -rf types && npm run build:types"
   },
   "type": "module",
+  "types": "types/server.d.ts",
   "files": [
     "src/api.js",
     "src/openapi.js",
@@ -29,7 +32,8 @@
     "src/handlers/not-found.js",
     "src/handlers/request-validation.js",
     "src/handlers/response-validation.js",
-    "src/handlers/unauthorized.js"
+    "src/handlers/unauthorized.js",
+    "types/**"
   ],
   "main": "src/server.js",
   "devDependencies": {
@@ -40,7 +44,8 @@
     "globals": "^16.0.0",
     "jscpd": "^4.0.5",
     "prettier": "^3.3.3",
-    "supertest": "^7.0.0"
+    "supertest": "^7.0.0",
+    "typescript": "^5.9.2"
   },
   "repository": {
     "type": "git",
