@@ -25,9 +25,9 @@ const TestCases = [
     expectedResult: 400
   },
   {
-    description: 'A syntax error should return status 500',
+    description: 'A syntax error should return status 400',
     error: new SyntaxError('test'),
-    expectedResult: 500
+    expectedResult: 400
   },
   {
     description: 'An unknown non-error object should return fallback status 500',
