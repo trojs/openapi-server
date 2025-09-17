@@ -1,6 +1,7 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import test from 'node:test'
 import assert from 'node:assert'
+import { AppError } from '@trojs/error'
 import { makeExpressCallback } from './express-callback.js'
 
 const res = {
@@ -130,6 +131,71 @@ test('Test the express callback', async (t) => {
       const error = new Error('test error')
       error.status = 418
       error.errors = [{ test: 'detail' }]
+      throw error
+    }
+
+    const expressCallback = makeExpressCallback({
+      controller,
+      specification,
+      logger,
+      meta
+    })
+
+    const result = await expressCallback(context, req, currentRes)
+    assert.deepEqual(result.message, 'test error')
+    assert.deepEqual(result.status, 418)
+    assert.deepEqual(result.errors, [{ test: 'detail' }])
+  })
+
+  await t.test('It should handle a custom error', async () => {
+    const currentRes = { ...res, values: { ...res.values } }
+
+    const controller = () => {
+      const error = new AppError({ message: 'test error' })
+      throw error
+    }
+
+    const expressCallback = makeExpressCallback({
+      controller,
+      specification,
+      logger,
+      meta
+    })
+
+    const result = await expressCallback(context, req, currentRes)
+    assert.deepEqual(result.message, 'test error')
+    assert.deepEqual(result.status, 500)
+    assert.deepEqual(result.errors, undefined)
+  })
+
+  await t.test('It should get the errors object from the value of a custom error object', async () => {
+    const currentRes = { ...res, values: { ...res.values } }
+
+    const controller = () => {
+      const error = new AppError({ message: 'test error', value: { errors: [{ test: 'detail' }] } })
+      throw error
+    }
+
+    const expressCallback = makeExpressCallback({
+      controller,
+      specification,
+      logger,
+      meta
+    })
+
+    const result = await expressCallback(context, req, currentRes)
+    assert.deepEqual(result.message, 'test error')
+    assert.deepEqual(result.status, 500)
+    assert.deepEqual(result.errors, [{ test: 'detail' }])
+  })
+
+  await t.test('It should return the errors object from the error', async () => {
+    const currentRes = { ...res, values: { ...res.values } }
+
+    const controller = () => {
+      const error = new Error('test error')
+      error.status = 418
+      error.value = { errors: [{ test: 'detail' }] }
       throw error
     }
 
