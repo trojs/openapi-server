@@ -12,10 +12,6 @@ const errorCodesStatus = [
     status: 404
   },
   {
-    type: EvalError,
-    status: 400
-  },
-  {
     type: SyntaxError,
     status: 400
   },

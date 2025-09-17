@@ -30,11 +30,6 @@ const TestCases = [
     expectedResult: 400
   },
   {
-    description: 'A eval error should return status 400',
-    error: new EvalError('test'),
-    expectedResult: 400
-  },
-  {
     description: 'An unknown non-error object should return fallback status 500',
     error: { foo: 'bar', message: 'test' },
     expectedResult: 500
