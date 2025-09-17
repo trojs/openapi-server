@@ -123,6 +123,29 @@ test('Test the express callback', async (t) => {
     assert.deepEqual(result.errors, undefined)
   })
 
+  await t.test('It should return also the errors object', async () => {
+    const currentRes = { ...res, values: { ...res.values } }
+
+    const controller = () => {
+      const error = new Error('test error')
+      error.status = 418
+      error.errors = [{ test: 'detail' }]
+      throw error
+    }
+
+    const expressCallback = makeExpressCallback({
+      controller,
+      specification,
+      logger,
+      meta
+    })
+
+    const result = await expressCallback(context, req, currentRes)
+    assert.deepEqual(result.message, 'test error')
+    assert.deepEqual(result.status, 418)
+    assert.deepEqual(result.errors, [{ test: 'detail' }])
+  })
+
   await t.test('It should catch errors and return more details', async () => {
     const currentRes = { ...res, values: { ...res.values } }
 

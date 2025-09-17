@@ -99,6 +99,7 @@ export const makeExpressCallback
         }
 
         return {
+          errors: error.errors,
           status: errorCodeStatus,
           timestamp: new Date(),
           message: error.message
