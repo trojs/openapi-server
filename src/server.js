@@ -4,6 +4,7 @@ import compression from 'compression'
 import helmet from 'helmet'
 import * as Sentry from '@sentry/node'
 import bodyParser from 'body-parser'
+import { hostname } from 'node:os'
 import { openAPI } from './openapi.js'
 import { Api } from './api.js'
 
@@ -98,7 +99,7 @@ export const setupServer = async ({
       tracesSampleRate: sentry.tracesSampleRate || 1.0,
       profilesSampleRate: sentry.profilesSampleRate || 1.0,
       release: sentry.release || process.env.SOURCE_VERSION,
-      serverName: sentry.serverName || process.env.SERVER_NAME
+      serverName: sentry.serverName || process.env.SERVER_NAME || hostname()
     })
 
     app.use(Sentry.Handlers.requestHandler())
