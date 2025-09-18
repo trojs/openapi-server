@@ -53,6 +53,8 @@ const getOriginResourcePolicy = (origin) => ({
  * @property {number=} tracesSampleRate
  * @property {number=} profilesSampleRate
  * @property {string=} release
+ * @property {string=} environment
+ * @property {string=} serverName
  */
 
 /**
@@ -88,13 +90,15 @@ export const setupServer = async ({
   if (sentry) {
     Sentry.init({
       dsn: sentry.dsn,
+      environment: sentry.environment || process.env.NODE_ENV || 'production',
       integrations: [
         new Sentry.Integrations.Http({ tracing: true }),
         new Sentry.Integrations.Express({ app })
       ],
       tracesSampleRate: sentry.tracesSampleRate || 1.0,
       profilesSampleRate: sentry.profilesSampleRate || 1.0,
-      release: sentry.release
+      release: sentry.release || process.env.SOURCE_VERSION,
+      serverName: sentry.serverName || process.env.SERVER_NAME
     })
 
     app.use(Sentry.Handlers.requestHandler())
