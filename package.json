@@ -38,7 +38,7 @@
   "main": "src/server.js",
   "devDependencies": {
     "@trojs/lint": "^0.3.0",
-    "@types/node": "^22.0.0",
+    "@types/node": "^24.0.0",
     "@types/express-serve-static-core": "^5.0.0",
     "eslint": "^9.15.0",
     "globals": "^16.0.0",
@@ -52,7 +52,7 @@
     "url": "https://github.com/trojs/openapi-server"
   },
   "engines": {
-    "node": ">= 20 < 21 || >= 22 < 23"
+    "node": ">= 20 < 21 || >= 22 < 25"
   },
   "keywords": [
     "openapi",
