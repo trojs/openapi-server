@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { hrtime } from 'node:process'
 import getStatusByError from './error-status.js'
 import { parseParams } from './params.js'
@@ -45,6 +46,14 @@ export const makeExpressCallback
           mock
         })
         const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
+
+        const ipHeader = request.headers?.['x-forwarded-for']
+        const ip = Array.isArray(ipHeader)
+          ? ipHeader[0]
+          : (ipHeader?.split(',')[0].trim() || request.socket?.remoteAddress || request.ip || '-')
+        const { method } = request
+        const userAgent = request.get('user-agent') || '-'
+
         const feedback = {
           context,
           request,
@@ -68,7 +77,13 @@ export const makeExpressCallback
           url,
           parameters,
           post: request.body,
-          response: responseBody
+          response: responseBody,
+          method,
+          ip,
+          userAgent,
+          responseTime,
+          statusCode: response.statusCode || 200,
+          message: 'access'
         })
 
         return responseBody
