@@ -48,9 +48,10 @@ export const makeExpressCallback
         const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
 
         const ipHeader = request.headers?.['x-forwarded-for']
-        const ip = Array.isArray(ipHeader)
-          ? ipHeader[0]
-          : (ipHeader?.split(',')[0].trim() || request.socket?.remoteAddress || request.ip || '-')
+        const ipString = Array.isArray(ipHeader) ? ipHeader[0] : ipHeader;
+        const ip = ipString
+          ? ipString.split(',')[0].trim()
+          : (request.socket?.remoteAddress || request.ip || '-');
         const { method } = request
         const userAgent = request.get('user-agent') || '-'
 
