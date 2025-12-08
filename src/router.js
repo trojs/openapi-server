@@ -82,7 +82,7 @@ export const setupRouter = ({
 
   api.register('notImplemented', (context) => {
     const { mock: mockImplementation }
-            = context.api.mockResponseForOperation(context.operation.operationId)
+      = context.api.mockResponseForOperation(context.operation.operationId)
     return mockImplementation
   })
 

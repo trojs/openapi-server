@@ -20,7 +20,7 @@ import { parseParams } from './params.js'
  * @returns {Function}
  */
 export const makeExpressCallback
-    = ({ controller, specification, errorDetails, logger, meta, mock }) =>
+  = ({ controller, specification, errorDetails, logger, meta, mock }) =>
     /**
      * Handle controller
      * @async
@@ -29,68 +29,68 @@ export const makeExpressCallback
      * @param {Response} response
      * @returns {Promise<any>}
      */
-      async (context, request, response) => {
-        try {
-          const allParameters = {
-            ...(context.request?.params || {}),
-            ...(context.request?.query || {})
-          }
-          const parameters = parseParams({
-            query: allParameters,
-            spec: context.operation.parameters,
-            mock
-          })
-          const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
+    async (context, request, response) => {
+      try {
+        const allParameters = {
+          ...(context.request?.params || {}),
+          ...(context.request?.query || {})
+        }
+        const parameters = parseParams({
+          query: allParameters,
+          spec: context.operation.parameters,
+          mock
+        })
+        const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
 
-          const responseBody = await controller({
-            context,
-            request,
-            response,
-            parameters,
-            specification,
-            post: request.body,
-            url,
-            logger,
-            meta
-          })
-          logger.debug({
-            url,
-            parameters,
-            post: request.body,
-            response: responseBody
-          })
+        const responseBody = await controller({
+          context,
+          request,
+          response,
+          parameters,
+          specification,
+          post: request.body,
+          url,
+          logger,
+          meta
+        })
+        logger.debug({
+          url,
+          parameters,
+          post: request.body,
+          response: responseBody
+        })
 
-          return responseBody
-        } catch (error) {
-          const errorCodeStatus = getStatusByError(error)
+        return responseBody
+      } catch (error) {
+        const errorCodeStatus = getStatusByError(error)
 
-          if (errorCodeStatus >= 500) {
-            logger.error(error)
-          } else {
-            logger.warn(error)
-          }
+        if (errorCodeStatus >= 500) {
+          logger.error(error)
+        } else {
+          logger.warn(error)
+        }
 
-          response.status(errorCodeStatus)
+        response.status(errorCodeStatus)
 
-          if (errorDetails) {
-            return {
-              errors: [
-                {
-                  message: error.message,
-                  value: error.valueOf(),
-                  type: error.constructor.name
-                }
-              ],
-              status: errorCodeStatus,
-              timestamp: new Date(),
-              message: error.message
-            }
-          }
-
+        if (errorDetails) {
           return {
+            errors: [
+              {
+                message: error.message,
+                value: error.valueOf(),
+                type: error.constructor.name
+              }
+            ],
             status: errorCodeStatus,
             timestamp: new Date(),
             message: error.message
           }
         }
+
+        return {
+          status: errorCodeStatus,
+          timestamp: new Date(),
+          message: error.message
+        }
       }
+    }
