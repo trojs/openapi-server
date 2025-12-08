@@ -39,10 +39,10 @@
     "main": "src/server.js",
     "devDependencies": {
         "@eslint/js": "^9.15.0",
-        "@trojs/error": "^4.3.6",
-        "@trojs/lint": "^0.3.4",
+        "@trojs/error": "^5.0.0",
+        "@trojs/lint": "^0.4.1",
         "@types/express-serve-static-core": "^5.0.6",
-        "@types/node": "^22.0.0",
+        "@types/node": "^24.0.0",
         "eslint": "^9.15.0",
         "globals": "^16.0.0",
         "jscpd": "^4.0.5",
