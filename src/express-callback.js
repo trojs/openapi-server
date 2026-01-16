@@ -1,4 +1,5 @@
 /* @ts-self-types="../types/express-callback.d.ts" */
+import { hrtime } from 'node:process'
 import getStatusByError from './error-status.js'
 import { parseParams } from './params.js'
 
@@ -31,6 +32,7 @@ export const makeExpressCallback
      * @returns {Promise<any>}
      */
     async (context, request, response) => {
+      const startTime = hrtime()
       try {
         const allParameters = {
           ...(context.request?.params || {}),
@@ -43,7 +45,15 @@ export const makeExpressCallback
         })
         const url = `${request.protocol}://${request.get('Host')}${request.originalUrl}`
 
-        const responseBody = await controller({
+        const ipHeader = request.headers?.['x-forwarded-for']
+        const ipString = Array.isArray(ipHeader) ? ipHeader[0] : ipHeader
+        const ip = ipString
+          ? ipString.split(',')[0].trim()
+          : (request.socket?.remoteAddress || request.ip || '-')
+        const { method } = request
+        const userAgent = request.headers?.['user-agent'] || request.get('user-agent') || '-'
+
+        const feedback = {
           context,
           request,
           response,
@@ -53,12 +63,22 @@ export const makeExpressCallback
           url,
           logger,
           meta
-        })
+        }
+
+        const responseBody = await controller(feedback)
+        const responseTime = hrtime(startTime)[1] / 1000000 // convert to milliseconds
+
         logger.debug({
           url,
           parameters,
           post: request.body,
-          response: responseBody
+          response: responseBody,
+          method,
+          ip,
+          userAgent,
+          responseTime,
+          statusCode: response.statusCode || 200,
+          message: 'access'
         })
 
         return responseBody
@@ -89,6 +109,7 @@ export const makeExpressCallback
         }
 
         return {
+          errors: error.errors || error.value?.errors,
           status: errorCodeStatus,
           timestamp: new Date(),
           message: error.message
