@@ -6,6 +6,7 @@ import helmet from 'helmet'
 import * as Sentry from '@sentry/node'
 import bodyParser from 'body-parser'
 import { hostname } from 'node:os'
+import process from 'node:process'
 import { openAPI } from './openapi.js'
 import { Api } from './api.js'
 
