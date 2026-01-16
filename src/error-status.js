@@ -1,3 +1,7 @@
+/**
+ * @typedef {Error & { status?: number }} StatusError
+ */
+
 const errorCodesStatus = [
   {
     type: TypeError,
@@ -8,6 +12,10 @@ const errorCodesStatus = [
     status: 404
   },
   {
+    type: SyntaxError,
+    status: 400
+  },
+  {
     type: Error,
     status: 500
   }
@@ -16,9 +24,10 @@ const errorCodesStatus = [
 /**
  * Get a http status when you send an error.
  * When it is a error, throw back the error.
- * @param {Error} error
+ * @param {StatusError} error
  * @returns {number}
  */
 export default (error) =>
-  errorCodesStatus.find((errorCode) => error instanceof errorCode.type)
-    .status
+  error.status
+  || errorCodesStatus.find((errorCode) => error instanceof errorCode.type)?.status
+  || 500

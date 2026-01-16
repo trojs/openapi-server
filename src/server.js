@@ -4,6 +4,7 @@ import compression from 'compression'
 import helmet from 'helmet'
 import * as Sentry from '@sentry/node'
 import bodyParser from 'body-parser'
+import { hostname } from 'node:os'
 import { openAPI } from './openapi.js'
 import { Api } from './api.js'
 
@@ -35,7 +36,7 @@ const getOriginResourcePolicy = (origin) => ({
  */
 
 /**
- * @template {object} [T=object]
+ * @template [T=unknown]
  * @typedef {object} Controller
  * @property {Context=} context
  * @property {Request=} request
@@ -54,7 +55,8 @@ const getOriginResourcePolicy = (origin) => ({
  * @property {number=} tracesSampleRate
  * @property {number=} profilesSampleRate
  * @property {string=} release
- * @property {Integration[]=} integrations
+ * @property {string=} environment
+ * @property {string=} serverName
  */
 
 /**
@@ -90,10 +92,11 @@ export const setupServer = async ({
   if (sentry) {
     Sentry.init({
       dsn: sentry.dsn,
+      environment: sentry.environment || process.env.NODE_ENV || 'production',
       tracesSampleRate: sentry.tracesSampleRate || 1.0,
       profilesSampleRate: sentry.profilesSampleRate || 1.0,
-      integrations: sentry.integrations || [],
-      release: sentry.release
+      release: sentry.release || process.env.SOURCE_VERSION,
+      serverName: sentry.serverName || process.env.SERVER_NAME || hostname()
     })
   }
 

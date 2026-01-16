@@ -8,7 +8,7 @@ export default (logger) => (context, request, response) => {
     context.response,
     context.operation
   )
-  if (valid && valid.errors) {
+  if (valid?.errors) {
     if (logger) {
       logger.error({
         message: 'Response validation failed',
