@@ -1,10 +1,12 @@
 import express from 'express'
 import swaggerUi from 'swagger-ui-express'
+import crypto from 'node:crypto'
 import { setupRouter } from './router.js'
 
 /**
  * @typedef {import('openapi-backend').Handler} Handler
  * @typedef {import('ajv').Options} AjvOpts
+ * @typedef {import('openapi-backend').AjvCustomizer} AjvCustomizer
  * @typedef {object} Logger
  * @property {Function} error
  * @property {Function} warn
@@ -23,9 +25,11 @@ import { setupRouter } from './router.js'
  * @property {Logger=} logger
  * @property {object=} meta
  * @property {SecurityHandler[]=} securityHandlers
+ * @property {Handler=} unauthorizedHandler
  * @property {boolean=} swagger
  * @property {boolean=} apiDocs
  * @property {AjvOpts=} ajvOptions
+ * @property {AjvCustomizer=} customizeAjv
  * @property {any[]=} middleware
  */
 
@@ -50,9 +54,11 @@ export class Api {
     logger,
     meta,
     securityHandlers,
+    unauthorizedHandler,
     swagger,
     apiDocs,
     ajvOptions,
+    customizeAjv,
     middleware = []
   }) {
     this.version = version
@@ -64,9 +70,11 @@ export class Api {
     this.logger = logger || console
     this.meta = meta || {}
     this.securityHandlers = securityHandlers || []
+    this.unauthorizedHandler = unauthorizedHandler || undefined
     this.swagger = swagger ?? true
     this.apiDocs = apiDocs ?? true
     this.ajvOptions = ajvOptions ?? { allErrors: false }
+    this.customizeAjv = customizeAjv
     this.middleware = middleware
   }
 
@@ -84,7 +92,7 @@ export class Api {
     if (this.apiDocs) {
     // Generate an ETag for the specification (simple hash or JSON string)
       const apiDocsString = JSON.stringify(this.specification)
-      const etag = `"${Buffer.from(apiDocsString).toString('base64')}"`
+      const etag = `"${crypto.createHash('sha256').update(apiDocsString).digest('base64')}"`
 
       router.get('/api-docs', (request, response) => {
         // Check for If-None-Match header
@@ -111,7 +119,9 @@ export class Api {
       logger: this.logger,
       meta: this.meta,
       securityHandlers: this.securityHandlers,
-      ajvOptions: this.ajvOptions
+      unauthorizedHandler: this.unauthorizedHandler,
+      ajvOptions: this.ajvOptions,
+      customizeAjv: this.customizeAjv
     })
     api.init()
 
