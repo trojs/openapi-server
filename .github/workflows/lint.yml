@@ -22,9 +22,9 @@ jobs:
           CI: true
 
       - name: Install Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2
         with:
-          deno-version: v1.x
+          deno-version: v2.x
 
       - name: Deno lint
         run: deno lint
