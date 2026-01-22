@@ -78,6 +78,7 @@
     "semver@<=7.5.3": "^7.5.3",
     "send@<=0.19.0": "^0.19.0",
     "cookie@<=0.7.0": "0.7.0",
-    "@apidevtools/json-schema-ref-parser@<=14.0.0": "14.0.0"
+    "@apidevtools/json-schema-ref-parser@<=14.0.0": "14.0.0",
+    "lodash@<=4.17.23": "4.17.23"
   }
 }
