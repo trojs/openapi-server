@@ -17,5 +17,16 @@ jobs:
         run: |
           npm ci
           npm run lint
+          npm run lint:types
         env:
           CI: true
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Deno lint
+        run: deno lint
+      - name: Deno check
+        run: deno task check
