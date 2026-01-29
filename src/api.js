@@ -1,3 +1,4 @@
+/* @ts-self-types="../types/api.d.ts" */
 import express from 'express'
 import swaggerUi from 'swagger-ui-express'
 import crypto from 'node:crypto'

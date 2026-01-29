@@ -1,3 +1,4 @@
+/* @ts-self-types="../types/params.d.ts" */
 import { types } from './types.js'
 
 /**
