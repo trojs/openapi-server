@@ -28,6 +28,7 @@ import { setupRouter } from './router.js'
  * @property {Handler=} unauthorizedHandler
  * @property {boolean=} swagger
  * @property {boolean=} apiDocs
+ * @property {boolean=} validateResponse
  * @property {AjvOpts=} ajvOptions
  * @property {AjvCustomizer=} customizeAjv
  * @property {any[]=} middleware
@@ -57,6 +58,7 @@ export class Api {
     unauthorizedHandler,
     swagger,
     apiDocs,
+    validateResponse,
     ajvOptions,
     customizeAjv,
     middleware = []
@@ -73,6 +75,7 @@ export class Api {
     this.unauthorizedHandler = unauthorizedHandler || undefined
     this.swagger = swagger ?? true
     this.apiDocs = apiDocs ?? true
+    this.validateResponse = validateResponse ?? true
     this.ajvOptions = ajvOptions ?? { allErrors: false }
     this.customizeAjv = customizeAjv
     this.middleware = middleware
@@ -120,6 +123,7 @@ export class Api {
       meta: this.meta,
       securityHandlers: this.securityHandlers,
       unauthorizedHandler: this.unauthorizedHandler,
+      validateResponse: this.validateResponse,
       ajvOptions: this.ajvOptions,
       customizeAjv: this.customizeAjv
     })

@@ -27,6 +27,7 @@ import { unauthorized } from './handlers/unauthorized.js'
  * @param {object=} params.meta
  * @param {SecurityHandler[]=} params.securityHandlers
  * @param {Handler=} params.unauthorizedHandler
+ * @param {boolean=} params.validateResponse
  * @param {AjvOpts=} params.ajvOptions
  * @param {AjvCustomizer=} params.customizeAjv
  * @param {boolean=} params.mock
@@ -42,6 +43,7 @@ export const setupRouter = ({
   meta,
   securityHandlers = [],
   unauthorizedHandler,
+  validateResponse = true,
   ajvOptions = {},
   customizeAjv,
   mock
@@ -58,12 +60,17 @@ export const setupRouter = ({
     customizeAjv: customizeAjv || ajvWithExtraFormats
   })
 
-  api.register({
+  const handlers = {
     unauthorizedHandler: unauthorizedHandler || unauthorized,
     validationFail: requestValidation,
-    notFound,
-    postResponseHandler: makeResponseValidation(logger)
-  })
+    notFound
+  }
+
+  if (validateResponse) {
+    handlers.postResponseHandler = makeResponseValidation(logger)
+  }
+
+  api.register(handlers)
 
   operationIds({ specification: openAPISpecification }).forEach(
     (operationId) => {
