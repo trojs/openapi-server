@@ -90,4 +90,68 @@ test('Test the router', async (t) => {
       )
     }
   )
+
+  await t.test(
+    'It should not register postResponseHandler when validateResponse is false',
+    async () => {
+      const controllers = {
+        getMessages: () => ({
+          test: 'ok'
+        })
+      }
+
+      const { api } = setupRouter({
+        secret: envExample.SECRET,
+        openAPISpecification,
+        controllers,
+        validateResponse: false,
+        logger
+      })
+
+      assert.strictEqual(api.handlers.postResponseHandler, undefined)
+    }
+  )
+
+  await t.test(
+    'It should register postResponseHandler when validateResponse is true',
+    async () => {
+      const controllers = {
+        getMessages: () => ({
+          test: 'ok'
+        })
+      }
+
+      const { api } = setupRouter({
+        secret: envExample.SECRET,
+        openAPISpecification,
+        controllers,
+        validateResponse: true,
+        logger
+      })
+
+      assert.notStrictEqual(api.handlers.postResponseHandler, undefined)
+      assert.strictEqual(typeof api.handlers.postResponseHandler, 'function')
+    }
+  )
+
+  await t.test(
+    'It should register postResponseHandler by default (when validateResponse is not specified)',
+    async () => {
+      const controllers = {
+        getMessages: () => ({
+          test: 'ok'
+        })
+      }
+
+      const { api } = setupRouter({
+        secret: envExample.SECRET,
+        openAPISpecification,
+        controllers,
+        logger
+      })
+
+      assert.notStrictEqual(api.handlers.postResponseHandler, undefined)
+      assert.strictEqual(typeof api.handlers.postResponseHandler, 'function')
+    }
+  )
 })
