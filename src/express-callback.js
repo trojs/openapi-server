@@ -1,3 +1,4 @@
+/* @ts-self-types="../types/express-callback.d.ts" */
 import { hrtime } from 'node:process'
 import getStatusByError from './error-status.js'
 import { parseParams } from './params.js'
@@ -6,7 +7,7 @@ import { parseParams } from './params.js'
  * @typedef {import('express-serve-static-core').Request} Request
  * @typedef {import('express-serve-static-core').Response} Response
  * @typedef {import('openapi-backend').Context} Context
- * @typedef {import('./api.js').Logger} Logger
+ * @typedef {import('../src/api.js').Logger} Logger
  */
 
 /**

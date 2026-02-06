@@ -14,7 +14,8 @@
     "test": "node --test --experimental-test-coverage --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=./coverage/lcov.info",
     "cpd": "node_modules/jscpd/bin/jscpd src",
     "vulnerabilities": "npm audit --omit=dev",
-    "build:types": "tsc",
+    "lint:types": "tsc --noEmit --project tsconfig.json --skipLibCheck",
+    "build:types": "tsc && node scripts/create-type-stubs.js",
     "prepublishOnly": "rm -rf types && npm run build:types"
   },
   "type": "module",
@@ -40,6 +41,7 @@
     "@trojs/lint": "^0.4.0",
     "@types/node": "^24.0.0",
     "@types/express-serve-static-core": "^5.0.0",
+    "deno": "^2.5.0",
     "eslint": "^9.15.0",
     "globals": "^17.0.0",
     "jscpd": "^4.0.5",

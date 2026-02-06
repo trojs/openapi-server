@@ -1,3 +1,4 @@
+/* @ts-self-types="../types/operation-ids.d.ts" */
 const operations = ['get', 'put', 'patch', 'post', 'delete']
 
 /**

@@ -1,3 +1,4 @@
+/* @ts-self-types="../types/error-status.d.ts" */
 /**
  * @typedef {Error & { status?: number }} StatusError
  */

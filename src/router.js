@@ -1,3 +1,4 @@
+/* @ts-self-types="../types/router.d.ts" */
 import { OpenAPIBackend } from 'openapi-backend'
 import addFormats from 'ajv-formats'
 import { makeExpressCallback } from './express-callback.js'
@@ -8,9 +9,9 @@ import makeResponseValidation from './handlers/response-validation.js'
 import { unauthorized } from './handlers/unauthorized.js'
 
 /**
- * @typedef {import('./api.js').Logger} Logger
- * @typedef {import('./api.js').SecurityHandler} SecurityHandler
- * @typedef {import('./api.js').Handler} Handler
+ * @typedef {import('../src/api.js').Logger} Logger
+ * @typedef {import('../src/api.js').SecurityHandler} SecurityHandler
+ * @typedef {import('../src/api.js').Handler} Handler
  * @typedef {import('ajv').Options} AjvOpts
  * @typedef {import('openapi-backend').AjvCustomizer} AjvCustomizer
  */
