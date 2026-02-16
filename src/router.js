@@ -66,9 +66,7 @@ export const setupRouter = ({
     notFound
   }
 
-  if (validateResponse) {
-    handlers.postResponseHandler = makeResponseValidation(logger)
-  }
+  handlers.postResponseHandler = makeResponseValidation(logger, validateResponse)
 
   api.register(handlers)
 

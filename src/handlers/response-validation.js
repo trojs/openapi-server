@@ -1,13 +1,17 @@
-export default (logger) => (context, request, response) => {
+export default (logger, validateResponse) => (context, request, response) => {
   const responseDoesntNeedValidation = response.statusCode >= 400
   if (responseDoesntNeedValidation) {
     return response.json(context.response)
   }
 
-  const valid = context.api.validateResponse(
-    context.response,
-    context.operation
-  )
+  const valid = validateResponse
+    ? (
+        context.api.validateResponse(
+          context.response,
+          context.operation
+        )
+      )
+    : null
   if (valid?.errors) {
     if (logger) {
       logger.error({

@@ -47,6 +47,7 @@ test('Test the router', async (t) => {
         secret: envExample.SECRET,
         openAPISpecification,
         controllers,
+        validateResponse: true,
         customizeAjv: (originalAjv) => {
           originalAjv.addKeyword('example', {
             validate: (schema, data) => data === 'example',
@@ -92,7 +93,7 @@ test('Test the router', async (t) => {
   )
 
   await t.test(
-    'It should not register postResponseHandler when validateResponse is false',
+    'It should not validate response when validateResponse is false',
     async () => {
       const controllers = {
         getMessages: () => ({
@@ -108,7 +109,31 @@ test('Test the router', async (t) => {
         logger
       })
 
-      assert.strictEqual(api.handlers.postResponseHandler, undefined)
+      // Handler should exist but not perform validation
+      assert.notStrictEqual(api.handlers.postResponseHandler, undefined)
+      assert.strictEqual(typeof api.handlers.postResponseHandler, 'function')
+
+      // Test that validation is not performed (no 502 error even with invalid response)
+      const context = {
+        response: {
+          status: 200,
+          timestamp: new Date(),
+          message: 'OK'
+        },
+        operation: 'get',
+        api: {
+          validateResponse: () => ({ errors: 'test' }),
+          validateResponseHeaders: () => undefined
+        }
+      }
+      const request = {}
+      const response = { ...resMock, values: { ...resMock.values } }
+
+      api.handlers.postResponseHandler(context, request, response)
+
+      // Should not return 502 because validation is disabled
+      assert.strictEqual(resMock.response.status, 200)
+      assert.strictEqual(resMock.response.message, 'OK')
     }
   )
 
