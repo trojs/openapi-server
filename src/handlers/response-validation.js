@@ -1,12 +1,10 @@
 export default (logger, validateResponse) => (context, request, response) => {
-  // Prevent sending headers if they're already sent
-  if (response.headersSent) {
-    return undefined
-  }
-
   const responseDoesntNeedValidation = response.statusCode >= 400
   if (responseDoesntNeedValidation) {
-    return response.json(context.response)
+    if (!response.headersSent) {
+      return response.json(context.response)
+    }
+    return context.response
   }
 
   const valid = validateResponse
@@ -27,25 +25,31 @@ export default (logger, validateResponse) => (context, request, response) => {
         response: context.response
       })
     }
-    if (!response.headersSent) {
-      return response.status(502).json({
-        errors: valid.errors,
-        status: 502,
-        timestamp: new Date(),
-        message: 'Bad response'
-      })
+    const errorResponse = {
+      errors: valid.errors,
+      status: 502,
+      timestamp: new Date(),
+      message: 'Bad response'
     }
-    return undefined
+    if (!response.headersSent) {
+      return response.status(502).json(errorResponse)
+    }
+    return errorResponse
   }
 
   if (!context.response) {
-    return response.end()
+    if (!response.headersSent) {
+      return response.end()
+    }
+    return null
   }
 
   const contentType = request?.headers?.accept ?? 'application/json'
-  if (contentType === 'application/json') {
-    return response.json(context.response)
+  if (!response.headersSent) {
+    if (contentType === 'application/json') {
+      return response.json(context.response)
+    }
+    return response.send(context.response)
   }
-
-  return response.send(context.response)
+  return context.response
 }
