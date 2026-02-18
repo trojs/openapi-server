@@ -1,5 +1,7 @@
 export const requestValidation = (context, request, response) => {
-  response.status(400)
+  if (!response.headersSent) {
+    response.status(400)
+  }
   return {
     errors: context.validation.errors,
     status: 400,

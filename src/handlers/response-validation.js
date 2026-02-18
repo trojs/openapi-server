@@ -1,4 +1,9 @@
 export default (logger, validateResponse) => (context, request, response) => {
+  // Prevent sending headers if they're already sent
+  if (response.headersSent) {
+    return undefined
+  }
+
   const responseDoesntNeedValidation = response.statusCode >= 400
   if (responseDoesntNeedValidation) {
     return response.json(context.response)
@@ -22,12 +27,15 @@ export default (logger, validateResponse) => (context, request, response) => {
         response: context.response
       })
     }
-    return response.status(502).json({
-      errors: valid.errors,
-      status: 502,
-      timestamp: new Date(),
-      message: 'Bad response'
-    })
+    if (!response.headersSent) {
+      return response.status(502).json({
+        errors: valid.errors,
+        status: 502,
+        timestamp: new Date(),
+        message: 'Bad response'
+      })
+    }
+    return undefined
   }
 
   if (!context.response) {
