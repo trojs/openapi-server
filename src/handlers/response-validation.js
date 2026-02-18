@@ -1,7 +1,7 @@
 export default (logger, validateResponse) => (context, request, response) => {
   // Prevent sending headers if they're already sent
   if (response.headersSent) {
-    return undefined
+    return response.end()
   }
 
   const responseDoesntNeedValidation = response.statusCode >= 400
@@ -35,7 +35,7 @@ export default (logger, validateResponse) => (context, request, response) => {
         message: 'Bad response'
       })
     }
-    return undefined
+    return response.end()
   }
 
   if (!context.response) {
