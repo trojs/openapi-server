@@ -41,7 +41,7 @@ export default (logger, validateResponse) => (context, request, response) => {
     if (!response.headersSent) {
       return response.end()
     }
-    return undefined
+    return null
   }
 
   const contentType = request?.headers?.accept ?? 'application/json'
