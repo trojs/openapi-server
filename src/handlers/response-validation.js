@@ -19,13 +19,18 @@ export default (logger, validateResponse) => (context, request, response) => {
     : null
   if (valid?.errors) {
     if (logger) {
-      logger.error({
-        message: 'Response validation failed',
-        errors: valid.errors,
-        operation: context.operation,
-        statusCode: response.statusCode,
-        response: context.response
-      })
+      try {
+        logger.error({
+          message: 'Response validation failed',
+          errors: valid.errors,
+          operation: context.operation,
+          statusCode: response.statusCode,
+          response: context.response
+        })
+      } catch (logError) {
+        // Prevent logging errors from affecting the response
+        console.error('Logger failed:', logError)
+      }
     }
     if (!response.headersSent) {
       return response.status(502).json({
