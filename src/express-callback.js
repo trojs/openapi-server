@@ -67,27 +67,37 @@ export const makeExpressCallback
         const responseBody = await controller(feedback)
         const responseTime = hrtime(startTime)[1] / 1000000 // convert to milliseconds
 
-        logger.debug({
-          url,
-          parameters,
-          post: request.body,
-          response: responseBody,
-          method,
-          ip,
-          userAgent,
-          responseTime,
-          statusCode: response.statusCode || 200,
-          message: 'access'
-        })
+        try {
+          logger?.debug({
+            url,
+            parameters,
+            post: request.body,
+            response: responseBody,
+            method,
+            ip,
+            userAgent,
+            responseTime,
+            statusCode: response.statusCode || 200,
+            message: 'access'
+          })
+        } catch (logError) {
+          // Prevent logging errors from affecting the request
+          console.error('Logger failed:', logError)
+        }
 
         return responseBody
       } catch (error) {
         const errorCodeStatus = getStatusByError(error)
 
-        if (errorCodeStatus >= 500) {
-          logger.error(error)
-        } else {
-          logger.warn(error)
+        try {
+          if (errorCodeStatus >= 500) {
+            logger?.error(error)
+          } else {
+            logger?.warn(error)
+          }
+        } catch (logError) {
+          // Prevent logging errors from affecting the request
+          console.error('Logger failed:', logError)
         }
 
         response.status(errorCodeStatus)
