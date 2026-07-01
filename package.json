@@ -12,7 +12,7 @@
         "lint:report": "eslint src/*.js -f json -o report.json",
         "lint:fix": "eslint --fix",
         "test": "node scripts/run-tests.js",
-        "cpd": "node_modules/jscpd/bin/jscpd src",
+        "cpd": "./node_modules/.bin/jscpd src",
         "vulnerabilities": "npm audit --omit=dev",
         "build:types": "tsc",
         "prepublishOnly": "rm -rf types && npm run build:types"
