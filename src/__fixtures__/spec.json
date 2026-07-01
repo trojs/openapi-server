@@ -170,6 +170,48 @@
                     }
                 ]
             }
+        },
+        "/events": {
+            "post": {
+                "operationId": "createEvent",
+                "summary": "Create event",
+                "description": "Create event with nested date payload.",
+                "parameters": [
+                    {
+                        "name": "event.startsAt",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2026-01-15T10:00:00.000Z"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "tags": [
+                    "Example"
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
         }
     },
     "info": {

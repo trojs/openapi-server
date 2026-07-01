@@ -39,7 +39,15 @@ const controllers = {
   getUsers: () => {
     throw new TypeError('test')
   },
-  getUserSecure: ({ context }) => context.security.customSecurityHandler
+  getUserSecure: ({ context }) => context.security.customSecurityHandler,
+  createEvent: ({ parameters, post }) => ({
+    parameterKeys: Object.keys(parameters),
+    isDate: parameters['event.startsAt'] instanceof Date,
+    startsAtIso: parameters['event.startsAt']?.toISOString(),
+    postIsDate: post?.event?.startsAt instanceof Date,
+    postStartsAtIso: post?.event?.startsAt?.toISOString(),
+    postTitle: post?.event?.title
+  })
 }
 
 const { openAPISpecification } = await openAPI({ file: specFileLocation })
@@ -245,6 +253,32 @@ test('Test the server', async (t) => {
         .set('authorization', 'not-the-secret')
 
       assert.strictEqual(response.status, 401)
+    }
+  )
+
+  await t.test(
+    'It should parse nested POST date payload into Date for controller parameters',
+    async () => {
+      const startsAt = '2026-01-15T10:00:00.000Z'
+      const response = await request
+        .post('/v1/events')
+        .set('x-api-key', envExample.SECRET)
+        .send({
+          event: {
+            startsAt,
+            title: 'Integration test event'
+          }
+        })
+
+      assert.strictEqual(response.status, 200)
+      assert.deepEqual(response.body, {
+        parameterKeys: ['event.startsAt'],
+        isDate: true,
+        startsAtIso: startsAt,
+        postIsDate: true,
+        postStartsAtIso: startsAt,
+        postTitle: 'Integration test event'
+      })
     }
   )
 })

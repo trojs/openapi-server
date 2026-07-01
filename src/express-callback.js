@@ -1,6 +1,6 @@
 import { hrtime } from 'node:process'
 import getStatusByError from './error-status.js'
-import { parseParams } from './params.js'
+import { parseParams, parsePost } from './params.js'
 
 /**
  * @typedef {import('express-serve-static-core').Request} Request
@@ -37,8 +37,13 @@ export const makeExpressCallback
           ...(context.request?.params || {}),
           ...(context.request?.query || {})
         }
+        const parsedPost = parsePost({
+          post: request.body,
+          spec: context.operation.parameters
+        })
         const parameters = parseParams({
           query: allParameters,
+          post: parsedPost,
           spec: context.operation.parameters,
           mock
         })
@@ -58,7 +63,7 @@ export const makeExpressCallback
           response,
           parameters,
           specification,
-          post: request.body,
+          post: parsedPost,
           url,
           logger,
           meta
@@ -70,7 +75,7 @@ export const makeExpressCallback
         logger.debug({
           url,
           parameters,
-          post: request.body,
+          post: parsedPost,
           response: responseBody,
           method,
           ip,
