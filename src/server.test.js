@@ -60,6 +60,7 @@ const controllers = {
   }),
   createAppointment: ({ post }) => ({
     // Dates are returned as date objects, not as strings
+    date: post.date,
     startsAt: post.startsAt,
     kinds: {
       date: post.date.constructor.name,
@@ -316,6 +317,7 @@ test('Test the server', async (t) => {
 
       assert.strictEqual(response.status, 200)
       assert.deepEqual(response.body, {
+        date: '2026-01-15',
         startsAt: parsedDate(STARTS_AT),
         kinds: {
           date: dateClass,

@@ -2,6 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert'
 import {
   getRequestBodySchema,
+  getResponseSchema,
   isDateLike,
   parseDate,
   parseSchemaDates,
@@ -158,6 +159,53 @@ test('parseSchemaDates', async (t) => {
     })
   })
 
+  await t.test('It should keep a string when a oneOf or anyOf branch is plain text', () => {
+    withoutTemporal(() => {
+      const choice = {
+        oneOf: [
+          { type: 'string' },
+          { type: 'string', format: 'date' }
+        ]
+      }
+      assert.strictEqual(parseSchemaDates({ value: DATE, schema: choice }), DATE)
+      assert.strictEqual(
+        parseSchemaDates({ value: DATE, schema: { anyOf: choice.oneOf } }),
+        DATE
+      )
+    })
+  })
+
+  await t.test('It should parse the date branch of a oneOf or anyOf by value type', () => {
+    withoutTemporal(() => {
+      const choice = {
+        oneOf: [
+          { type: 'integer' },
+          { type: 'string', format: 'date' }
+        ]
+      }
+      assert.deepEqual(
+        parseSchemaDates({ value: DATE, schema: choice }),
+        new Date(DATE)
+      )
+      assert.strictEqual(parseSchemaDates({ value: 5, schema: choice }), 5)
+
+      const objects = {
+        anyOf: [
+          { type: 'object', required: ['name'], properties: { born: { type: 'string' } } },
+          { type: 'object', required: ['birthday'], properties: { birthday: { type: 'string', format: 'date' } } }
+        ]
+      }
+      assert.deepEqual(
+        parseSchemaDates({ value: { birthday: DATE }, schema: objects }),
+        { birthday: new Date(DATE) }
+      )
+      assert.deepEqual(
+        parseSchemaDates({ value: { name: 'a', born: DATE }, schema: objects }),
+        { name: 'a', born: DATE }
+      )
+    })
+  })
+
   await t.test('It should not mutate the original value', () => {
     withoutTemporal(() => {
       parseSchemaDates({ value: body, schema })
@@ -191,6 +239,33 @@ test('serializeDates', async (t) => {
     })
   })
 
+  await t.test('It should use the schema format for a Date', () => {
+    const schema = {
+      type: 'object',
+      properties: {
+        date: { type: 'string', format: 'date' },
+        startsAt: { type: 'string', format: 'date-time' },
+        list: { type: 'array', items: { type: 'string', format: 'date' } }
+      }
+    }
+    assert.deepEqual(
+      serializeDates(
+        {
+          date: new Date(DATE),
+          startsAt: new Date(DATE_TIME_MS),
+          list: [new Date(REMINDER_DATE)]
+        },
+        schema
+      ),
+      { date: DATE, startsAt: DATE_TIME_MS, list: [REMINDER_DATE] }
+    )
+  })
+
+  await t.test('It should keep an invalid Date', () => {
+    const invalid = new Date('invalid')
+    assert.strictEqual(serializeDates(invalid), invalid)
+  })
+
   await t.test('It should keep other values', () => {
     assert.strictEqual(serializeDates('text'), 'text')
     assert.strictEqual(serializeDates(undefined), undefined)
@@ -205,23 +280,43 @@ test('isDateLike', () => {
 
 test('getRequestBodySchema', async (t) => {
   const schema = { type: 'object' }
+  const other = { type: 'string' }
+  const operation = {
+    requestBody: {
+      content: {
+        'application/json': { schema },
+        'text/plain': { schema: other },
+        'application/*': { schema: other }
+      }
+    }
+  }
 
-  await t.test('It should find the JSON schema', () => {
-    assert.strictEqual(
-      getRequestBodySchema({
-        requestBody: { content: { 'application/json': { schema } } }
-      }),
-      schema
-    )
+  await t.test('It should select the schema of the request content type', () => {
+    assert.strictEqual(getRequestBodySchema(operation, 'application/json; charset=utf-8'), schema)
+    assert.strictEqual(getRequestBodySchema(operation, 'text/plain'), other)
   })
 
-  await t.test('It should return undefined without a JSON request body', () => {
-    assert.strictEqual(getRequestBodySchema({}), undefined)
-    assert.strictEqual(
-      getRequestBodySchema({
-        requestBody: { content: { 'text/plain': { schema } } }
-      }),
-      undefined
-    )
+  await t.test('It should fall back to a wildcard media type', () => {
+    assert.strictEqual(getRequestBodySchema(operation, 'application/xml'), other)
   })
+
+  await t.test('It should return undefined without a matching media type', () => {
+    assert.strictEqual(getRequestBodySchema(operation, 'image/png'), undefined)
+    assert.strictEqual(getRequestBodySchema(operation), undefined)
+    assert.strictEqual(getRequestBodySchema({}, 'application/json'), undefined)
+  })
+})
+
+test('getResponseSchema', () => {
+  const schema = { type: 'object' }
+  const operation = {
+    responses: {
+      200: { content: { 'application/json': { schema } } },
+      default: { content: { 'application/problem+json': { schema: { type: 'string' } } } }
+    }
+  }
+  assert.strictEqual(getResponseSchema(operation, 200, 'application/json'), schema)
+  assert.deepEqual(getResponseSchema(operation, 500, 'application/problem+json'), { type: 'string' })
+  assert.strictEqual(getResponseSchema(operation, 200, 'text/html'), undefined)
+  assert.strictEqual(getResponseSchema({}, 200, 'application/json'), undefined)
 })

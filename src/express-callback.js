@@ -10,6 +10,8 @@ import { getRequestBodySchema } from './dates.js'
  * @typedef {import('./api.js').Logger} Logger
  */
 
+const getContentType = (request) => request.headers?.['content-type']
+
 /**
  * Make an express callback for the controller
  * @param {object} params
@@ -41,7 +43,10 @@ export const makeExpressCallback
         const parsedPost = parsePost({
           post: request.body,
           spec: context.operation.parameters,
-          bodySchema: getRequestBodySchema(context.operation)
+          bodySchema: getRequestBodySchema(
+            context.operation,
+            getContentType(request)
+          )
         })
         const parameters = parseParams({
           query: allParameters,
