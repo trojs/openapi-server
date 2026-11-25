@@ -1,4 +1,5 @@
 import { types } from './types.js'
+import { parseDate, parseSchemaDates } from './dates.js'
 
 /**
  * @typedef {object} ParameterSchema
@@ -24,6 +25,8 @@ const getNestedValue = (obj, path) => {
 
 /**
  * Set a nested value by dot-path while keeping support for flat keys.
+ * The original object is not mutated, only the objects along the path are copied.
+ * Copying is done without structuredClone, because Temporal objects can't be cloned.
  * @param {object} obj
  * @param {string} path
  * @param {any} value
@@ -32,26 +35,25 @@ const getNestedValue = (obj, path) => {
 const setNestedValue = (obj, path, value) => {
   if (!obj || !path) return obj
 
-  const next = structuredClone(obj)
-
-  if (Object.prototype.hasOwnProperty.call(next, path)) {
-    next[path] = value
-    return next
+  if (Object.prototype.hasOwnProperty.call(obj, path)) {
+    return { ...obj, [path]: value }
   }
 
-  const keys = path.split('.')
-  const last = keys[keys.length - 1]
-  let target = next
-
-  for (let index = 0; index < keys.length - 1; index += 1) {
-    const key = keys[index]
-    const existing = target[key]
-    target[key] = existing && typeof existing === 'object' ? existing : {}
-    target = target[key]
+  const setByKeys = (target, [key, ...rest]) => {
+    const copy = Array.isArray(target) ? [...target] : { ...target }
+    if (rest.length === 0) {
+      copy[key] = value
+      return copy
+    }
+    const existing = copy[key]
+    copy[key] = setByKeys(
+      existing && typeof existing === 'object' ? existing : {},
+      rest
+    )
+    return copy
   }
 
-  target[last] = value
-  return next
+  return setByKeys(obj, path.split('.'))
 }
 
 /**
@@ -76,7 +78,7 @@ const parseValue = ({ schema, value }) => {
   }
 
   if (Type === Date || (type === 'string' && (format === 'date' || format === 'date-time'))) {
-    return value instanceof Date ? value : new Date(value)
+    return parseDate({ value, format: format ?? 'date-time' })
   }
 
   return new Type(value).valueOf()
@@ -87,14 +89,15 @@ const parseValue = ({ schema, value }) => {
  * @param {object} params
  * @param {object=} params.post
  * @param {object[]} params.spec
+ * @param {object=} params.bodySchema Schema of the request body, used to parse the date fields
  * @returns {object|undefined}
  */
-export const parsePost = ({ post, spec }) => {
+export const parsePost = ({ post, spec, bodySchema }) => {
   if (!post || typeof post !== 'object') {
     return post
   }
 
-  let parsedPost = structuredClone(post)
+  let parsedPost = post
 
   spec.forEach((parameter) => {
     const { name, schema } = parameter
@@ -108,7 +111,7 @@ export const parsePost = ({ post, spec }) => {
     parsedPost = setNestedValue(parsedPost, name, parsedValue)
   })
 
-  return parsedPost
+  return parseSchemaDates({ value: parsedPost, schema: bodySchema })
 }
 
 /**

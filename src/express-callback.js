@@ -1,6 +1,7 @@
 import { hrtime } from 'node:process'
 import getStatusByError from './error-status.js'
 import { parseParams, parsePost } from './params.js'
+import { getRequestBodySchema } from './dates.js'
 
 /**
  * @typedef {import('express-serve-static-core').Request} Request
@@ -8,6 +9,8 @@ import { parseParams, parsePost } from './params.js'
  * @typedef {import('openapi-backend').Context} Context
  * @typedef {import('./api.js').Logger} Logger
  */
+
+const getContentType = (request) => request.headers?.['content-type']
 
 /**
  * Make an express callback for the controller
@@ -39,7 +42,11 @@ export const makeExpressCallback
         }
         const parsedPost = parsePost({
           post: request.body,
-          spec: context.operation.parameters
+          spec: context.operation.parameters,
+          bodySchema: getRequestBodySchema(
+            context.operation,
+            getContentType(request)
+          )
         })
         const parameters = parseParams({
           query: allParameters,
