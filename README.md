@@ -67,6 +67,11 @@ getTest: ({ parameters }) =>
 
 parameters are query param's from the url of a get request, parsed by the type defined in the OpenAPI spec.
 
+### Sentry
+
+Pass a `sentry` object to `setupServer` to enable Sentry.
+Upgrading from a version with `@sentry/node` v10? See [UPGRADING.md](./UPGRADING.md).
+
 ### Dates
 
 Fields with `type: string` and `format: date` or `format: date-time` are parsed in the `parameters` and in the `post` body.

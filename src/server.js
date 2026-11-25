@@ -25,6 +25,23 @@ const getOriginResourcePolicy = (origin) => ({
   }
 })
 
+const denyIpHeaders = {
+  deny: ['forwarded', '-ip', 'remote-', 'via', '-user']
+}
+
+// Equivalent to the Sentry v10 defaults (`sendDefaultPii: false`), v11 collects more by default
+const defaultDataCollection = {
+  userInfo: false,
+  cookies: false,
+  httpHeaders: { request: denyIpHeaders, response: denyIpHeaders },
+  httpBodies: [],
+  urlQueryParams: denyIpHeaders,
+  genAI: { inputs: false, outputs: false },
+  databaseQueryData: false,
+  queues: false,
+  graphQL: { document: false, variables: false }
+}
+
 /**
  * @typedef {import('express-serve-static-core').Request} Request
  * @typedef {import('express-serve-static-core').Response} Response
@@ -32,7 +49,6 @@ const getOriginResourcePolicy = (origin) => ({
  * @typedef {import('./api.js').ApiSchema} ApiSchema
  * @typedef {import('./api.js').Logger} Logger
  * @typedef {import('express').Express} Express
- * @typedef {import('@sentry/types').Integration} Integration
  */
 
 /**
@@ -53,7 +69,10 @@ const getOriginResourcePolicy = (origin) => ({
  * @typedef {object} SentryConfig
  * @property {string=} dsn
  * @property {number=} tracesSampleRate
- * @property {number=} profilesSampleRate
+ * @property {number=} profilesSampleRate Deprecated: removed in Sentry v11 and ignored. Use `profileSessionSampleRate`.
+ * @property {number=} profileSessionSampleRate
+ * @property {'manual'|'trace'=} profileLifecycle
+ * @property {import('@sentry/node').NodeOptions['dataCollection']=} dataCollection
  * @property {string=} release
  * @property {string=} environment
  * @property {string=} serverName
@@ -94,7 +113,9 @@ export const setupServer = async ({
       dsn: sentry.dsn,
       environment: sentry.environment || process.env.NODE_ENV || 'production',
       tracesSampleRate: sentry.tracesSampleRate || 1.0,
-      profilesSampleRate: sentry.profilesSampleRate || 1.0,
+      profileSessionSampleRate: sentry.profileSessionSampleRate,
+      profileLifecycle: sentry.profileLifecycle,
+      dataCollection: sentry.dataCollection || defaultDataCollection,
       release: sentry.release || process.env.SOURCE_VERSION,
       serverName: sentry.serverName || process.env.SERVER_NAME || hostname()
     })
