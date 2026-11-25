@@ -1,3 +1,5 @@
+import { serializeDates } from '../dates.js'
+
 export default (logger, validateResponse) => (context, request, response) => {
   // Prevent sending response if headers are already sent (e.g., after redirect)
   if (response.headersSent) {
@@ -12,7 +14,7 @@ export default (logger, validateResponse) => (context, request, response) => {
   const valid = validateResponse
     ? (
         context.api.validateResponse(
-          context.response,
+          serializeDates(context.response),
           context.operation
         )
       )

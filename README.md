@@ -67,6 +67,15 @@ getTest: ({ parameters }) =>
 
 parameters are query param's from the url of a get request, parsed by the type defined in the OpenAPI spec.
 
+### Dates
+
+Fields with `type: string` and `format: date` or `format: date-time` are parsed in the `parameters` and in the `post` body.
+For the body this is based on the `requestBody` JSON schema (including nested objects and arrays).
+When `Temporal` is available (Node 26 and later) `date` becomes a `Temporal.PlainDate` and `date-time` a `Temporal.Instant`, otherwise a `Date` is used.
+
+The responses are not converted, but your controller can return `Date` or `Temporal` objects for date fields:
+they are serialized to strings before the response is validated and sent.
+
 Specifications is the OpenAPI spec.
 
 Url is the current url.

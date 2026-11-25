@@ -212,6 +212,77 @@
                     }
                 ]
             }
+        },
+        "/appointments": {
+            "post": {
+                "operationId": "createAppointment",
+                "summary": "Create appointment",
+                "description": "Create appointment with dates in the request body and response.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "startsAt": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "reminders": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "date": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "startsAt": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "kinds": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "tags": [
+                    "Example"
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
         }
     },
     "info": {

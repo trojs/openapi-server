@@ -13,6 +13,8 @@ const envExample = {
   PORT: 3000
 }
 
+const STARTS_AT = '2026-01-15T10:00:00.000Z'
+
 const specFileLocation = './__fixtures__/spec.json'
 
 const exampleResponse = {
@@ -34,6 +36,14 @@ const exampleResponse = {
   total: 0
 }
 
+// Temporal is available in Node 26 and later
+const { Temporal } = globalThis
+const DateType = Temporal ? Temporal.Instant : Date
+const iso = (value) => (Temporal ? value?.toString() : value?.toISOString())
+const parsedDate = (value) => (Temporal ? Temporal.Instant.from(value).toString() : value)
+const dateClass = Temporal ? 'PlainDate' : 'Date'
+const dateTimeClass = Temporal ? 'Instant' : 'Date'
+
 const controllers = {
   getMessages: () => exampleResponse,
   getUsers: () => {
@@ -42,11 +52,20 @@ const controllers = {
   getUserSecure: ({ context }) => context.security.customSecurityHandler,
   createEvent: ({ parameters, post }) => ({
     parameterKeys: Object.keys(parameters),
-    isDate: parameters['event.startsAt'] instanceof Date,
-    startsAtIso: parameters['event.startsAt']?.toISOString(),
-    postIsDate: post?.event?.startsAt instanceof Date,
-    postStartsAtIso: post?.event?.startsAt?.toISOString(),
+    isDate: parameters['event.startsAt'] instanceof DateType,
+    startsAtIso: iso(parameters['event.startsAt']),
+    postIsDate: post?.event?.startsAt instanceof DateType,
+    postStartsAtIso: iso(post?.event?.startsAt),
     postTitle: post?.event?.title
+  }),
+  createAppointment: ({ post }) => ({
+    // Dates are returned as date objects, not as strings
+    startsAt: post.startsAt,
+    kinds: {
+      date: post.date.constructor.name,
+      startsAt: post.startsAt.constructor.name,
+      reminder: post.reminders[0].date.constructor.name
+    }
   })
 }
 
@@ -259,7 +278,8 @@ test('Test the server', async (t) => {
   await t.test(
     'It should parse nested POST date payload into Date for controller parameters',
     async () => {
-      const startsAt = '2026-01-15T10:00:00.000Z'
+      const startsAt = STARTS_AT
+      const expectedStartsAt = parsedDate(startsAt)
       const response = await request
         .post('/v1/events')
         .set('x-api-key', envExample.SECRET)
@@ -274,10 +294,34 @@ test('Test the server', async (t) => {
       assert.deepEqual(response.body, {
         parameterKeys: ['event.startsAt'],
         isDate: true,
-        startsAtIso: startsAt,
+        startsAtIso: expectedStartsAt,
         postIsDate: true,
-        postStartsAtIso: startsAt,
+        postStartsAtIso: expectedStartsAt,
         postTitle: 'Integration test event'
+      })
+    }
+  )
+
+  await t.test(
+    'It should parse dates in the request body and accept dates in the response',
+    async () => {
+      const response = await request
+        .post('/v1/appointments')
+        .set('x-api-key', envExample.SECRET)
+        .send({
+          date: '2026-01-15',
+          startsAt: STARTS_AT,
+          reminders: [{ date: '2026-01-14' }]
+        })
+
+      assert.strictEqual(response.status, 200)
+      assert.deepEqual(response.body, {
+        startsAt: parsedDate(STARTS_AT),
+        kinds: {
+          date: dateClass,
+          startsAt: dateTimeClass,
+          reminder: dateClass
+        }
       })
     }
   )

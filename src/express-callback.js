@@ -1,6 +1,7 @@
 import { hrtime } from 'node:process'
 import getStatusByError from './error-status.js'
 import { parseParams, parsePost } from './params.js'
+import { getRequestBodySchema } from './dates.js'
 
 /**
  * @typedef {import('express-serve-static-core').Request} Request
@@ -39,7 +40,8 @@ export const makeExpressCallback
         }
         const parsedPost = parsePost({
           post: request.body,
-          spec: context.operation.parameters
+          spec: context.operation.parameters,
+          bodySchema: getRequestBodySchema(context.operation)
         })
         const parameters = parseParams({
           query: allParameters,
